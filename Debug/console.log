@@ -1,0 +1,398 @@
+
+**** Build of configuration Debug for project Tasking_TC375_Ethernet ****
+
+"D:\\App\\Tasking6_3_Install\\ctc\\bin\\amk" -j8 all -a 
+Compiling Ifx_InterfaceConst.c
+Compiling Ifx_Lwip.c
+Compiling netif.c
+Compiling api_lib.c
+Compiling api_msg.c
+Compiling err.c
+Compiling if_api.c
+Compiling netbuf.c
+ctc W504: ["..\0_Src\0_AppSw\Config\Common\ConfigurationIsr.h" 143/9] macro "ISR_PRIORITY_OS_TICK" redefined
+ctc I801: ["..\0_Src\0_AppSw\Config\Common\ConfigurationIsr.h" 89/9] previous definition of macro "ISR_PRIORITY_OS_TICK"
+0 errors, 1 warnings
+Compiling netdb.c
+Compiling netifapi.c
+Compiling sockets.c
+Compiling tcpip.c
+Compiling altcp.c
+Compiling altcp_alloc.c
+Compiling altcp_tcp.c
+Compiling def.c
+ctc W504: ["D:\WorkSpace\Tasking\Tasking_TC375_Ethernet\0_Src\0_AppSw\Config\Common\ConfigurationIsr.h" 143/9] macro "ISR_PRIORITY_OS_TICK" redefined
+ctc I801: ["D:\WorkSpace\Tasking\Tasking_TC375_Ethernet\0_Src\0_AppSw\Config\Common\ConfigurationIsr.h" 89/9] previous definition of macro "ISR_PRIORITY_OS_TICK"
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c" 506/20] condition is always false
+0 errors, 2 warnings
+Compiling dns.c
+ctc W504: ["D:\WorkSpace\Tasking\Tasking_TC375_Ethernet\0_Src\0_AppSw\Config\Common\ConfigurationIsr.h" 143/9] macro "ISR_PRIORITY_OS_TICK" redefined
+ctc I801: ["D:\WorkSpace\Tasking\Tasking_TC375_Ethernet\0_Src\0_AppSw\Config\Common\ConfigurationIsr.h" 89/9] previous definition of macro "ISR_PRIORITY_OS_TICK"
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c" 364/5] condition is always true
+0 errors, 2 warnings
+Compiling inet_chksum.c
+Compiling init.c
+Compiling ip.c
+Compiling mem.c
+Compiling memp.c
+Compiling netif.c
+ctc W588: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\def.c" 234/9] dead assignment to "res" eliminated
+0 errors, 1 warnings
+Compiling pbuf.c
+Compiling raw.c
+Compiling stats.c
+Compiling sys.c
+Compiling tcp.c
+Compiling tcp_in.c
+Compiling tcp_out.c
+Compiling timeouts.c
+Compiling udp.c
+Compiling autoip.c
+ctc W514: ["D:\App\Tasking6_3_Install\ctc\include\stdlib.h" 101/1] empty declaration
+ctc W589: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\netif.c" 877/3] pointer assumed to be nonzero - test removed
+0 errors, 2 warnings
+Compiling dhcp.c
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\pbuf.c" 258/9] condition is always true
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\pbuf.c" 732/5] condition is always false
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\pbuf.c" 1224/3] condition is always true
+0 errors, 3 warnings
+Compiling etharp.c
+Compiling icmp.c
+Compiling igmp.c
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\timeouts.c" 190/5] condition is always false
+ctc W589: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\timeouts.c" 213/28] pointer assumed to be nonzero - test removed
+0 errors, 2 warnings
+Compiling ip4.c
+ctc W588: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\udp.c" 246/7] dead assignment to "pcb" eliminated
+ctc W588: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\udp.c" 903/7] dead assignment to "q" eliminated
+ctc W589: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\udp.c" 135/3] pointer assumed to be nonzero - test removed
+ctc W589: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\udp.c" 164/13] pointer assumed to be nonzero - test removed
+ctc W589: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\udp.c" 173/11] pointer assumed to be nonzero - test removed
+ctc W589: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\udp.c" 1001/56] pointer assumed to be nonzero - test removed
+ctc W589: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\udp.c" 1002/15] pointer assumed to be nonzero - test removed
+ctc W589: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\udp.c" 1013/3] pointer assumed to be nonzero - test removed
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\udp.c" 1087/3] condition is always false
+0 errors, 9 warnings
+Compiling ip4_addr.c
+ctc W588: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp.c" 620/16] dead assignment to "last_state" eliminated
+ctc W588: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp.c" 1403/18] dead assignment to "last_state" eliminated
+ctc W588: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp.c" 1200/7] dead assignment to "err" eliminated
+ctc W589: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp.c" 412/3] pointer assumed to be nonzero - test removed
+ctc W589: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp.c" 728/18] pointer assumed to be nonzero - test removed
+ctc W589: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp.c" 729/18] pointer assumed to be nonzero - test removed
+ctc W589: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp.c" 739/8] pointer assumed to be nonzero - test removed
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp.c" 744/5] condition is always false
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp.c" 861/18] condition is always false
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp.c" 1083/3] condition is always false
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp.c" 1098/7] condition is always false
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp.c" 1099/33] condition is always true
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp.c" 1100/18] condition is always false
+0 errors, 13 warnings
+Compiling ip4_frag.c
+ctc W588: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\ipv4\etharp.c" 1162/5] dead assignment to "p" eliminated
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\ipv4\etharp.c" 291/7] condition is always true
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\ipv4\etharp.c" 320/24] condition is always true
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\ipv4\etharp.c" 383/5] condition is always true
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\ipv4\etharp.c" 387/3] condition is always true
+ctc W589: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\ipv4\etharp.c" 944/7] pointer assumed to be nonzero - test removed
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\ipv4\etharp.c" 961/3] condition is always true
+0 errors, 7 warnings
+Compiling dhcp6.c
+ctc W589: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp_out.c" 163/3] pointer assumed to be nonzero - test removed
+ctc W589: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp_out.c" 1296/7] pointer assumed to be nonzero - test removed
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp_out.c" 1297/33] condition is always true
+ctc W589: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp_out.c" 1434/3] pointer assumed to be nonzero - test removed
+ctc W589: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp_out.c" 1465/3] pointer assumed to be nonzero - test removed
+ctc W589: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp_out.c" 1858/3] pointer assumed to be nonzero - test removed
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp_out.c" 1298/18] condition is always false
+0 errors, 7 warnings
+Compiling ethip6.c
+Compiling icmp6.c
+ctc W588: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp_in.c" 451/13] dead assignment to "err" eliminated
+ctc W588: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp_in.c" 667/7] dead assignment to "err" eliminated
+ctc W588: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp_in.c" 667/7] dead assignment to "err" eliminated
+ctc W588: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp_in.c" 794/7] dead assignment to "err" eliminated
+ctc W589: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp_in.c" 339/22] pointer assumed to be nonzero - test removed
+ctc W589: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\tcp_in.c" 750/3] pointer assumed to be nonzero - test removed
+0 errors, 6 warnings
+Compiling inet6.c
+Compiling ip6.c
+Compiling ip6_addr.c
+Compiling ip6_frag.c
+Compiling mld6.c
+Compiling nd6.c
+Compiling bridgeif.c
+Compiling bridgeif_fdb.c
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\ipv4\ip4_frag.c" 188/5] condition is always true
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\ipv4\ip4_frag.c" 479/11] condition is always true
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\ipv4\ip4_frag.c" 680/3] condition is always true
+ctc W589: ["..\0_Src\0_AppSw\Ethernet\lwip\src\core\ipv4\ip4_frag.c" 708/3] pointer assumed to be nonzero - test removed
+0 errors, 4 warnings
+Compiling ethernet.c
+Compiling lowpan6.c
+Compiling lowpan6_ble.c
+Compiling lowpan6_common.c
+Compiling zepif.c
+Compiling auth.c
+Compiling ccp.c
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\src\netif\bridgeif_fdb.c" 167/11] condition is always true
+ctc W549: ["..\0_Src\0_AppSw\Ethernet\lwip\src\netif\bridgeif_fdb.c" 167/23] condition is always true
+0 errors, 2 warnings
+Compiling chap-md5.c
+Compiling chap-new.c
+Compiling chap_ms.c
+Compiling demand.c
+Compiling eap.c
+Compiling ecp.c
+Compiling eui64.c
+Compiling fsm.c
+Compiling ipcp.c
+Compiling ipv6cp.c
+Compiling lcp.c
+Compiling magic.c
+Compiling mppe.c
+Compiling multilink.c
+Compiling ppp.c
+Compiling pppapi.c
+Compiling pppcrypt.c
+Compiling pppoe.c
+Compiling pppol2tp.c
+Compiling pppos.c
+Compiling upap.c
+Compiling utils.c
+Compiling vj.c
+Compiling arc4.c
+Compiling des.c
+Compiling md4.c
+Compiling md5.c
+Compiling sha1.c
+Compiling IfxGeth_Phy_Dp83825i.c
+Compiling Cpu0_Main.c
+Compiling Cpu1_Main.c
+Compiling Cpu2_Main.c
+Compiling Echo.c
+Compiling UART_Logging.c
+Compiling SpiIf.c
+Compiling IfxStdIf_DPipe.c
+Compiling IfxStdIf_Pos.c
+ctc W557: ["..\0_Src\0_AppSw\Tricore\Main\Cpu1_Main.c" 46/12] possible infinite loop
+0 errors, 1 warnings
+Compiling IfxStdIf_PwmHl.c
+ctc W557: ["..\0_Src\0_AppSw\Tricore\Main\Cpu2_Main.c" 46/12] possible infinite loop
+0 errors, 1 warnings
+Compiling IfxStdIf_Timer.c
+Compiling Assert.c
+ctc W537: ["..\0_Src\0_AppSw\Tricore\Main\Echo.c" 120/14] unused variable "ErrSts"
+ctc W536: ["..\0_Src\0_AppSw\Tricore\Main\Echo.c" 537/14] unused static function "TCP_poll_cb"
+ctc W537: ["..\0_Src\0_AppSw\Tricore\Main\Echo.c" 419/11] unused variable "tcpSendRet"
+ctc W549: ["..\0_Src\0_AppSw\Tricore\Main\Echo.c" 217/15] condition is always true
+0 errors, 4 warnings
+Compiling Bsp.c
+Compiling Ifx_Console.c
+Compiling Ifx_Shell.c
+Compiling Ifx_GlobalResources.c
+Compiling Ifx_AngleTrkF32.c
+Compiling Ifx_Cf32.c
+Compiling Ifx_Crc.c
+Compiling Ifx_FftF32.c
+Compiling Ifx_FftF32_BitReverseTable.c
+Compiling Ifx_FftF32_TwiddleTable.c
+ctc W549: ["..\0_Src\1_SrvSw\SysSe\Math\Ifx_AngleTrkF32.c" 184/62] condition is always false
+0 errors, 1 warnings
+Compiling Ifx_IntegralF32.c
+ctc W504: ["D:\WorkSpace\Tasking\Tasking_TC375_Ethernet\0_Src\0_AppSw\Config\Common\ConfigurationIsr.h" 143/9] macro "ISR_PRIORITY_OS_TICK" redefined
+ctc I801: ["D:\WorkSpace\Tasking\Tasking_TC375_Ethernet\0_Src\0_AppSw\Config\Common\ConfigurationIsr.h" 89/9] previous definition of macro "ISR_PRIORITY_OS_TICK"
+0 errors, 1 warnings
+Compiling Ifx_LowPassPt1.c
+Compiling Ifx_LowPassPt1F32.c
+Compiling Ifx_LutAtan2F32.c
+ctc W529: ["..\0_Src\1_SrvSw\SysSe\Math\Ifx_Crc.c" 338/20] overflow in constant expression of type "unsigned long int"
+ctc W529: ["..\0_Src\1_SrvSw\SysSe\Math\Ifx_Crc.c" 345/20] overflow in constant expression of type "unsigned long int"
+ctc W529: ["..\0_Src\1_SrvSw\SysSe\Math\Ifx_Crc.c" 372/20] overflow in constant expression of type "unsigned long int"
+ctc W529: ["..\0_Src\1_SrvSw\SysSe\Math\Ifx_Crc.c" 379/20] overflow in constant expression of type "unsigned long int"
+ctc W529: ["..\0_Src\1_SrvSw\SysSe\Math\Ifx_Crc.c" 406/20] overflow in constant expression of type "unsigned long int"
+ctc W529: ["..\0_Src\1_SrvSw\SysSe\Math\Ifx_Crc.c" 413/20] overflow in constant expression of type "unsigned long int"
+0 errors, 6 warnings
+Compiling Ifx_LutAtan2F32_Table.c
+Compiling Ifx_LutLinearF32.c
+Compiling Ifx_LutLSincosF32.c
+Compiling Ifx_LutSincosF32.c
+Compiling Ifx_LutSincosF32_Table.c
+Compiling Ifx_RampF32.c
+Compiling Ifx_WndF32_BlackmanHarrisTable.c
+Compiling Ifx_WndF32_HannTable.c
+ctc W587: ["..\0_Src\1_SrvSw\SysSe\Math\Ifx_LutAtan2F32_Table.c" 55/5] underflow on constant of type "float"
+0 errors, 1 warnings
+Compiling Ifx_DateTime.c
+Compiling CompilerDcc.c
+Compiling CompilerGhs.c
+Compiling CompilerGnuc.c
+Compiling CompilerTasking.c
+Compiling IfxAsclin_cfg.c
+Compiling IfxCan_cfg.c
+Compiling IfxCcu6_cfg.c
+Compiling IfxCif_cfg.c
+Compiling IfxCpu_cfg.c
+Compiling IfxDma_cfg.c
+Compiling IfxEray_cfg.c
+Compiling IfxEvadc_cfg.c
+Compiling IfxFlash_cfg.c
+Compiling IfxGeth_cfg.c
+Compiling IfxGtm_cfg.c
+Compiling IfxHssl_cfg.c
+Compiling IfxI2c_cfg.c
+Compiling IfxMsc_cfg.c
+Compiling IfxMtu_cfg.c
+Compiling IfxMultican_cfg.c
+Compiling IfxPort_cfg.c
+Compiling IfxPsi5_cfg.c
+Compiling IfxQspi_cfg.c
+Compiling IfxScu_cfg.c
+Compiling IfxSent_cfg.c
+Compiling IfxSmu_cfg.c
+Compiling IfxSrc_cfg.c
+Compiling IfxStm_cfg.c
+Compiling Ifx_CircularBuffer.asm.c
+Compiling Ifx_CircularBuffer.c
+Compiling Ifx_Fifo.c
+Compiling Ifx_InternalMux.c
+Compiling IfxAsclin_PinMap.c
+Compiling IfxCan_PinMap.c
+Compiling IfxCcu6_PinMap.c
+Compiling IfxDmu_PinMap.c
+Compiling IfxEdsadc_PinMap.c
+Compiling IfxEray_PinMap.c
+Compiling IfxEvadc_PinMap.c
+Compiling IfxGeth_PinMap.c
+Compiling IfxGpt12_PinMap.c
+Compiling IfxGtm_PinMap.c
+Compiling IfxI2c_PinMap.c
+Compiling IfxMsc_PinMap.c
+Compiling IfxPms_PinMap.c
+Compiling IfxPort_PinMap.c
+Compiling IfxPsi5_PinMap.c
+Compiling IfxPsi5s_PinMap.c
+Compiling IfxQspi_PinMap.c
+Compiling IfxScu_PinMap.c
+Compiling IfxSent_PinMap.c
+Compiling IfxSmu_PinMap.c
+Compiling IfxAsclin_Asc.c
+Compiling IfxAsclin_Lin.c
+Compiling IfxAsclin_Spi.c
+Compiling IfxAsclin.c
+Compiling IfxCan_Can.c
+Compiling IfxCan.c
+Compiling IfxCcu6_Icu.c
+Compiling IfxCcu6_PwmBc.c
+Compiling IfxCcu6_PwmHl.c
+Compiling IfxCcu6.c
+Compiling IfxCcu6_Timer.c
+Compiling IfxCcu6_TimerWithTrigger.c
+Compiling IfxCcu6_TPwm.c
+Compiling IfxConvctrl.c
+Compiling IfxCpu_CStart0.c
+Compiling IfxCpu_CStart1.c
+Compiling IfxCpu_CStart2.c
+ctc W523: ["..\0_Src\4_McHal\Tricore\Can\Can\IfxCan_Can.c" 980/43] pointers to different types at assignment
+0 errors, 1 warnings
+Compiling IfxCpu_Irq.c
+Compiling IfxCpu.c
+Compiling IfxCpu_Trap.c
+Compiling IfxDma_Dma.c
+Compiling IfxDma.c
+Compiling IfxDts_Dts.c
+Compiling IfxDts.c
+Compiling IfxEdsadc_Edsadc.c
+Compiling IfxEdsadc.c
+Compiling IfxEray_Eray.c
+Compiling IfxEray.c
+Compiling IfxEvadc_Adc.c
+Compiling IfxEvadc.c
+Compiling IfxFce_Crc.c
+Compiling IfxFce.c
+Compiling IfxFlash.c
+Compiling IfxGeth_Eth.c
+Compiling IfxGeth.c
+Compiling IfxGpt12_IncrEnc.c
+Compiling IfxGpt12.c
+Compiling IfxGtm_Atom_Dtm_PwmHl.c
+Compiling IfxGtm_Atom_Pwm.c
+Compiling IfxGtm_Atom_PwmHl.c
+Compiling IfxGtm_Atom_Timer.c
+Compiling IfxGtm.c
+Compiling IfxGtm_Atom.c
+Compiling IfxGtm_Cmu.c
+Compiling IfxGtm_Dpll.c
+Compiling IfxGtm_Dtm.c
+ctc W560: ["..\0_Src\4_McHal\Tricore\Gtm\Atom\Dtm_PwmHl\IfxGtm_Atom_Dtm_PwmHl.c" 323/104] possible truncation at implicit conversion to type "float"
+0 errors, 1 warnings
+Compiling IfxGtm_Psm.c
+Compiling IfxGtm_Spe.c
+Compiling IfxGtm_Tbu.c
+Compiling IfxGtm_Tim.c
+Compiling IfxGtm_Tom.c
+Compiling IfxGtm_Tim_In.c
+Compiling IfxGtm_Tim_Timer.c
+ctc W549: ["..\0_Src\4_McHal\Tricore\Gtm\Std\IfxGtm_Dtm.c" 101/28] condition is always true
+0 errors, 1 warnings
+Compiling IfxGtm_Tom_Dtm_PwmHl.c
+Compiling IfxGtm_Tom_Pwm.c
+Compiling IfxGtm_Tom_PwmHl.c
+Compiling IfxGtm_Tom_Timer.c
+Compiling IfxGtm_Trig.c
+Compiling IfxHssl_Hssl.c
+Compiling IfxHssl.c
+Compiling IfxI2c_I2c.c
+Compiling IfxI2c.c
+Compiling IfxIom_Driver.c
+ctc W532: ["..\0_Src\4_McHal\Tricore\Gtm\Tom\Dtm_PwmHl\IfxGtm_Tom_Dtm_PwmHl.c" 182/26] incompatible enum types at assignment
+ctc W532: ["..\0_Src\4_McHal\Tricore\Gtm\Tom\Dtm_PwmHl\IfxGtm_Tom_Dtm_PwmHl.c" 189/104] incompatible enum types at argument #1
+ctc W532: ["..\0_Src\4_McHal\Tricore\Gtm\Tom\Dtm_PwmHl\IfxGtm_Tom_Dtm_PwmHl.c" 189/141] incompatible enum types at argument #1
+ctc W532: ["..\0_Src\4_McHal\Tricore\Gtm\Tom\Dtm_PwmHl\IfxGtm_Tom_Dtm_PwmHl.c" 189/173] incompatible enum types at argument #2
+ctc W532: ["..\0_Src\4_McHal\Tricore\Gtm\Tom\Dtm_PwmHl\IfxGtm_Tom_Dtm_PwmHl.c" 203/64] incompatible enum types at argument #3
+ctc W532: ["..\0_Src\4_McHal\Tricore\Gtm\Tom\Dtm_PwmHl\IfxGtm_Tom_Dtm_PwmHl.c" 212/98] incompatible enum types at argument #1
+ctc W532: ["..\0_Src\4_McHal\Tricore\Gtm\Tom\Dtm_PwmHl\IfxGtm_Tom_Dtm_PwmHl.c" 239/103] incompatible enum types at argument #1
+ctc W532: ["..\0_Src\4_McHal\Tricore\Gtm\Tom\Dtm_PwmHl\IfxGtm_Tom_Dtm_PwmHl.c" 239/140] incompatible enum types at argument #1
+ctc W532: ["..\0_Src\4_McHal\Tricore\Gtm\Tom\Dtm_PwmHl\IfxGtm_Tom_Dtm_PwmHl.c" 239/161] incompatible enum types at argument #2
+ctc W560: ["..\0_Src\4_McHal\Tricore\Gtm\Tom\Dtm_PwmHl\IfxGtm_Tom_Dtm_PwmHl.c" 324/104] possible truncation at implicit conversion to type "float"
+0 errors, 10 warnings
+Compiling IfxIom_Iom.c
+Compiling IfxIom.c
+Compiling IfxMsc_Msc.c
+Compiling IfxMsc.c
+Compiling IfxMtu.c
+Compiling IfxPmsEvr.c
+Compiling IfxPmsPm.c
+Compiling IfxPort_Io.c
+Compiling IfxPort.c
+Compiling IfxPsi5_Psi5.c
+Compiling IfxPsi5.c
+Compiling IfxPsi5s_Psi5s.c
+Compiling IfxPsi5s.c
+Compiling IfxQspi_SpiMaster.c
+Compiling IfxQspi_SpiSlave.c
+Compiling IfxQspi.c
+Compiling IfxScuCcu.c
+Compiling IfxScuEru.c
+Compiling IfxScuLbist.c
+Compiling IfxScuRcu.c
+Compiling IfxScuWdt.c
+Compiling IfxSent_Sent.c
+Compiling IfxSent.c
+Compiling IfxSmu_Smu.c
+Compiling IfxSmu.c
+Compiling IfxSmuStdby.c
+Compiling IfxSrc.c
+Compiling IfxStm.c
+Compiling IfxStm_Timer.c
+Linking to Tasking_TC375_Ethernet.elf
+
+Time consumed: 144988 ms
+**** End of build ****
+
+Tool info: 
+TASKING VX-toolset for TriCore: control program v6.3r1 Build 19041558
+TASKING VX-toolset for TriCore: C compiler v6.3r1 Build 19041558 SN 09003382
+TASKING VX-toolset for TriCore: assembler v6.3r1 Build 19041558
+TASKING program builder v6.3r1 Build 19041558
+TASKING VX-toolset for TriCore: object linker v6.3r1 Build 19041558 SN 09003382
