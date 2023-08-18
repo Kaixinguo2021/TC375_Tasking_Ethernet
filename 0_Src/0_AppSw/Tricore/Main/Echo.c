@@ -70,7 +70,7 @@
 /*********************************************************************************************************************/
 /*------------------------------------------------------Macros-------------------------------------------------------*/
 /*********************************************************************************************************************/
-#define STORAGE_SIZE_BYTES 256          /* Size in bytes of the space in memory allocated for storing incoming data */
+#define STORAGE_SIZE_BYTES 1500          /* Size in bytes of the space in memory allocated for storing incoming data */
 
 #define  TCP_LOCAL_PORT    8088
 /*********************************************************************************************************************/
@@ -147,14 +147,14 @@ void TCP_server_init(void)
         if (err == ERR_OK)                                          /* If the binding was successful...                                                             */
         {
             g_TCPPcb = tcp_listen(g_TCPPcb);                      /* ...set the TCP control block able to accept incoming connections.                            */
-            tcp_accept(g_TCPPcb, tcp_server_accept);                      /* Configure the callback function to be called when a new connection is established.           */
+            // tcp_accept(g_TCPPcb, tcp_server_accept);                      /* Configure the callback function to be called when a new connection is established.           */
+            tcp_accept(g_TCPPcb, echoAccept);                      /* Configure the callback function to be called when a new connection is established.           */
         }
         else
         {
             memp_free(MEMP_TCP_PCB, g_TCPPcb);
         }
     }
-
 }
 
 /* Accept callback: it is called every time a client establish a new connection */
@@ -181,7 +181,7 @@ err_t echoAccept(void *arg, tcpPcb *newPcb, err_t err)
                                                                          * The time interval is specified as multiple of the TCP coarse timer interval, which is
                                                                          * called twice a second                                                                    */
         retErr = ERR_OK;                                                /* Set the return value when no error occured                                               */
-
+        LWIP_DEBUGF(TCP_OUTPUT_DEBUG | LWIP_DBG_STATE | LWIP_DBG_LEVEL_SEVERE, ("echoAccept call"));
         tcp_write(newPcb, g_Logo, strlen(g_Logo), 1);                   /* Send the Infineon logo to the remote client                                              */
     }
     else                                                                /* If it was not possible to allocate the necessary memory for the session...               */
@@ -196,7 +196,8 @@ err_t echoRecv(void *arg, tcpPcb *tpcb, pBuf *p, err_t err)
 {
     err_t retErr;                                                       /* Allocate memory for function return value                                                */
     EchoSession *es = (EchoSession*) arg;                               /* Get a pointer to the current session                                                     */
-
+    
+    tcp_nagle_disable(tpcb);
     if (p == NULL)                                                      /* If there is no enqueued received data after the RECV callback was called, it means the   */
     {                                                                   /* remote client closed the connection in the meanwhile                                     */
         es->state = ES_CLOSING;                                         /* Set the state of this session to CLOSING in order to free its resources                  */
@@ -236,9 +237,11 @@ err_t echoRecv(void *arg, tcpPcb *tpcb, pBuf *p, err_t err)
             es->p = p;                                                  /* ... set the unprocessed data buffer of the session to the received one                   */
             echoUnpack(tpcb, es);                                       /* Process the incoming data                                                                */
             echoSend(tpcb, es);                                         /* Send an echo to the remote client                                                        */
+            LWIP_DEBUGF(TCP_OUTPUT_DEBUG | LWIP_DBG_STATE | LWIP_DBG_LEVEL_SEVERE, ("es->state == ES_RECEIVING,es->p == NULL"));
         }
         else                                                            /* If the session still contains some unprocessed received data...                          */
         {
+            LWIP_DEBUGF(TCP_OUTPUT_DEBUG | LWIP_DBG_STATE | LWIP_DBG_LEVEL_SEVERE, ("es->state == ES_RECEIVING,es->p != NULL"));
             pBuf *ptr = es->p;                                          /* ... create a local reference for the received data                                       */
             pbuf_chain(ptr, p);                                         /* Chain the old unprocessed data contained in the session with the new one                 */
         }
@@ -328,13 +331,14 @@ void echoSend(tcpPcb *tpcb, EchoSession *es)
     {                                                                   /* nothing to send                                                                          */
         return;
     }
-    if(es->storage[es->nextFreeStoragePos - 1] != '\n' &&               /* If the string to be sent does not end with a new line...                                 */
-       es->nextFreeStoragePos < STORAGE_SIZE_BYTES)                     /* ... and the storage is not full ...                                                      */
-    {                                                                   /* ... do not send yet. Wait for the string to be echoed to terminate                       */
-        return;                                                         /* or the storage to completely fill.                                                       */
-    }
+    // if(es->storage[es->nextFreeStoragePos - 1] != '\n' &&               /* If the string to be sent does not end with a new line...                                 */
+    //    es->nextFreeStoragePos < STORAGE_SIZE_BYTES)                     /* ... and the storage is not full ...                                                      */
+    // {                                                                   /* ... do not send yet. Wait for the string to be echoed to terminate                       */
+    //     return;                                                         /* or the storage to completely fill.                                                       */
+    // }
     err_t wrErr = tcp_write(tpcb, "Board: ", 7, 1);                     /* Enqueue an echo preamble to be sent to the remote client                                 */
     wrErr |= tcp_write(tpcb, es->storage, es->nextFreeStoragePos, 1);   /* Enqueue the string stored in the session for sending                                     */
+    tcp_output(tpcb);
     if(wrErr == ERR_OK)                                                 /* If data was correctly enqueued for TCP transmission ...                                  */
     {
         es->nextFreeStoragePos = 0;                                     /* ... remove sent data from the session storage.                                           */
@@ -400,6 +404,11 @@ void echoClose(tcpPcb *tpcb, EchoSession *es)
  ******************************************************************************/
 static err_t tcp_server_accept(void *arg, struct tcp_pcb *newpcb, err_t err)
 {
+    /* 关闭nagle算法 */
+    tcp_nagle_disable(newpcb);
+    /* 发送数据 */
+    tcp_write(newpcb, "Server Connect", 50, TCP_WRITE_FLAG_COPY);
+    tcp_output(newpcb);
     /* 注册接收回调函数 */
     tcp_recv(newpcb, tcp_server_recv);
 

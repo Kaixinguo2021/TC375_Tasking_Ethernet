@@ -641,7 +641,8 @@
  *  (60 * 5) seconds = 5 minutes.
  */
 #if !defined ARP_MAXAGE || defined __DOXYGEN__
-#define ARP_MAXAGE                      300
+#define ARP_MAXAGE                      65535
+// #define ARP_MAXAGE                      300
 #endif
 
 /**

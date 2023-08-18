@@ -288,7 +288,8 @@ Ifx_Lwip_onTimerTick:	.type	func
 
 ; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   248      uint16    timerFlags = lwip->timerFlags;
 ; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   249  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   250      Ifx_Lwip_timerIncr(lwip->timer.arp, IFX_LWIP_ARP_PERIOD, IFX_LWIP_FLAG_ARP);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   250  #if LWIP_ARP
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   251      Ifx_Lwip_timerIncr(lwip->timer.arp, IFX_LWIP_ARP_PERIOD, IFX_LWIP_FLAG_ARP);
 	ld.hu	d2,[a15]56
 .L246:
 	mov	d3,#1000
@@ -298,25 +299,25 @@ Ifx_Lwip_onTimerTick:	.type	func
 	ld.hu	d4,[a15]64
 .L179:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   251  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   252      Ifx_Lwip_timerIncr(lwip->timer.tcp_fast, IFX_LWIP_TCP_FAST_PERIOD, IFX_LWIP_FLAG_TCP_FAST);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   252  #endif
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   253      Ifx_Lwip_timerIncr(lwip->timer.tcp_fast, IFX_LWIP_TCP_FAST_PERIOD, IFX_LWIP_FLAG_TCP_FAST);
 	extr.u	d2,d2,#0,#16
 	lea	a4,[a15]58
 	ld.hu	d15,[a15]58
 .L248:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   253      Ifx_Lwip_timerIncr(lwip->timer.tcp_slow, IFX_LWIP_TCP_SLOW_PERIOD, IFX_LWIP_FLAG_TCP_SLOW);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   254      Ifx_Lwip_timerIncr(lwip->timer.tcp_slow, IFX_LWIP_TCP_SLOW_PERIOD, IFX_LWIP_FLAG_TCP_SLOW);
 	lea	a5,[a15]60
 	ld.hu	d0,[a15]60
 .L249:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   254  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   255  #if LWIP_DHCP
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   256      Ifx_Lwip_timerIncr(lwip->timer.dhcp_coarse, IFX_LWIP_DHCP_COARSE_PERIOD, IFX_LWIP_FLAG_DHCP_COARSE);
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   257      Ifx_Lwip_timerIncr(lwip->timer.dhcp_fine, IFX_LWIP_DHCP_FINE_PERIOD, IFX_LWIP_FLAG_DHCP_FINE);
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   258  #endif
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   259  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   260      Ifx_Lwip_timerIncr(lwip->timer.link, IFX_LWIP_LINK_PERIOD, IFX_LWIP_FLAG_LINK);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   255  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   256  #if LWIP_DHCP
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   257      Ifx_Lwip_timerIncr(lwip->timer.dhcp_coarse, IFX_LWIP_DHCP_COARSE_PERIOD, IFX_LWIP_FLAG_DHCP_COARSE);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   258      Ifx_Lwip_timerIncr(lwip->timer.dhcp_fine, IFX_LWIP_DHCP_FINE_PERIOD, IFX_LWIP_FLAG_DHCP_FINE);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   259  #endif
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   260  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   261      Ifx_Lwip_timerIncr(lwip->timer.link, IFX_LWIP_LINK_PERIOD, IFX_LWIP_FLAG_LINK);
 	lea	a6,[a15]62
 	ld.hu	d1,[a15]62
 .L250:
@@ -347,12 +348,12 @@ Ifx_Lwip_onTimerTick:	.type	func
 	or	d4,d4,#16
 .L5:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   261  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   262      lwip->timerFlags = timerFlags;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   262  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   263      lwip->timerFlags = timerFlags;
 	st.h	[a2],d4
 .L251:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   263  }
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   264  }
 	st.h	[a6],d1
 	st.h	[a5],d0
 	st.h	[a4],d3
@@ -371,10 +372,10 @@ __Ifx_Lwip_onTimerTick_function_end:
 	
 	.global	Ifx_Lwip_pollTimerFlags
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   264  
 ; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   265  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   266  /** \brief Polling the timer event flags */
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   267  void Ifx_Lwip_pollTimerFlags(void)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   266  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   267  /** \brief Polling the timer event flags */
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   268  void Ifx_Lwip_pollTimerFlags(void)
 ; Function Ifx_Lwip_pollTimerFlags
 .L30:
 Ifx_Lwip_pollTimerFlags:	.type	func
@@ -1145,22 +1146,22 @@ Ifx_Lwip_pollTimerFlags:	.type	func
 	nop
 .L138:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   268  {
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   269      Ifx_Lwip *lwip = &g_Lwip;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   269  {
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   270      Ifx_Lwip *lwip = &g_Lwip;
 	movh.a	a12,#@his(g_Lwip)
 	lea	a12,[a12]@los(g_Lwip)
 .L257:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   270      uint16    timerFlags;
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   271  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   272      /* disable interrupts */
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   273      boolean interruptState = IfxCpu_disableInterrupts();
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   274  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   275      timerFlags       = lwip->timerFlags;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   271      uint16    timerFlags;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   272  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   273      /* disable interrupts */
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   274      boolean interruptState = IfxCpu_disableInterrupts();
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   275  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   276      timerFlags       = lwip->timerFlags;
 	ld.hu	d8,[a12]64
 .L182:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   276      lwip->timerFlags = 0;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   277      lwip->timerFlags = 0;
 	mov	d0,#0
 	st.h	[a12]64,d0
 .L146:
@@ -2202,126 +2203,126 @@ Ifx_Lwip_pollTimerFlags:	.type	func
 ; D:\WorkSpace\Tasking\Tasking_TC375_Ethernet\0_Src\4_McHal\Tricore\Cpu\Std\IfxCpu.h	  1026      if (enabled != FALSE)      (inlined)
 .L6:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   277  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   278      /* enable interrupts again */
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   279      IfxCpu_restoreInterrupts(interruptState);
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   280  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   281  #if LWIP_DHCP
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   282      if (timerFlags & IFX_LWIP_FLAG_DHCP_COARSE)
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   283      {
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   284      	/* only if we have a link we will check the dhcp */
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   285      	if (g_Lwip.netif.flags & NETIF_FLAG_LINK_UP)
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   286      		dhcp_coarse_tmr();
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   287      }
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   288  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   289      if (timerFlags & IFX_LWIP_FLAG_DHCP_FINE)
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   290      {
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   291      	/* only if we have a link we will check the dhcp */
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   292      	if (g_Lwip.netif.flags & NETIF_FLAG_LINK_UP)
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   293      		dhcp_fine_tmr();
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   294      }
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   295  #endif
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   296  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   297      if (timerFlags & IFX_LWIP_FLAG_TCP_FAST)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   278  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   279      /* enable interrupts again */
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   280      IfxCpu_restoreInterrupts(interruptState);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   281  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   282  #if LWIP_DHCP
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   283      if (timerFlags & IFX_LWIP_FLAG_DHCP_COARSE)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   284      {
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   285      	/* only if we have a link we will check the dhcp */
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   286      	if (g_Lwip.netif.flags & NETIF_FLAG_LINK_UP)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   287      		dhcp_coarse_tmr();
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   288      }
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   289  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   290      if (timerFlags & IFX_LWIP_FLAG_DHCP_FINE)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   291      {
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   292      	/* only if we have a link we will check the dhcp */
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   293      	if (g_Lwip.netif.flags & NETIF_FLAG_LINK_UP)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   294      		dhcp_fine_tmr();
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   295      }
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   296  #endif
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   297  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   298      if (timerFlags & IFX_LWIP_FLAG_TCP_FAST)
 	jz.t	d8:2,.L7
 .L259:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   298      {
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   299      	/* only if we have a link we will check the tcp */
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   300      	if (g_Lwip.netif.flags & NETIF_FLAG_LINK_UP)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   299      {
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   300      	/* only if we have a link we will check the tcp */
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   301      	if (g_Lwip.netif.flags & NETIF_FLAG_LINK_UP)
 	ld.bu	d15,[a12]41
 .L260:
 	jz.t	d15:2,.L8
 .L261:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   301      		tcp_fasttmr();
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   302      		tcp_fasttmr();
 	call	tcp_fasttmr
 .L8:
 .L7:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   302      }
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   303  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   304      if (timerFlags & IFX_LWIP_FLAG_TCP_SLOW)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   303      }
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   304  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   305      if (timerFlags & IFX_LWIP_FLAG_TCP_SLOW)
 	jz.t	d8:3,.L9
 .L262:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   305      {
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   306      	/* only if we have a link we will check the tcp */
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   307      	if (g_Lwip.netif.flags & NETIF_FLAG_LINK_UP)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   306      {
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   307      	/* only if we have a link we will check the tcp */
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   308      	if (g_Lwip.netif.flags & NETIF_FLAG_LINK_UP)
 	ld.bu	d15,[a12]41
 .L263:
 	jz.t	d15:2,.L10
 .L264:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   308      		tcp_slowtmr();
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   309      		tcp_slowtmr();
 	call	tcp_slowtmr
 .L10:
 .L9:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   309      }
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   310  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   311      if (timerFlags & IFX_LWIP_FLAG_ARP)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   310      }
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   311  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   312      if (timerFlags & IFX_LWIP_FLAG_ARP)
 	jz.t	d8:1,.L11
 .L265:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   312      {
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   313      	/* only if we have a link we will check the arp */
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   314      	if (g_Lwip.netif.flags & NETIF_FLAG_LINK_UP)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   313      {
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   314      	/* only if we have a link we will check the arp */
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   315      	if (g_Lwip.netif.flags & NETIF_FLAG_LINK_UP)
 	ld.bu	d15,[a12]41
 .L266:
 	jz.t	d15:2,.L12
 .L267:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   315      		etharp_tmr();
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   316      		etharp_tmr();
 	call	etharp_tmr
 .L12:
 .L11:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   316      }
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   317  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   318      if (timerFlags & IFX_LWIP_FLAG_LINK)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   317      }
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   318  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   319      if (timerFlags & IFX_LWIP_FLAG_LINK)
 	jz.t	d8:4,.L13
 .L151:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   319      {
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   320          Ifx_GETH_MAC_PHYIF_CONTROL_STATUS ctrl_status;
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   321  		ctrl_status.U = IfxGeth_Eth_Phy_Dp83825i_link_status();
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   320      {
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   321          Ifx_GETH_MAC_PHYIF_CONTROL_STATUS ctrl_status;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   322  		ctrl_status.U = IfxGeth_Eth_Phy_Dp83825i_link_status();
 	call	IfxGeth_Eth_Phy_Dp83825i_link_status
 .L183:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   322      	if (ctrl_status.B.LNKSTS == 0)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   323      	if (ctrl_status.B.LNKSTS == 0)
 	extr.u	d15,d2,#16,#8
 .L268:
 	jnz.t	d15:3,.L14
 .L269:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   323      		netif_set_link_down(&g_Lwip.netif);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   324      		netif_set_link_down(&g_Lwip.netif);
 	mov.aa	a4,a12
 	j	netif_set_link_down
 .L13:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   324      	else {
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   325      		IfxGeth_Eth *ethernetif = g_Lwip.netif.state;
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   326      		// we set the correct duplexMode
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   327      		if (ctrl_status.B.LNKMOD == 1)
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   328      			IfxGeth_mac_setDuplexMode(ethernetif->gethSFR, IfxGeth_DuplexMode_fullDuplex);
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   329      		else
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   330      			IfxGeth_mac_setDuplexMode(ethernetif->gethSFR, IfxGeth_DuplexMode_halfDuplex);
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   331      		// we set the correct speed
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   332      		if (ctrl_status.B.LNKSPEED == 0)
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   333      			// 10MBit speed
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   334      			IfxGeth_mac_setLineSpeed(ethernetif->gethSFR, IfxGeth_LineSpeed_10Mbps);
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   335      		else
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   336          		if (ctrl_status.B.LNKSPEED == 1)
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   337          			// 100MBit speed
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   338          			IfxGeth_mac_setLineSpeed(ethernetif->gethSFR, IfxGeth_LineSpeed_100Mbps);
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   339          		else
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   340          			// 1000MBit speed
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   341          			IfxGeth_mac_setLineSpeed(ethernetif->gethSFR, IfxGeth_LineSpeed_1000Mbps);
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   342      		netif_set_link_up(&g_Lwip.netif);
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   343      	}
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   344      }
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   345  }
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   325      	else {
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   326      		IfxGeth_Eth *ethernetif = g_Lwip.netif.state;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   327      		// we set the correct duplexMode
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   328      		if (ctrl_status.B.LNKMOD == 1)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   329      			IfxGeth_mac_setDuplexMode(ethernetif->gethSFR, IfxGeth_DuplexMode_fullDuplex);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   330      		else
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   331      			IfxGeth_mac_setDuplexMode(ethernetif->gethSFR, IfxGeth_DuplexMode_halfDuplex);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   332      		// we set the correct speed
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   333      		if (ctrl_status.B.LNKSPEED == 0)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   334      			// 10MBit speed
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   335      			IfxGeth_mac_setLineSpeed(ethernetif->gethSFR, IfxGeth_LineSpeed_10Mbps);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   336      		else
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   337          		if (ctrl_status.B.LNKSPEED == 1)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   338          			// 100MBit speed
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   339          			IfxGeth_mac_setLineSpeed(ethernetif->gethSFR, IfxGeth_LineSpeed_100Mbps);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   340          		else
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   341          			// 1000MBit speed
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   342          			IfxGeth_mac_setLineSpeed(ethernetif->gethSFR, IfxGeth_LineSpeed_1000Mbps);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   343      		netif_set_link_up(&g_Lwip.netif);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   344      	}
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   345      }
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   346  }
 	ret
 .L14:
 	ld.a	a2,[a12]28
@@ -6869,38 +6870,38 @@ __Ifx_Lwip_pollTimerFlags_function_end:
 	
 	.global	Ifx_Lwip_pollReceiveFlags
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   346  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   347  /** \brief Polling the ETH receive event flags */
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   348  void Ifx_Lwip_pollReceiveFlags(void)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   347  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   348  /** \brief Polling the ETH receive event flags */
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   349  void Ifx_Lwip_pollReceiveFlags(void)
 ; Function Ifx_Lwip_pollReceiveFlags
 .L32:
 Ifx_Lwip_pollReceiveFlags:	.type	func
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   349  {
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   350      /**
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   351       * We are assuming that the only interrupt source is an incoming packet
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   352       */
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   353      if (ETH_Receive_Flag == TRUE)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   350  {
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   351      /**
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   352       * We are assuming that the only interrupt source is an incoming packet
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   353       */
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   354      if (ETH_Receive_Flag == TRUE)
 	ld.bu	d15,ETH_Receive_Flag
 .L281:
 	jne	d15,#1,.L22
 .L282:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   354      {
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   355          ifx_netif_input(&g_Lwip.netif);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   355      {
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   356          ifx_netif_input(&g_Lwip.netif);
 	movh.a	a4,#@his(g_Lwip)
 	lea	a4,[a4]@los(g_Lwip)
 .L283:
 	call	ifx_netif_input
 .L284:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   356          ETH_Receive_Flag = FALSE;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   357          ETH_Receive_Flag = FALSE;
 	mov	d15,#0
 	st.b	ETH_Receive_Flag,d15
 .L22:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   357      }
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   358  }
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   358      }
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   359  }
 	ret
 .L164:
 	
@@ -6915,19 +6916,19 @@ __Ifx_Lwip_pollReceiveFlags_function_end:
 	
 	.global	netif_state_changed
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   359  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   360  #if LWIP_NETIF_EXT_STATUS_CALLBACK
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   361  static netif_ext_callback_t g_extCallback;
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   362  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   363  void netif_state_changed(struct netif* netif, netif_nsc_reason_t reason, const netif_ext_callback_args_t* args) {
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   360  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   361  #if LWIP_NETIF_EXT_STATUS_CALLBACK
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   362  static netif_ext_callback_t g_extCallback;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   363  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   364  void netif_state_changed(struct netif* netif, netif_nsc_reason_t reason, const netif_ext_callback_args_t* args) {
 ; Function netif_state_changed
 .L34:
 netif_state_changed:	.type	func
 	sub.a	a10,#16
 .L186:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   364      if(reason | LWIP_NSC_IPV4_ADDRESS_CHANGED) {
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   365          LWIP_DEBUGF(NETIF_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, ("netif: new ip address assigned: %"U16_F".%"U16_F".%"U16_F".%"U16_F"\n",
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   365      if(reason | LWIP_NSC_IPV4_ADDRESS_CHANGED) {
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   366          LWIP_DEBUGF(NETIF_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, ("netif: new ip address assigned: %"U16_F".%"U16_F".%"U16_F".%"U16_F"\n",
 	ld.bu	d15,[a4]4
 	st.w	[a10],d15
 	ld.bu	d15,[a4]5
@@ -6953,69 +6954,69 @@ __netif_state_changed_function_end:
 	
 	.global	Ifx_Lwip_init
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   366                          ip4_addr1_16(netif_ip4_addr(netif)),
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   367                          ip4_addr2_16(netif_ip4_addr(netif)),
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   368                          ip4_addr3_16(netif_ip4_addr(netif)),
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   369                          ip4_addr4_16(netif_ip4_addr(netif))));
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   370      }
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   371  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   372  }
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   373  #endif
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   374  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   375  //________________________________________________________________________________________
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   376  // INITIALIZATION FUNCTION
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   377  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   378  /** \brief LWIP initialization function
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   379   *
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   380   * The followings are executed: */
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   381  void Ifx_Lwip_init(eth_addr_t ethAddr)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   367                          ip4_addr1_16(netif_ip4_addr(netif)),
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   368                          ip4_addr2_16(netif_ip4_addr(netif)),
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   369                          ip4_addr3_16(netif_ip4_addr(netif)),
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   370                          ip4_addr4_16(netif_ip4_addr(netif))));
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   371      }
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   372  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   373  }
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   374  #endif
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   375  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   376  //________________________________________________________________________________________
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   377  // INITIALIZATION FUNCTION
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   378  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   379  /** \brief LWIP initialization function
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   380   *
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   381   * The followings are executed: */
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   382  void Ifx_Lwip_init(eth_addr_t ethAddr)
 ; Function Ifx_Lwip_init
 .L36:
 Ifx_Lwip_init:	.type	func
 	sub.a	a10,#24
 .L188:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   382  {
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   383  #ifdef __LWIP_DEBUG__
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   384      //Init uart for debugging
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   385      initUART();
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   383  {
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   384  #ifdef __LWIP_DEBUG__
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   385      //Init uart for debugging
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   386      initUART();
 	mov	e8,d5,d4
 	call	initUART
 .L127:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   386  #endif
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   387      ip_addr_t default_ipaddr, default_netmask, default_gw;
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   388      IP4_ADDR(&default_gw, 192,168,0,1);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   387  #endif
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   388      ip_addr_t default_ipaddr, default_netmask, default_gw;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   389      IP4_ADDR(&default_gw, 192,168,0,1);
 	ld.w	d15,.6.cnt
 	st.w	[a10]20,d15
 .L225:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   389      IP4_ADDR(&default_ipaddr, 192,168,0,11);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   390      IP4_ADDR(&default_ipaddr, 192,168,0,11);
 	ld.w	d15,.7.cnt
 	st.w	[a10]12,d15
 .L226:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   390      IP4_ADDR(&default_netmask, 255,255,255,0);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   391      IP4_ADDR(&default_netmask, 255,255,255,0);
 	ld.w	d15,.8.cnt
 	st.w	[a10]16,d15
 .L227:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   391  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   392      LWIP_DEBUGF(IFX_LWIP_DEBUG | LWIP_DBG_STATE, ("Ifx_Lwip_init start!\n"));
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   392  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   393      LWIP_DEBUGF(IFX_LWIP_DEBUG | LWIP_DBG_STATE, ("Ifx_Lwip_init start!\n"));
 	movh.a	a4,#@his(.3.str)
 	lea	a4,[a4]@los(.3.str)
 	call	Ifx_Lwip_printf
 .L228:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   393  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   394      /** - initialise LWIP (lwip_init()) */
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   395      lwip_init();
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   394  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   395      /** - initialise LWIP (lwip_init()) */
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   396      lwip_init();
 	call	lwip_init
 .L229:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   396  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   397      /** - initialise and add a \ref netif */
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   398      g_Lwip.eth_addr = ethAddr;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   397  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   398      /** - initialise and add a \ref netif */
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   399      g_Lwip.eth_addr = ethAddr;
 	movh.a	a12,#@his(g_Lwip)
 	lea	a12,[a12]@los(g_Lwip)
 .L230:
@@ -7023,8 +7024,8 @@ Ifx_Lwip_init:	.type	func
 	st.w	[a12]48,d8
 .L231:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   399      netif_add(&g_Lwip.netif, &default_ipaddr, &default_netmask, &default_gw,
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   400          (void *)0, ifx_netif_init, ethernet_input);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   400      netif_add(&g_Lwip.netif, &default_ipaddr, &default_netmask, &default_gw,
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   401          (void *)0, ifx_netif_init, ethernet_input);
 	mov	d15,#0
 	st.w	[a10],d15
 .L232:
@@ -7045,31 +7046,31 @@ Ifx_Lwip_init:	.type	func
 	call	netif_add
 .L237:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   401      netif_set_default(&g_Lwip.netif);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   402      netif_set_default(&g_Lwip.netif);
 	mov.aa	a4,a12
 	call	netif_set_default
 .L238:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   402      netif_set_up(&g_Lwip.netif);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   403      netif_set_up(&g_Lwip.netif);
 	mov.aa	a4,a12
 	call	netif_set_up
 .L239:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   403  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   404  #if LWIP_NETIF_HOSTNAME
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   405      g_Lwip.netif.hostname = BOARDNAME;
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   406  #endif
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   407  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   408  #if LWIP_DHCP
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   409      /** - assign \ref dhcp to \ref netif */
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   410      dhcp_set_struct(&g_Lwip.netif, &g_Lwip.dhcp);
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   411  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   412      /* we start the dhcp always here also when we don't have a link here */
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   413      dhcp_start(&g_Lwip.netif);
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   414  #endif
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   415  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   416  #if LWIP_NETIF_EXT_STATUS_CALLBACK
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   417      netif_add_ext_callback(&g_extCallback, netif_state_changed);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   404  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   405  #if LWIP_NETIF_HOSTNAME
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   406      g_Lwip.netif.hostname = BOARDNAME;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   407  #endif
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   408  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   409  #if LWIP_DHCP
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   410      /** - assign \ref dhcp to \ref netif */
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   411      dhcp_set_struct(&g_Lwip.netif, &g_Lwip.dhcp);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   412  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   413      /* we start the dhcp always here also when we don't have a link here */
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   414      dhcp_start(&g_Lwip.netif);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   415  #endif
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   416  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   417  #if LWIP_NETIF_EXT_STATUS_CALLBACK
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   418      netif_add_ext_callback(&g_extCallback, netif_state_changed);
 	lea	a4,g_extCallback
 .L240:
 	movh.a	a5,#@his(netif_state_changed)
@@ -7088,23 +7089,23 @@ __Ifx_Lwip_init_function_end:
 	
 	.global	sys_now
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   418  #endif
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   419      LWIP_DEBUGF(IFX_LWIP_DEBUG, ("Ifx_Lwip_init end!\n"));
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   420  }
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   421  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   422  /** Returns the current time in milliseconds,
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   423   * may be the same as sys_jiffies or at least based on it. */
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   424  inline u32_t sys_now(void)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   419  #endif
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   420      LWIP_DEBUGF(IFX_LWIP_DEBUG, ("Ifx_Lwip_init end!\n"));
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   421  }
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   422  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   423  /** Returns the current time in milliseconds,
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   424   * may be the same as sys_jiffies or at least based on it. */
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   425  inline u32_t sys_now(void)
 ; Function sys_now
 .L38:
 sys_now:	.type	func
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   425  {
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   426  	return g_TickCount_1ms;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   426  {
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   427  	return g_TickCount_1ms;
 	ld.w	d2,g_TickCount_1ms
 .L220:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   427  }
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   428  }
 	ret
 .L123:
 	
@@ -7116,15 +7117,15 @@ __sys_now_function_end:
 	.sdecl	'.text.inttab0.intvec.064',code
 	.sect	'.text.inttab0.intvec.064'
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   428  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   429  /**
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   430   * This interrupt is raised by the ethernet tx. The initialization is done by IfxGeth_Eth_init().
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   431   *
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   432   * \isrProvider \ref ISR_PROVIDER_ETH
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   433   * \isrPriority \ref ISR_PRIORITY_GETH_TX
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   434   *
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   435   */
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   436  IFX_INTERRUPT(ISR_Geth_Tx, CPU_WHICH_SERVICE_ETHERNET, ISR_PRIORITY_GETH_TX)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   429  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   430  /**
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   431   * This interrupt is raised by the ethernet tx. The initialization is done by IfxGeth_Eth_init().
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   432   *
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   433   * \isrProvider \ref ISR_PROVIDER_ETH
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   434   * \isrPriority \ref ISR_PRIORITY_GETH_TX
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   435   *
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   436   */
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   437  IFX_INTERRUPT(ISR_Geth_Tx, CPU_WHICH_SERVICE_ETHERNET, ISR_PRIORITY_GETH_TX)
 	movh.a	a14,#@his(ISR_Geth_Tx)
 	lea	a14,[a14]@los(ISR_Geth_Tx)
 	ji	a14
@@ -7137,15 +7138,15 @@ __sys_now_function_end:
 .L40:
 ISR_Geth_Tx:	.type	func
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   437  {
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   438      isrTxCount++;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   438  {
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   439      isrTxCount++;
 	ld.w	d15,isrTxCount
 .L293:
 	add	d15,#1
 	st.w	isrTxCount,d15
 .L294:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   439  }
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   440  }
 	rfe
 .L171:
 	
@@ -7157,15 +7158,15 @@ __ISR_Geth_Tx_function_end:
 	.sdecl	'.text.inttab0.intvec.065',code
 	.sect	'.text.inttab0.intvec.065'
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   440  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   441  /**
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   442   * This interrupt is raised by the ethernet rx. The initialization is done by IfxGeth_Eth_init().
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   443   *
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   444   * \isrProvider \ref ISR_PROVIDER_ETH
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   445   * \isrPriority \ref ISR_PRIORITY_GETH_RX
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   446   *
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   447   */
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   448  IFX_INTERRUPT(ISR_Geth_Rx, CPU_WHICH_SERVICE_ETHERNET, ISR_PRIORITY_GETH_RX)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   441  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   442  /**
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   443   * This interrupt is raised by the ethernet rx. The initialization is done by IfxGeth_Eth_init().
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   444   *
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   445   * \isrProvider \ref ISR_PROVIDER_ETH
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   446   * \isrPriority \ref ISR_PRIORITY_GETH_RX
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   447   *
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   448   */
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   449  IFX_INTERRUPT(ISR_Geth_Rx, CPU_WHICH_SERVICE_ETHERNET, ISR_PRIORITY_GETH_RX)
 	movh.a	a14,#@his(ISR_Geth_Rx)
 	lea	a14,[a14]@los(ISR_Geth_Rx)
 	ji	a14
@@ -7178,21 +7179,21 @@ __ISR_Geth_Tx_function_end:
 .L42:
 ISR_Geth_Rx:	.type	func
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   449  {
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   450      isrRxCount++;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   450  {
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   451      isrRxCount++;
 	ld.w	d15,isrRxCount
 .L299:
 	add	d15,#1
 	st.w	isrRxCount,d15
 .L300:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   451      ETH_Receive_Flag = TRUE;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   452      ETH_Receive_Flag = TRUE;
 	mov	d15,#1
 	st.b	ETH_Receive_Flag,d15
 .L301:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   452      // ifx_netif_input(&g_Lwip.netif);
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   453  }
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   453      // ifx_netif_input(&g_Lwip.netif);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   454  }
 	rfe
 .L172:
 	
@@ -7207,16 +7208,16 @@ __ISR_Geth_Rx_function_end:
 	
 	.global	Ifx_Lwip_printf
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   454  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   455  //________________________________________________________________________________________
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   456  // DEBUGGING FUNCTIONS
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   457  #include "Configuration.h"
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   458  #include <stdio.h>
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   459  #include <string.h>
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   460  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   461  #define MAXCHARS 256
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   462  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   463  s8_t Ifx_Lwip_printf(const char *format, ...)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   455  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   456  //________________________________________________________________________________________
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   457  // DEBUGGING FUNCTIONS
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   458  #include "Configuration.h"
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   459  #include <stdio.h>
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   460  #include <string.h>
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   461  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   462  #define MAXCHARS 256
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   463  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   464  s8_t Ifx_Lwip_printf(const char *format, ...)
 ; Function Ifx_Lwip_printf
 .L44:
 Ifx_Lwip_printf:	.type	func
@@ -7225,27 +7226,27 @@ Ifx_Lwip_printf:	.type	func
 	mov.aa	a5,a4
 .L191:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   464  {
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   465  #ifdef __LWIP_DEBUG__
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   466      char    str[MAXCHARS + 4];
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   467      s8_t    result = ERR_CONN;
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   468  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   469      va_list args;
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   470      va_start(args, format);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   465  {
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   466  #ifdef __LWIP_DEBUG__
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   467      char    str[MAXCHARS + 4];
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   468      s8_t    result = ERR_CONN;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   469  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   470      va_list args;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   471      va_start(args, format);
 	lea	a6,[a10]264
 .L212:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   471      vsnprintf(str, MAXCHARS, format, args);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   472      vsnprintf(str, MAXCHARS, format, args);
 	mov.aa	a4,a10
 .L190:
 	mov	d4,#256
 	call	vsnprintf
 .L118:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   472      va_end(args);
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   473      {
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   474          Ifx_SizeT cnt = 0;
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   475          while(str[cnt]!=0)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   473      va_end(args);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   474      {
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   475          Ifx_SizeT cnt = 0;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   476          while(str[cnt]!=0)
 	mov	d4,#0
 	ld.bu	d15,[a10]
 .L192:
@@ -7254,7 +7255,7 @@ Ifx_Lwip_printf:	.type	func
 	jeq	d15,#0,.L24
 .L25:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   476              cnt++;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   477              cnt++;
 	add	d4,#1
 	ld.b	d15,[+a15]1
 .L193:
@@ -7263,23 +7264,23 @@ Ifx_Lwip_printf:	.type	func
 	jne	d15,#0,.L25
 .L24:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   477          sendUARTMessage(str, cnt);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   478          sendUARTMessage(str, cnt);
 	mov.aa	a4,a10
 .L214:
 	call	sendUARTMessage
 .L195:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   478          sendUARTMessage("\r\n", 2);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   479          sendUARTMessage("\r\n", 2);
 	lea	a4,.5.str
 .L215:
 	mov	d4,#2
 	call	sendUARTMessage
 .L119:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   479      }
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   480  #endif
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   481      return result;
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   482  }
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   480      }
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   481  #endif
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   482      return result;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   483  }
 	mov	d2,#-11
 	ret
 .L113:
@@ -32368,22 +32369,22 @@ g_extCallback:	.type	object
 	.byte	2
 	.word	.L45
 	.byte	3
-	.byte	'Ifx_Lwip_printf',0,1,207,3,6
+	.byte	'Ifx_Lwip_printf',0,1,208,3,6
 	.word	.L112
 	.byte	1,1,1
 	.word	.L44,.L113,.L43
 	.byte	4
-	.byte	'format',0,1,207,3,34
+	.byte	'format',0,1,208,3,34
 	.word	.L114,.L115
-	.byte	5,1,207,3,42,6
+	.byte	5,1,208,3,42,6
 	.word	.L44,.L113
 	.byte	7
-	.byte	'str',0,1,210,3,13
+	.byte	'str',0,1,211,3,13
 	.word	.L116,.L117
 	.byte	6
 	.word	.L118,.L119
 	.byte	7
-	.byte	'cnt',0,1,218,3,19
+	.byte	'cnt',0,1,219,3,19
 	.word	.L120,.L121
 	.byte	0,0,0,0
 	.sdecl	'.debug_abbrev',debug,cluster('Ifx_Lwip_printf')
@@ -32405,7 +32406,7 @@ g_extCallback:	.type	object
 .L211:
 	.byte	5,6,7,0,5,2
 	.word	.L44
-	.byte	3,206,3,1,5,5,9
+	.byte	3,207,3,1,5,5,9
 	.half	.L191-.L44
 	.byte	3,7,1,5,15,9
 	.half	.L212-.L191
@@ -32455,7 +32456,7 @@ g_extCallback:	.type	object
 	.byte	2
 	.word	.L45
 	.byte	3
-	.byte	'sys_now',0,2,1,168,3,14
+	.byte	'sys_now',0,2,1,169,3,14
 	.word	.L122
 	.byte	1,1,1
 	.word	.L38,.L123,.L37
@@ -32480,7 +32481,7 @@ g_extCallback:	.type	object
 .L219:
 	.byte	5,9,7,0,5,2
 	.word	.L38
-	.byte	3,169,3,1,5,1,9
+	.byte	3,170,3,1,5,1,9
 	.half	.L220-.L38
 	.byte	3,1,1,7,9
 	.half	.L58-.L220
@@ -32504,23 +32505,23 @@ g_extCallback:	.type	object
 	.byte	2
 	.word	.L45
 	.byte	3
-	.byte	'Ifx_Lwip_init',0,1,253,2,6,1,1,1
+	.byte	'Ifx_Lwip_init',0,1,254,2,6,1,1,1
 	.word	.L36,.L124,.L35
 	.byte	4
-	.byte	'ethAddr',0,1,253,2,31
+	.byte	'ethAddr',0,1,254,2,31
 	.word	.L125,.L126
 	.byte	5
 	.word	.L36,.L124
 	.byte	5
 	.word	.L127,.L124
 	.byte	6
-	.byte	'default_ipaddr',0,1,131,3,15
+	.byte	'default_ipaddr',0,1,132,3,15
 	.word	.L128,.L129
 	.byte	6
-	.byte	'default_netmask',0,1,131,3,31
+	.byte	'default_netmask',0,1,132,3,31
 	.word	.L128,.L130
 	.byte	6
-	.byte	'default_gw',0,1,131,3,48
+	.byte	'default_gw',0,1,132,3,48
 	.word	.L128,.L131
 	.byte	0,0,0,0
 	.sdecl	'.debug_abbrev',debug,cluster('Ifx_Lwip_init')
@@ -32542,7 +32543,7 @@ g_extCallback:	.type	object
 .L224:
 	.byte	5,6,7,0,5,2
 	.word	.L36
-	.byte	3,252,2,1,5,13,9
+	.byte	3,253,2,1,5,13,9
 	.half	.L188-.L36
 	.byte	3,4,1,5,5,9
 	.half	.L127-.L188
@@ -32628,13 +32629,13 @@ g_extCallback:	.type	object
 	.word	.L28
 	.byte	3,246,1,1,5,5,9
 	.half	.L245-.L28
-	.byte	3,3,1,5,32,9
+	.byte	3,4,1,5,32,9
 	.half	.L246-.L245
-	.byte	3,126,1,5,5,9
+	.byte	3,125,1,5,5,9
 	.half	.L247-.L246
-	.byte	3,2,1,5,32,3,126,1,5,5,9
+	.byte	3,3,1,5,32,3,125,1,5,5,9
 	.half	.L179-.L247
-	.byte	3,2,1,3,2,1,9
+	.byte	3,3,1,3,2,1,9
 	.half	.L248-.L179
 	.byte	3,1,1,9
 	.half	.L249-.L248
@@ -32672,12 +32673,12 @@ g_extCallback:	.type	object
 	.byte	2
 	.word	.L45
 	.byte	3
-	.byte	'Ifx_Lwip_pollTimerFlags',0,1,139,2,6,1,1,1
+	.byte	'Ifx_Lwip_pollTimerFlags',0,1,140,2,6,1,1,1
 	.word	.L30,.L135,.L29
 	.byte	4
 	.word	.L30,.L135
 	.byte	5
-	.byte	'timerFlags',0,1,142,2,15
+	.byte	'timerFlags',0,1,143,2,15
 	.word	.L133,.L136
 	.byte	6
 	.word	.L137,.L30,.L138
@@ -32699,12 +32700,12 @@ g_extCallback:	.type	object
 	.byte	0,10
 	.word	.L150
 	.byte	5
-	.byte	'ctrl_status',0,1,192,2,43
+	.byte	'ctrl_status',0,1,193,2,43
 	.word	.L152,.L153
 	.byte	4
 	.word	.L14,.L135
 	.byte	5
-	.byte	'ethernetif',0,1,197,2,20
+	.byte	'ethernetif',0,1,198,2,20
 	.word	.L154,.L155
 	.byte	6
 	.word	.L156,.L157,.L16
@@ -32757,17 +32758,17 @@ g_extCallback:	.type	object
 	.half	.L256-.L141
 	.byte	3,1,1,4,1,5,23,9
 	.half	.L138-.L256
-	.byte	3,157,124,1,5,28,9
+	.byte	3,158,124,1,5,28,9
 	.half	.L257-.L138
 	.byte	3,6,1,5,24,9
 	.half	.L182-.L257
 	.byte	3,1,1,5,22,1,4,2,5,5,9
 	.half	.L146-.L182
-	.byte	3,238,5,1,5,17,7,9
+	.byte	3,237,5,1,5,17,7,9
 	.half	.L258-.L146
 	.byte	3,2,1,4,1,5,5,9
 	.half	.L6-.L258
-	.byte	3,165,122,1,5,22,7,9
+	.byte	3,166,122,1,5,22,7,9
 	.half	.L259-.L6
 	.byte	3,3,1,5,6,9
 	.half	.L260-.L259
@@ -32809,15 +32810,15 @@ g_extCallback:	.type	object
 	.half	.L270-.L185
 	.byte	3,127,1,4,3,5,33,7,9
 	.half	.L157-.L270
-	.byte	3,146,9,1,5,37,9
-	.half	.L271-.L157
-	.byte	1,4,1,5,85,3,239,118,1,4,3,5,33,9
-	.half	.L16-.L271
 	.byte	3,145,9,1,5,37,9
+	.half	.L271-.L157
+	.byte	1,4,1,5,85,3,240,118,1,4,3,5,33,9
+	.half	.L16-.L271
+	.byte	3,144,9,1,5,37,9
 	.half	.L272-.L16
 	.byte	1,4,1,5,24,9
 	.half	.L163-.L272
-	.byte	3,243,118,1,5,43,9
+	.byte	3,244,118,1,5,43,9
 	.half	.L273-.L163
 	.byte	3,2,1,5,7,9
 	.half	.L274-.L273
@@ -32855,7 +32856,7 @@ g_extCallback:	.type	object
 	.byte	2
 	.word	.L45
 	.byte	3
-	.byte	'Ifx_Lwip_pollReceiveFlags',0,1,220,2,6,1,1,1
+	.byte	'Ifx_Lwip_pollReceiveFlags',0,1,221,2,6,1,1,1
 	.word	.L32,.L164,.L31
 	.byte	4
 	.word	.L32,.L164
@@ -32878,7 +32879,7 @@ g_extCallback:	.type	object
 .L280:
 	.byte	5,9,7,0,5,2
 	.word	.L32
-	.byte	3,224,2,1,5,5,9
+	.byte	3,225,2,1,5,5,9
 	.half	.L281-.L32
 	.byte	1,5,26,7,9
 	.half	.L282-.L281
@@ -32910,16 +32911,16 @@ g_extCallback:	.type	object
 	.byte	2
 	.word	.L45
 	.byte	3
-	.byte	'netif_state_changed',0,1,235,2,6,1,1,1
+	.byte	'netif_state_changed',0,1,236,2,6,1,1,1
 	.word	.L34,.L165,.L33
 	.byte	4
-	.byte	'netif',0,1,235,2,40
+	.byte	'netif',0,1,236,2,40
 	.word	.L166,.L167
 	.byte	4
-	.byte	'reason',0,1,235,2,66
+	.byte	'reason',0,1,236,2,66
 	.word	.L133,.L168
 	.byte	4
-	.byte	'args',0,1,235,2,107
+	.byte	'args',0,1,236,2,107
 	.word	.L169,.L170
 	.byte	5
 	.word	.L34,.L165
@@ -32942,7 +32943,7 @@ g_extCallback:	.type	object
 .L288:
 	.byte	5,6,7,0,5,2
 	.word	.L34
-	.byte	3,234,2,1,5,9,9
+	.byte	3,235,2,1,5,9,9
 	.half	.L186-.L34
 	.byte	3,2,1,5,1,9
 	.half	.L83-.L186
@@ -32966,7 +32967,7 @@ g_extCallback:	.type	object
 	.byte	2
 	.word	.L45
 	.byte	3
-	.byte	'ISR_Geth_Tx',0,1,180,3,1,1,1,1
+	.byte	'ISR_Geth_Tx',0,1,181,3,1,1,1,1
 	.word	.L40,.L171,.L39
 	.byte	4
 	.word	.L40,.L171
@@ -32989,7 +32990,7 @@ g_extCallback:	.type	object
 .L292:
 	.byte	5,5,7,0,5,2
 	.word	.L40
-	.byte	3,181,3,1,5,15,9
+	.byte	3,182,3,1,5,15,9
 	.half	.L293-.L40
 	.byte	1,5,1,9
 	.half	.L294-.L293
@@ -33015,7 +33016,7 @@ g_extCallback:	.type	object
 	.byte	2
 	.word	.L45
 	.byte	3
-	.byte	'ISR_Geth_Rx',0,1,192,3,1,1,1,1
+	.byte	'ISR_Geth_Rx',0,1,193,3,1,1,1,1
 	.word	.L42,.L172,.L41
 	.byte	4
 	.word	.L42,.L172
@@ -33038,7 +33039,7 @@ g_extCallback:	.type	object
 .L298:
 	.byte	5,5,7,0,5,2
 	.word	.L42
-	.byte	3,193,3,1,5,15,9
+	.byte	3,194,3,1,5,15,9
 	.half	.L299-.L42
 	.byte	1,5,24,9
 	.half	.L300-.L299
@@ -33239,7 +33240,7 @@ g_extCallback:	.type	object
 	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1,2
 	.word	.L45
 	.byte	3
-	.byte	'g_extCallback',0,29,233,2,29
+	.byte	'g_extCallback',0,29,234,2,29
 	.word	.L178
 	.byte	5,3
 	.word	g_extCallback
@@ -33480,24 +33481,24 @@ g_extCallback:	.type	object
 	.word	(.L113-.L189)/2
 	.byte	19,0,8,26
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   483  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   484  #if defined(__GNUC__)
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   485  #pragma section // end text section
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   486  #endif
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   487  #if defined(__TASKING__)
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   488  #pragma section code restore
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   489  #pragma section fardata restore
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   490  #pragma section farbss restore
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   491  #endif
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   492  #if defined(__DCC__)
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   493  #pragma section CODE
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   494  #pragma section DATA RW
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   495  #endif
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   496  #if defined(__ghs__)
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   497  #pragma ghs section text=default
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   498  #pragma ghs section data=default
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   499  #pragma ghs section bss=default
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   500  #endif
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   501  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   484  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   485  #if defined(__GNUC__)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   486  #pragma section // end text section
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   487  #endif
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   488  #if defined(__TASKING__)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   489  #pragma section code restore
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   490  #pragma section fardata restore
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   491  #pragma section farbss restore
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   492  #endif
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   493  #if defined(__DCC__)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   494  #pragma section CODE
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   495  #pragma section DATA RW
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   496  #endif
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   497  #if defined(__ghs__)
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   498  #pragma ghs section text=default
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   499  #pragma ghs section data=default
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   500  #pragma ghs section bss=default
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   501  #endif
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\Ifx_Lwip.c	   502  
 
 	; Module end

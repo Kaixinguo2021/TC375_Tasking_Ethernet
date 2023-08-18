@@ -108,7 +108,7 @@ void core0_main (void)
     
     // TCP_client_init();
     TCP_server_init();                                             /* Initialize ECHO application                                  */
-    UDP_server_init();
+    // UDP_server_init();
 
     while (1)
     {

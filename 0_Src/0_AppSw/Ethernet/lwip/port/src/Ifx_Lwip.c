@@ -247,8 +247,9 @@ void Ifx_Lwip_onTimerTick(void)
     Ifx_Lwip *lwip       = &g_Lwip;
     uint16    timerFlags = lwip->timerFlags;
 
+#if LWIP_ARP
     Ifx_Lwip_timerIncr(lwip->timer.arp, IFX_LWIP_ARP_PERIOD, IFX_LWIP_FLAG_ARP);
-
+#endif
     Ifx_Lwip_timerIncr(lwip->timer.tcp_fast, IFX_LWIP_TCP_FAST_PERIOD, IFX_LWIP_FLAG_TCP_FAST);
     Ifx_Lwip_timerIncr(lwip->timer.tcp_slow, IFX_LWIP_TCP_SLOW_PERIOD, IFX_LWIP_FLAG_TCP_SLOW);
 

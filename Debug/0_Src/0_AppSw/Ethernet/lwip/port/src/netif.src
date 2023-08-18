@@ -129,7 +129,7 @@ $TC162
 ; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	    97  #include "IfxGeth_Phy_Dp83825i.h"
 ; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	    98  #include "Configuration.h"
 ; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	    99  #include <string.h>
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   100  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   100  #include "etharp.h"
 ; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   101  /* Define those to better describe your network interface. */
 ; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   102  #define IFNAME0 'e'
 ; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   103  #define IFNAME1 'n'
@@ -10608,31 +10608,33 @@ ifx_netif_init:	.type	func
 ; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   528       * You can instead declare your own function an call etharp_output()
 ; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   529       * from it if you have to do some checks before sending (e.g. if link
 ; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   530       * is available...) */
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   531      netif->output     = etharp_output;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   531      #if LWIP_ARP
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   532      netif->output     = etharp_output;
 	movh.a	a15,#@his(etharp_output)
 	lea	a15,[a15]@los(etharp_output)
 .L262:
 	st.a	[a12]20,a15
 .L263:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   532      netif->linkoutput = low_level_output;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   533      #endif
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   534      netif->linkoutput = low_level_output;
 	movh.a	a15,#@his(low_level_output)
 	lea	a15,[a15]@los(low_level_output)
 .L264:
 	st.a	[a12]24,a15
 .L265:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   533  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   534      /* initialize the hardware */
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   535      low_level_init(netif);
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   535  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   536      /* initialize the hardware */
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   537      low_level_init(netif);
 	mov.aa	a4,a12
 .L239:
 	call	low_level_init
 .L240:
 
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   536  
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   537      return ERR_OK;
-; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   538  }
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   538  
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   539      return ERR_OK;
+; ..\0_Src\0_AppSw\Ethernet\lwip\port\src\netif.c	   540  }
 	mov	d2,#0
 	ret
 .L88:
@@ -28407,11 +28409,11 @@ rmii_pins:	.type	object
 	.half	.L260-.L259
 	.byte	3,1,1,5,23,1,5,25,9
 	.half	.L261-.L260
-	.byte	3,5,1,5,23,9
+	.byte	3,6,1,5,23,9
 	.half	.L262-.L261
 	.byte	1,5,25,9
 	.half	.L263-.L262
-	.byte	3,1,1,5,23,9
+	.byte	3,2,1,5,23,9
 	.half	.L264-.L263
 	.byte	1,5,20,9
 	.half	.L265-.L264

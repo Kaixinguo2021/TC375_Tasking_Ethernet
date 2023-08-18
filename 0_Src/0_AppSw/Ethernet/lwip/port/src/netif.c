@@ -97,7 +97,7 @@
 #include "IfxGeth_Phy_Dp83825i.h"
 #include "Configuration.h"
 #include <string.h>
-
+#include "etharp.h"
 /* Define those to better describe your network interface. */
 #define IFNAME0 'e'
 #define IFNAME1 'n'
@@ -528,7 +528,9 @@ err_t ifx_netif_init(netif_t *netif)
      * You can instead declare your own function an call etharp_output()
      * from it if you have to do some checks before sending (e.g. if link
      * is available...) */
+    #if LWIP_ARP
     netif->output     = etharp_output;
+    #endif
     netif->linkoutput = low_level_output;
 
     /* initialize the hardware */

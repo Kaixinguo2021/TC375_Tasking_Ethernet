@@ -370,3 +370,5 @@
 "D:\WorkSpace\Tasking\Tasking_TC375_Ethernet\0_Src\0_AppSw\Config\Common\ConfigurationIsr.h" :
 0_Src\0_AppSw\Ethernet\lwip\port\src\netif.o :	"D:\App\Tasking6_3_Install\ctc\include\string.h"
 "D:\App\Tasking6_3_Install\ctc\include\string.h" :
+0_Src\0_AppSw\Ethernet\lwip\port\src\netif.o :	"D:\WorkSpace\Tasking\Tasking_TC375_Ethernet\0_Src\0_AppSw\Ethernet\lwip\src\include\lwip\prot\etharp.h"
+"D:\WorkSpace\Tasking\Tasking_TC375_Ethernet\0_Src\0_AppSw\Ethernet\lwip\src\include\lwip\prot\etharp.h" :

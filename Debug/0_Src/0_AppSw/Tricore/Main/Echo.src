@@ -6,11 +6,11 @@
 
 	
 $TC162
-	.sdecl	'.zrodata.Echo..6.cnt',data,rom
-	.sect	'.zrodata.Echo..6.cnt'
+	.sdecl	'.zrodata.Echo..10.cnt',data,rom
+	.sect	'.zrodata.Echo..10.cnt'
 	.align	2
-.6.cnt:	.type	object
-	.size	.6.cnt,4
+.10.cnt:	.type	object
+	.size	.10.cnt,4
 	.word	167815360
 	
 	.sdecl	'.text.Echo.TCP_server_init',code,cluster('TCP_server_init')
@@ -91,7 +91,7 @@ $TC162
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	    70  /*********************************************************************************************************************/
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	    71  /*------------------------------------------------------Macros-------------------------------------------------------*/
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	    72  /*********************************************************************************************************************/
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	    73  #define STORAGE_SIZE_BYTES 256          /* Size in bytes of the space in memory allocated for storing incoming data */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	    73  #define STORAGE_SIZE_BYTES 1500          /* Size in bytes of the space in memory allocated for storing incoming data */
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	    74  
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	    75  #define  TCP_LOCAL_PORT    8088
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	    76  /*********************************************************************************************************************/
@@ -161,69 +161,69 @@ $TC162
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   140  /* Function to initialize the ECHO program */
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   141  void TCP_server_init(void)
 ; Function TCP_server_init
-.L63:
+.L53:
 TCP_server_init:	.type	func
 
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   142  {
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   143      g_TCPPcb = tcp_new();                                          /* Create a new TCP protocol control block                                                      */
 	call	tcp_new
-.L405:
+.L353:
 	st.a	g_TCPPcb,a2
-.L406:
+.L354:
 
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   144      if (g_TCPPcb != NULL)                                          /* If the creation was successful...                                                            */
 	mov.aa	a4,a2
-.L407:
+.L355:
 	jz.a	a4,.L2
-.L174:
+.L148:
 
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   145      {
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   146          err_t err = tcp_bind(g_TCPPcb, IP_ADDR_ANY, TCP_LOCAL_PORT);           /* ...bind the TCP procotol control block to any local address and local port 80.               */
 	lea	a5,ip_addr_any
-.L408:
+.L356:
 	mov	d4,#8088
 	call	tcp_bind
-.L270:
+.L232:
 
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   147          if (err == ERR_OK)                                          /* If the binding was successful...                                                             */
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   148          {
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   149              g_TCPPcb = tcp_listen(g_TCPPcb);                      /* ...set the TCP control block able to accept incoming connections.                            */
 	ld.a	a4,g_TCPPcb
-.L409:
+.L357:
 	jne	d2,#0,.L3
-.L410:
+.L358:
 	mov	d4,#255
 	call	tcp_listen_with_backlog
-.L271:
+.L233:
 	st.a	g_TCPPcb,a2
-.L411:
+.L359:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   150              tcp_accept(g_TCPPcb, tcp_server_accept);                      /* Configure the callback function to be called when a new connection is established.           */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   150              // tcp_accept(g_TCPPcb, tcp_server_accept);                      /* Configure the callback function to be called when a new connection is established.           */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   151              tcp_accept(g_TCPPcb, echoAccept);                      /* Configure the callback function to be called when a new connection is established.           */
 	mov.aa	a4,a2
-.L412:
-	movh.a	a5,#@his(tcp_server_accept)
-	lea	a5,[a5]@los(tcp_server_accept)
+.L360:
+	movh.a	a5,#@his(echoAccept)
+	lea	a5,[a5]@los(echoAccept)
 	j	tcp_accept
 .L2:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   151          }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   152          else
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   153          {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   154              memp_free(MEMP_TCP_PCB, g_TCPPcb);
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   155          }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   156      }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   157  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   152          }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   153          else
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   154          {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   155              memp_free(MEMP_TCP_PCB, g_TCPPcb);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   156          }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   157      }
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   158  }
 	ret
 .L3:
 	mov	d4,#1
-.L413:
+.L361:
 	j	memp_free
-.L172:
+.L146:
 	
 __TCP_server_init_function_end:
 	.size	TCP_server_init,__TCP_server_init_function_end-TCP_server_init
-.L98:
+.L84:
 	; End of function
 	
 	.sdecl	'.text.Echo.echoAccept',code,cluster('echoAccept')
@@ -236,10 +236,10 @@ __TCP_server_init_function_end:
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   160  /* Accept callback: it is called every time a client establish a new connection */
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   161  err_t echoAccept(void *arg, tcpPcb *newPcb, err_t err)
 ; Function echoAccept
-.L65:
+.L55:
 echoAccept:	.type	func
 	mov.aa	a12,a5
-.L191:
+.L165:
 
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   162  {
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   163      LWIP_UNUSED_ARG(arg);                                               /* Eliminate compiler warning about unused arguments                                        */
@@ -247,102 +247,107 @@ echoAccept:	.type	func
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   165  
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   166      err_t retErr;                                                       /* Allocate memory for function return value                                                */
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   167      EchoSession *es = (EchoSession*) mem_malloc(sizeof(EchoSession));   /* Allocate memory for the session data                                                     */
-	mov	d4,#272
+	mov	d4,#1516
 	call	mem_malloc
-.L272:
+.L234:
 	mov.aa	a15,a2
-.L274:
+.L236:
 
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   168      if (es != NULL)                                                     /* If memory allocation was successful the session can be initialized                       */
 	jz.a	a15,.L5
-.L431:
+.L379:
 
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   169      {
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   170          es->state = ES_ACCEPTED;                                        /* The new session has been accepted                                                        */
 	mov	d15,#1
 	st.b	[a15],d15
-.L432:
+.L380:
 
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   171          es->pcb = newPcb;                                               /* A pointer to the TCP control block to use for this session is saved in the session       */
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   172          es->p = NULL;                                                   /* The packet buffer for received data is initially empty                                   */
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   173          memset(es->storage, 0, STORAGE_SIZE_BYTES);                     /* Allocate memory for storing processed received data                                      */
 	mov	d4,#0
 	st.a	[a15]4,a12
-.L433:
-	mov	d5,#256
+.L381:
+	mov	d5,#1500
 	mov.a	a2,#0
-.L273:
+.L235:
 	st.a	[a15]8,a2
-.L434:
+.L382:
 	lea	a4,[a15]12
-.L435:
+.L383:
 	call	memset
-.L436:
+.L384:
 
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   174          es->nextFreeStoragePos = 0;                                     /* The first free position in the received data array is the beginning of the array         */
 	mov	d15,#0
-	st.h	[a15]268,d15
-.L437:
+	st.h	[a15]1512,d15
+.L385:
 
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   175  
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   176          tcp_arg(newPcb, es);                                            /* Specify that the session shall be passed as argument to every callback function          */
 	mov.aa	a4,a12
-.L275:
+.L237:
 	mov.aa	a5,a15
-.L277:
+.L239:
 	call	tcp_arg
-.L276:
+.L238:
 
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   177          tcp_recv(newPcb, echoRecv);                                     /* Configure the callback function to be called when new data is received                   */
 	movh.a	a5,#@his(echoRecv)
 	lea	a5,[a5]@los(echoRecv)
 	mov.aa	a4,a12
-.L278:
+.L240:
 	call	tcp_recv
-.L279:
+.L241:
 
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   178          tcp_sent(newPcb, echoSent);                                     /* Configure the callback function to be called when new data is sent                       */
 	movh.a	a5,#@his(echoSent)
 	lea	a5,[a5]@los(echoSent)
 	mov.aa	a4,a12
-.L280:
+.L242:
 	call	tcp_sent
-.L281:
+.L243:
 
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   179          tcp_err(newPcb, echoError);                                     /* Configure the callback function to be called when a fatal connection error occurs        */
 	movh.a	a5,#@his(echoError)
 	lea	a5,[a5]@los(echoError)
 	mov.aa	a4,a12
-.L282:
+.L244:
 	call	tcp_err
-.L283:
+.L245:
 
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   180          tcp_poll(newPcb, echoPoll, 0);                                  /* Configure the callback function to be periodically called by TCP
 	movh.a	a5,#@his(echoPoll)
 	lea	a5,[a5]@los(echoPoll)
-.L438:
+.L386:
 	mov	d4,#0
 	mov.aa	a4,a12
-.L284:
+.L246:
 	call	tcp_poll
-.L285:
+.L247:
 
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   181                                                                           * The time interval is specified as multiple of the TCP coarse timer interval, which is
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   182                                                                           * called twice a second                                                                    */
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   183          retErr = ERR_OK;                                                /* Set the return value when no error occured                                               */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   184  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   184          LWIP_DEBUGF(TCP_OUTPUT_DEBUG | LWIP_DBG_STATE | LWIP_DBG_LEVEL_SEVERE, ("echoAccept call"));
+	movh.a	a4,#@his(.2.str)
+	lea	a4,[a4]@los(.2.str)
+	call	Ifx_Lwip_printf
+.L387:
+
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   185          tcp_write(newPcb, g_Logo, strlen(g_Logo), 1);                   /* Send the Infineon logo to the remote client                                              */
 	ld.a	a4,g_Logo
 	call	strlen
-.L439:
+.L388:
 	extr.u	d4,d2,#0,#16
 	mov.aa	a4,a12
-.L286:
+.L248:
 	mov	d5,#1
 	ld.a	a5,g_Logo
-.L440:
+.L389:
 	call	tcp_write
-.L287:
+.L249:
 	j	.L6
 .L5:
 
@@ -358,11 +363,11 @@ echoAccept:	.type	func
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   192  }
 	mov	d2,d15
 	ret
-.L185:
+.L159:
 	
 __echoAccept_function_end:
 	.size	echoAccept,__echoAccept_function_end-echoAccept
-.L108:
+.L94:
 	; End of function
 	
 	.sdecl	'.text.Echo.echoRecv',code,cluster('echoRecv')
@@ -375,189 +380,230 @@ __echoAccept_function_end:
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   194  /* Recv callback: it is called every time data is received through the TCP connection */
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   195  err_t echoRecv(void *arg, tcpPcb *tpcb, pBuf *p, err_t err)
 ; Function echoRecv
-.L67:
+.L57:
 echoRecv:	.type	func
-	mov.aa	a15,a4
-.L290:
 	mov.aa	a12,a5
-.L291:
-	mov.aa	a13,a6
-.L292:
+.L252:
 
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   196  {
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   197      err_t retErr;                                                       /* Allocate memory for function return value                                                */
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   198      EchoSession *es = (EchoSession*) arg;                               /* Get a pointer to the current session                                                     */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   199  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   200      if (p == NULL)                                                      /* If there is no enqueued received data after the RECV callback was called, it means the   */
-	mov	d15,d4
-	jnz.a	a13,.L8
-.L293:
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   199      
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   200      tcp_nagle_disable(tpcb);
+	mov	d8,d4
+	ld.hu	d15,[a12]26
+.L253:
+	mov.aa	a13,a6
+.L254:
+	or	d15,#64
+	st.h	[a12]26,d15
+.L394:
+	mov.aa	a15,a4
+.L255:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   201      {                                                                   /* remote client closed the connection in the meanwhile                                     */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   202          es->state = ES_CLOSING;                                         /* Set the state of this session to CLOSING in order to free its resources                  */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   201      if (p == NULL)                                                      /* If there is no enqueued received data after the RECV callback was called, it means the   */
+	jnz.a	a13,.L8
+.L395:
+
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   202      {                                                                   /* remote client closed the connection in the meanwhile                                     */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   203          es->state = ES_CLOSING;                                         /* Set the state of this session to CLOSING in order to free its resources                  */
 	mov	d15,#3
 	st.b	[a15],d15
-.L294:
+.L396:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   203          if (es->p == NULL)                                              /* If the session does not have any leftover unprocessed data...                            */
-	ld.a	a2,[a15]8
-.L445:
-	jnz.a	a2,.L9
-.L446:
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   204          if (es->p == NULL)                                              /* If the session does not have any leftover unprocessed data...                            */
+	ld.w	d15,[a15]8
+.L397:
+	jne	d15,#0,.L9
+.L398:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   204          {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   205              echoClose(tpcb, es);                                        /* ... close the session and free its resources.                                            */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   205          {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   206              echoClose(tpcb, es);                                        /* ... close the session and free its resources.                                            */
 	mov.aa	a4,a12
-.L288:
+.L250:
 	mov.aa	a5,a15
-.L295:
+.L256:
 	call	echoClose
-.L289:
+.L251:
 	j	.L10
 .L8:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   206          }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   207          else                                                            /* If the session does have leftover unprocessed data...                                    */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   208          {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   209              echoUnpack(tpcb, es);                                       /* ... process unprocessed data ...                                                         */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   210              echoSend(tpcb, es);                                         /* ... and send processed data.                                                             */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   211          }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   212          retErr = ERR_OK;                                                /* Signal a successful outcome                                                              */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   213      }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   214      else if (err != ERR_OK)                                             /* If there was an error while receiving data...                                            */
-	jeq	d15,#0,.L11
-.L447:
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   207          }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   208          else                                                            /* If the session does have leftover unprocessed data...                                    */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   209          {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   210              echoUnpack(tpcb, es);                                       /* ... process unprocessed data ...                                                         */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   211              echoSend(tpcb, es);                                         /* ... and send processed data.                                                             */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   212          }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   213          retErr = ERR_OK;                                                /* Signal a successful outcome                                                              */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   214      }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   215      else if (err != ERR_OK)                                             /* If there was an error while receiving data...                                            */
+	jeq	d8,#0,.L11
+.L399:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   215      {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   216          /* Cleanup, for unkown reason */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   217          if (p != NULL)                                                  /* ... if some data was received and stored...                                              */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   218          {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   219              es->p = NULL;                                               /* ... invalidate the unprocessed data contained in the session.                            */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   216      {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   217          /* Cleanup, for unkown reason */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   218          if (p != NULL)                                                  /* ... if some data was received and stored...                                              */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   219          {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   220              es->p = NULL;                                               /* ... invalidate the unprocessed data contained in the session.                            */
 	mov.a	a2,#0
-.L448:
+.L400:
 	st.a	[a15]8,a2
-.L449:
+.L401:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   220              pbuf_free(p);                                               /* Dereference and deallocate last received data which is probably corrupted                */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   221              pbuf_free(p);                                               /* Dereference and deallocate last received data which is probably corrupted                */
 	mov.aa	a4,a13
-.L296:
+.L257:
 	call	pbuf_free
-.L297:
+.L258:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   221          }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   222          retErr = err;                                                   /* Propagate the error                                                                      */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   222          }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   223          retErr = err;                                                   /* Propagate the error                                                                      */
 	j	.L12
 .L11:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   223      }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   224      else if (es->state == ES_ACCEPTED)                                  /* If the current session is in state ACCEPTED...                                           */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   224      }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   225      else if (es->state == ES_ACCEPTED)                                  /* If the current session is in state ACCEPTED...                                           */
 	ld.bu	d15,[a15]
-.L298:
+.L402:
 	jne	d15,#1,.L13
-.L450:
+.L403:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   225      {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   226          es->state = ES_RECEIVING;                                       /* ... change its state to RECEIVING.                                                       */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   226      {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   227          es->state = ES_RECEIVING;                                       /* ... change its state to RECEIVING.                                                       */
 	mov	d15,#2
 	st.b	[a15],d15
-.L451:
-	j	.L14
-.L13:
+.L404:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   227          es->p = p;                                                      /* Set the unprocessed data buffer of the session to the received one                       */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   228          echoUnpack(tpcb, es);                                           /* Perform a first incoming data processing                                                 */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   229          echoSend(tpcb, es);                                             /* Send the first echo to remote client                                                     */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   230          retErr = ERR_OK;                                                /* Signal a successful outcome                                                              */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   231      }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   232      else if (es->state == ES_RECEIVING)                                 /* If the current session was already receiving data...                                     */
-	jne	d15,#2,.L15
-.L452:
-
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   233      {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   234          if (es->p == NULL)                                              /* ... and no unprocessed data is contained in the session...                               */
-	ld.a	a4,[a15]8
-.L299:
-	jnz.a	a4,.L16
-.L14:
-
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   235          {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   236              es->p = p;                                                  /* ... set the unprocessed data buffer of the session to the received one                   */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   228          es->p = p;                                                      /* Set the unprocessed data buffer of the session to the received one                       */
 	st.a	[a15]8,a13
 .L9:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   237              echoUnpack(tpcb, es);                                       /* Process the incoming data                                                                */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   229          echoUnpack(tpcb, es);                                           /* Perform a first incoming data processing                                                 */
 	mov.aa	a4,a12
-.L301:
+.L259:
 	mov.aa	a5,a15
-.L302:
+.L261:
 	call	echoUnpack
-.L300:
+.L260:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   238              echoSend(tpcb, es);                                         /* Send an echo to the remote client                                                        */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   230          echoSend(tpcb, es);                                             /* Send the first echo to remote client                                                     */
 	mov.aa	a4,a12
-.L303:
+.L262:
 	mov.aa	a5,a15
-.L305:
+.L264:
 	call	echoSend
-.L304:
+.L263:
+	j	.L14
+.L13:
+
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   231          retErr = ERR_OK;                                                /* Signal a successful outcome                                                              */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   232      }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   233      else if (es->state == ES_RECEIVING)                                 /* If the current session was already receiving data...                                     */
+	jne	d15,#2,.L15
+.L405:
+
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   234      {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   235          if (es->p == NULL)                                              /* ... and no unprocessed data is contained in the session...                               */
+	ld.w	d15,[a15]8
+.L406:
+	jne	d15,#0,.L16
+.L407:
+
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   236          {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   237              es->p = p;                                                  /* ... set the unprocessed data buffer of the session to the received one                   */
+	st.a	[a15]8,a13
+.L408:
+
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   238              echoUnpack(tpcb, es);                                       /* Process the incoming data                                                                */
+	mov.aa	a4,a12
+.L265:
+	mov.aa	a5,a15
+.L267:
+	call	echoUnpack
+.L266:
+
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   239              echoSend(tpcb, es);                                         /* Send an echo to the remote client                                                        */
+	mov.aa	a4,a12
+.L268:
+	mov.aa	a5,a15
+.L270:
+	call	echoSend
+.L269:
+
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   240              LWIP_DEBUGF(TCP_OUTPUT_DEBUG | LWIP_DBG_STATE | LWIP_DBG_LEVEL_SEVERE, ("es->state == ES_RECEIVING,es->p == NULL"));
+	movh.a	a4,#@his(.3.str)
+	lea	a4,[a4]@los(.3.str)
+	call	Ifx_Lwip_printf
+.L409:
 	j	.L17
 .L16:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   239          }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   240          else                                                            /* If the session still contains some unprocessed received data...                          */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   241          {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   242              pBuf *ptr = es->p;                                          /* ... create a local reference for the received data                                       */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   243              pbuf_chain(ptr, p);                                         /* Chain the old unprocessed data contained in the session with the new one                 */
-	mov.aa	a5,a13
-.L306:
-	call	pbuf_chain
-.L203:
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   241          }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   242          else                                                            /* If the session still contains some unprocessed received data...                          */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   243          {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   244              LWIP_DEBUGF(TCP_OUTPUT_DEBUG | LWIP_DBG_STATE | LWIP_DBG_LEVEL_SEVERE, ("es->state == ES_RECEIVING,es->p != NULL"));
+	movh.a	a4,#@his(.4.str)
+.L271:
+	lea	a4,[a4]@los(.4.str)
+	call	Ifx_Lwip_printf
+.L177:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   244          }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   245          retErr = ERR_OK;                                                /* Signal a successful outcome                                                              */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   245              pBuf *ptr = es->p;                                          /* ... create a local reference for the received data                                       */
+	ld.a	a4,[a15]8
+.L410:
+
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   246              pbuf_chain(ptr, p);                                         /* Chain the old unprocessed data contained in the session with the new one                 */
+	mov.aa	a5,a13
+.L272:
+	call	pbuf_chain
+.L178:
+
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   247          }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   248          retErr = ERR_OK;                                                /* Signal a successful outcome                                                              */
 	j	.L18
 .L15:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   246      }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   247      else                                                                /* If we got new incoming data in an unknown state, discard the data                        */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   248      {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   249          tcp_recved(tpcb, p->tot_len);                                   /* Mark the incoming data as received                                                       */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   249      }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   250      else                                                                /* If we got new incoming data in an unknown state, discard the data                        */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   251      {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   252          tcp_recved(tpcb, p->tot_len);                                   /* Mark the incoming data as received                                                       */
 	ld.hu	d4,[a13]8
-.L308:
+.L274:
 	mov.aa	a4,a12
-.L307:
+.L273:
 	call	tcp_recved
-.L309:
+.L275:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   250          es->p = NULL;                                                   /* Invalidate the unprocessed data contained in the session                                 */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   253          es->p = NULL;                                                   /* Invalidate the unprocessed data contained in the session                                 */
 	mov.a	a2,#0
-.L453:
+.L411:
 	st.a	[a15]8,a2
-.L454:
+.L412:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   251          pbuf_free(p);                                                   /* Dereference and deallocate last received data                                            */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   254          pbuf_free(p);                                                   /* Dereference and deallocate last received data                                            */
 	mov.aa	a4,a13
-.L310:
+.L276:
 	call	pbuf_free
 .L18:
 .L17:
+.L14:
 .L10:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   252          retErr = ERR_OK;                                                /* Signal a successful outcome                                                              */
-	mov	d15,#0
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   255          retErr = ERR_OK;                                                /* Signal a successful outcome                                                              */
+	mov	d8,#0
 .L12:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   253      }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   254  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   255      return retErr;                                                      /* Return result                                                                            */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   256  }
-	mov	d2,d15
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   256      }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   257  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   258      return retErr;                                                      /* Return result                                                                            */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   259  }
+	mov	d2,d8
 	ret
-.L195:
+.L169:
 	
 __echoRecv_function_end:
 	.size	echoRecv,__echoRecv_function_end-echoRecv
-.L113:
+.L99:
 	; End of function
 	
 	.sdecl	'.text.Echo.echoError',code,cluster('echoError')
@@ -566,35 +612,35 @@ __echoRecv_function_end:
 	
 	.global	echoError
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   257  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   258  /* Error callback: it is called if a fatal error has already occurred on the connection */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   259  void echoError(void *arg, err_t err)
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   260  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   261  /* Error callback: it is called if a fatal error has already occurred on the connection */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   262  void echoError(void *arg, err_t err)
 ; Function echoError
-.L69:
+.L59:
 echoError:	.type	func
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   260  {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   261      LWIP_UNUSED_ARG(err);                                               /* Eliminate compiler warning about unused arguments                                        */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   262  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   263      EchoSession *es = (EchoSession*) arg;                               /* Get a pointer to the current session                                                     */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   264  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   265      if (es != NULL)                                                     /* If a session exists we cannot do anything with it anymore, since the fatal error         */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   263  {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   264      LWIP_UNUSED_ARG(err);                                               /* Eliminate compiler warning about unused arguments                                        */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   265  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   266      EchoSession *es = (EchoSession*) arg;                               /* Get a pointer to the current session                                                     */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   267  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   268      if (es != NULL)                                                     /* If a session exists we cannot do anything with it anymore, since the fatal error         */
 	jz.a	a4,.L20
-.L459:
+.L417:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   266      {                                                                   /* occurred ...                                                                             */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   267          mem_free(es);                                                   /* ... free memory assigned to the session                                                  */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   269      {                                                                   /* occurred ...                                                                             */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   270          mem_free(es);                                                   /* ... free memory assigned to the session                                                  */
 	j	mem_free
 .L20:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   268      }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   269  }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   271      }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   272  }
 	ret
-.L204:
+.L179:
 	
 __echoError_function_end:
 	.size	echoError,__echoError_function_end-echoError
-.L118:
+.L104:
 	; End of function
 	
 	.sdecl	'.text.Echo.echoPoll',code,cluster('echoPoll')
@@ -603,101 +649,101 @@ __echoError_function_end:
 	
 	.global	echoPoll
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   270  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   271  /* Poll function: it is called periodically by the TCP stack */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   272  err_t echoPoll(void *arg, tcpPcb *tpcb)
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   273  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   274  /* Poll function: it is called periodically by the TCP stack */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   275  err_t echoPoll(void *arg, tcpPcb *tpcb)
 ; Function echoPoll
-.L71:
+.L61:
 echoPoll:	.type	func
 	mov.aa	a15,a4
-.L312:
+.L278:
 	mov.aa	a12,a5
-.L313:
+.L279:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   273  {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   274      err_t retErr;                                                       /* Allocate memory for function return value                                                */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   275      EchoSession *es = (EchoSession*) arg;                               /* Get a pointer to the current session                                                     */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   276  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   277      if (es != NULL)                                                     /* If a session exists ...                                                                  */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   276  {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   277      err_t retErr;                                                       /* Allocate memory for function return value                                                */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   278      EchoSession *es = (EchoSession*) arg;                               /* Get a pointer to the current session                                                     */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   279  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   280      if (es != NULL)                                                     /* If a session exists ...                                                                  */
 	jz.a	a15,.L21
-.L464:
+.L422:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   278      {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   279          if (es->p != NULL ||                                            /* ... and if the session has any leftover unprocessed data...                              */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   281      {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   282          if (es->p != NULL ||                                            /* ... and if the session has any leftover unprocessed data...                              */
 	ld.w	d15,[a15]8
-.L465:
+.L423:
 	jne	d15,#0,.L22
-.L466:
+.L424:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   280              es->nextFreeStoragePos != 0)                                /* ... or there is still data in the session storage to send back...                        */
-	ld.hu	d15,[a15]268
-.L467:
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   283              es->nextFreeStoragePos != 0)                                /* ... or there is still data in the session storage to send back...                        */
+	ld.hu	d15,[a15]1512
+.L425:
 	jeq	d15,#0,.L23
 .L22:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   281          {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   282              echoUnpack(tpcb, es);                                       /* ... process unprocessed data ...                                                         */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   284          {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   285              echoUnpack(tpcb, es);                                       /* ... process unprocessed data ...                                                         */
 	mov.aa	a4,a12
-.L311:
+.L277:
 	mov.aa	a5,a15
-.L315:
+.L281:
 	call	echoUnpack
-.L314:
+.L280:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   283              echoSend(tpcb, es);                                         /* ... and send processed data.                                                             */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   286              echoSend(tpcb, es);                                         /* ... and send processed data.                                                             */
 	mov.aa	a4,a12
-.L316:
+.L282:
 	mov.aa	a5,a15
-.L318:
+.L284:
 	call	echoSend
-.L317:
+.L283:
 	j	.L24
 .L23:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   284          }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   285          else                                                            /* If the session has no leftover unprocessed data...                                       */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   286          {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   287              if (es->state == ES_CLOSING)                                /* ... and the session was marked for being closed...                                       */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   287          }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   288          else                                                            /* If the session has no leftover unprocessed data...                                       */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   289          {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   290              if (es->state == ES_CLOSING)                                /* ... and the session was marked for being closed...                                       */
 	ld.bu	d15,[a15]
-.L468:
+.L426:
 	jne	d15,#3,.L25
-.L469:
+.L427:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   288              {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   289                  echoClose(tpcb, es);                                    /* ... close the session and free its resources.                                            */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   291              {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   292                  echoClose(tpcb, es);                                    /* ... close the session and free its resources.                                            */
 	mov.aa	a4,a12
-.L319:
+.L285:
 	mov.aa	a5,a15
-.L320:
+.L286:
 	call	echoClose
 .L25:
 .L24:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   290              }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   291          }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   292          retErr = ERR_OK;                                                /* Signal a successful outcome                                                              */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   293      }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   294      else                                                                /* If no session exists something went wrong, the TCP connection has to be aborted          */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   295      {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   296          tcp_abort(tpcb);                                                /* Abort the TCP connection                                                                 */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   297          retErr = ERR_ABRT;                                              /* Propagate the abort error                                                                */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   298      }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   299      return retErr;                                                      /* Return result                                                                            */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   300  }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   293              }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   294          }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   295          retErr = ERR_OK;                                                /* Signal a successful outcome                                                              */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   296      }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   297      else                                                                /* If no session exists something went wrong, the TCP connection has to be aborted          */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   298      {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   299          tcp_abort(tpcb);                                                /* Abort the TCP connection                                                                 */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   300          retErr = ERR_ABRT;                                              /* Propagate the abort error                                                                */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   301      }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   302      return retErr;                                                      /* Return result                                                                            */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   303  }
 	mov	d2,#0
 	ret
 .L21:
 	mov.aa	a4,a12
-.L321:
+.L287:
 	call	tcp_abort
-.L322:
+.L288:
 	mov	d2,#-13
 	ret
-.L208:
+.L183:
 	
 __echoPoll_function_end:
 	.size	echoPoll,__echoPoll_function_end-echoPoll
-.L123:
+.L109:
 	; End of function
 	
 	.sdecl	'.text.Echo.echoSent',code,cluster('echoSent')
@@ -706,77 +752,77 @@ __echoPoll_function_end:
 	
 	.global	echoSent
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   301  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   302  /* Sent callback: it is called when TCP data has successfully been delivered to the remote host */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   303  err_t echoSent(void *arg, tcpPcb *tpcb, u16_t len)
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   304  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   305  /* Sent callback: it is called when TCP data has successfully been delivered to the remote host */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   306  err_t echoSent(void *arg, tcpPcb *tpcb, u16_t len)
 ; Function echoSent
-.L73:
+.L63:
 echoSent:	.type	func
 	mov.aa	a15,a4
-.L219:
+.L194:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   304  {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   305      LWIP_UNUSED_ARG(len);                                               /* Eliminates compiler warning about unused arguments                                       */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   306  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   307      EchoSession *es = (EchoSession*) arg;                               /* Get a pointer to the current session                                                     */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   308  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   309      if (es->p != NULL )                                                 /* If the session has any leftover unprocessed data...                                      */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   307  {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   308      LWIP_UNUSED_ARG(len);                                               /* Eliminates compiler warning about unused arguments                                       */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   309  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   310      EchoSession *es = (EchoSession*) arg;                               /* Get a pointer to the current session                                                     */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   311  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   312      if (es->p != NULL )                                                 /* If the session has any leftover unprocessed data...                                      */
 	ld.w	d15,[a15]8
-.L220:
+.L195:
 	mov.aa	a12,a5
-.L221:
+.L196:
 	jeq	d15,#0,.L28
-.L474:
+.L432:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   310      {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   311          echoUnpack(tpcb, es);                                           /* ... process unprocessed data ...                                                         */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   313      {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   314          echoUnpack(tpcb, es);                                           /* ... process unprocessed data ...                                                         */
 	mov.aa	a4,a12
-.L323:
+.L289:
 	mov.aa	a5,a15
-.L325:
+.L291:
 	call	echoUnpack
-.L324:
+.L290:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   312          echoSend(tpcb, es);                                             /* ... and send processed data.                                                             */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   315          echoSend(tpcb, es);                                             /* ... and send processed data.                                                             */
 	mov.aa	a4,a12
-.L326:
+.L292:
 	mov.aa	a5,a15
-.L328:
+.L294:
 	call	echoSend
-.L327:
+.L293:
 	j	.L29
 .L28:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   313      }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   314      else                                                                /* If the session has no leftover unprocessed data...                                       */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   315      {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   316          if (es->state == ES_CLOSING)                                    /* ... and the session was marked for being closed...                                       */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   316      }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   317      else                                                                /* If the session has no leftover unprocessed data...                                       */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   318      {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   319          if (es->state == ES_CLOSING)                                    /* ... and the session was marked for being closed...                                       */
 	ld.bu	d15,[a15]
-.L475:
+.L433:
 	jne	d15,#3,.L30
-.L476:
+.L434:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   317          {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   318              echoClose(tpcb, es);                                        /* ... close the session and free its resources.                                            */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   320          {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   321              echoClose(tpcb, es);                                        /* ... close the session and free its resources.                                            */
 	mov.aa	a4,a12
-.L329:
+.L295:
 	mov.aa	a5,a15
-.L330:
+.L296:
 	call	echoClose
 .L30:
 .L29:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   319          }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   320      }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   321      return ERR_OK;                                                      /* Return successful result                                                                 */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   322  }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   322          }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   323      }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   324      return ERR_OK;                                                      /* Return successful result                                                                 */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   325  }
 	mov	d2,#0
 	ret
-.L213:
+.L188:
 	
 __echoSent_function_end:
 	.size	echoSent,__echoSent_function_end-echoSent
-.L128:
+.L114:
 	; End of function
 	
 	.sdecl	'.text.Echo.echoSend',code,cluster('echoSend')
@@ -785,86 +831,77 @@ __echoSent_function_end:
 	
 	.global	echoSend
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   323  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   324  /* Send function: enqueues TCP data to be delivered to the remote client */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   325  void echoSend(tcpPcb *tpcb, EchoSession *es)
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   326  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   327  /* Send function: enqueues TCP data to be delivered to the remote client */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   328  void echoSend(tcpPcb *tpcb, EchoSession *es)
 ; Function echoSend
-.L75:
+.L65:
 echoSend:	.type	func
 	mov.aa	a12,a5
-.L333:
+.L299:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   326  {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   327      if(es->nextFreeStoragePos == 0)                                     /* If the next free position in the storage array is the beginning of the array, there is   */
-	ld.hu	d0,[a12]268
-.L481:
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   329  {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   330      if(es->nextFreeStoragePos == 0)                                     /* If the next free position in the storage array is the beginning of the array, there is   */
+	ld.hu	d15,[a12]1512
+.L439:
 	mov.aa	a15,a4
-.L334:
-	jeq	d0,#0,.L32
-.L482:
+.L300:
+	jeq	d15,#0,.L32
+.L201:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   328      {                                                                   /* nothing to send                                                                          */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   329          return;
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   330      }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   331      if(es->storage[es->nextFreeStoragePos - 1] != '\n' &&               /* If the string to be sent does not end with a new line...                                 */
-	addsc.a	a2,a12,d0,#0
-	ld.b	d1,[a2]11
-.L483:
-	mov	d15,#10
-.L484:
-	jeq	d15,d1,.L33
-.L485:
-
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   332         es->nextFreeStoragePos < STORAGE_SIZE_BYTES)                     /* ... and the storage is not full ...                                                      */
-	mov	d15,#256
-.L486:
-	jlt.u	d0,d15,.L34
-.L33:
-
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   333      {                                                                   /* ... do not send yet. Wait for the string to be echoed to terminate                       */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   334          return;                                                         /* or the storage to completely fill.                                                       */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   335      }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   336      err_t wrErr = tcp_write(tpcb, "Board: ", 7, 1);                     /* Enqueue an echo preamble to be sent to the remote client                                 */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   331      {                                                                   /* nothing to send                                                                          */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   332          return;
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   333      }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   334      // if(es->storage[es->nextFreeStoragePos - 1] != '\n' &&               /* If the string to be sent does not end with a new line...                                 */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   335      //    es->nextFreeStoragePos < STORAGE_SIZE_BYTES)                     /* ... and the storage is not full ...                                                      */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   336      // {                                                                   /* ... do not send yet. Wait for the string to be echoed to terminate                       */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   337      //     return;                                                         /* or the storage to completely fill.                                                       */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   338      // }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   339      err_t wrErr = tcp_write(tpcb, "Board: ", 7, 1);                     /* Enqueue an echo preamble to be sent to the remote client                                 */
 	mov	d4,#7
-	lea	a5,.2.str
-.L331:
+	lea	a5,.5.str
+.L297:
 	mov	d5,#1
 	call	tcp_write
-.L332:
+.L298:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   337      wrErr |= tcp_write(tpcb, es->storage, es->nextFreeStoragePos, 1);   /* Enqueue the string stored in the session for sending                                     */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   340      wrErr |= tcp_write(tpcb, es->storage, es->nextFreeStoragePos, 1);   /* Enqueue the string stored in the session for sending                                     */
 	mov	d15,d2
 	lea	a5,[a12]12
-.L336:
-	ld.hu	d4,[a12]268
-.L487:
+.L302:
+	ld.hu	d4,[a12]1512
+.L440:
 	mov	d5,#1
 	mov.aa	a4,a15
-.L337:
+.L303:
 	call	tcp_write
-.L335:
+.L301:
+
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   341      tcp_output(tpcb);
 	or	d15,d2
-.L488:
+	mov.aa	a4,a15
+.L304:
+	call	tcp_output
+.L305:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   338      if(wrErr == ERR_OK)                                                 /* If data was correctly enqueued for TCP transmission ...                                  */
-	jne	d15,#0,.L35
-.L489:
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   342      if(wrErr == ERR_OK)                                                 /* If data was correctly enqueued for TCP transmission ...                                  */
+	jne	d15,#0,.L33
+.L441:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   339      {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   340          es->nextFreeStoragePos = 0;                                     /* ... remove sent data from the session storage.                                           */
-	st.h	[a12]268,d15
-.L35:
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   343      {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   344          es->nextFreeStoragePos = 0;                                     /* ... remove sent data from the session storage.                                           */
+	st.h	[a12]1512,d15
+.L33:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   341      }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   342  }
-.L34:
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   345      }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   346  }
 .L32:
 	ret
-.L223:
+.L198:
 	
 __echoSend_function_end:
 	.size	echoSend,__echoSend_function_end-echoSend
-.L133:
+.L119:
 	; End of function
 	
 	.sdecl	'.text.Echo.echoUnpack',code,cluster('echoUnpack')
@@ -873,123 +910,123 @@ __echoSend_function_end:
 	
 	.global	echoUnpack
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   343  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   344  /* Unpack function: dequeues data from the package buffer and copies it in the session storage */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   345  void echoUnpack(tcpPcb *tpcb, EchoSession *es)
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   347  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   348  /* Unpack function: dequeues data from the package buffer and copies it in the session storage */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   349  void echoUnpack(tcpPcb *tpcb, EchoSession *es)
 ; Function echoUnpack
-.L77:
+.L67:
 echoUnpack:	.type	func
 	mov.aa	a12,a4
-.L338:
+.L306:
 	mov.aa	a15,a5
-.L339:
+.L307:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   346  {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   347      pBuf *ptr;                                                          /* Local reference to a packet buffer                                                       */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   348  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   349      while ((es->p != NULL))                                             /* Process data while there still are packets to process                                    */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   350      {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   351          ptr = es->p;                                                    /* Local reference of the packet to process                                                 */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   350  {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   351      pBuf *ptr;                                                          /* Local reference to a packet buffer                                                       */
 ; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   352  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   353          if (es->nextFreeStoragePos + ptr->len <= STORAGE_SIZE_BYTES)    /* If there is enough space in the session storage for the new data ...                     */
-	lea	a13,[a15]268
-.L494:
-	j	.L36
-.L37:
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   353      while ((es->p != NULL))                                             /* Process data while there still are packets to process                                    */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   354      {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   355          ptr = es->p;                                                    /* Local reference of the packet to process                                                 */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   356  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   357          if (es->nextFreeStoragePos + ptr->len <= STORAGE_SIZE_BYTES)    /* If there is enough space in the session storage for the new data ...                     */
+	lea	a13,[a15]1512
+.L446:
+	j	.L34
+.L35:
 	ld.a	a14,[a15]8
-.L340:
-	ld.hu	d15,[a15]268
-.L495:
-	mov	d1,#256
-.L496:
+.L308:
+	ld.hu	d15,[a15]1512
+.L447:
+	mov	d1,#1500
+.L448:
 	ld.hu	d4,[a14]10
-.L497:
+.L449:
 	add	d0,d15,d4
-.L498:
-	jlt	d1,d0,.L38
-.L499:
+.L450:
+	jlt	d1,d0,.L36
+.L451:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   354          {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   355              memcpy(&es->storage[es->nextFreeStoragePos],                /* ... copy data in the session storage                                                     */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   358          {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   359              memcpy(&es->storage[es->nextFreeStoragePos],                /* ... copy data in the session storage                                                     */
 	addsc.a	a2,a15,d15,#0
-.L500:
+.L452:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   356                      ptr->payload,
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   360                      ptr->payload,
 	ld.a	a5,[a14]4
-.L501:
+.L453:
 	lea	a4,[a2]12
-.L502:
+.L454:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   357                      ptr->len);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   361                      ptr->len);
 	call	memcpy
-.L503:
+.L455:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   358              es->nextFreeStoragePos += ptr->len;                         /* Increase the index of the new free position in the session storage array                 */
-	ld.hu	d15,[a15]268
-.L504:
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   362              es->nextFreeStoragePos += ptr->len;                         /* Increase the index of the new free position in the session storage array                 */
+	ld.hu	d15,[a15]1512
+.L456:
 	ld.hu	d0,[a14]10
-.L505:
+.L457:
 	add	d15,d0
 	st.h	[a13],d15
-.L231:
+.L207:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   359  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   360              u16_t plen = ptr->len;                                      /* Number of bytes successfully received and stored                                         */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   361  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   362              es->p = ptr->next;                                          /* Get the next packet in the chain (if any)                                                */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   363  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   364              u16_t plen = ptr->len;                                      /* Number of bytes successfully received and stored                                         */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   365  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   366              es->p = ptr->next;                                          /* Get the next packet in the chain (if any)                                                */
 	ld.a	a4,[a14]
-.L506:
+.L458:
 	ld.hu	d15,[a14]10
-.L341:
+.L309:
 	st.a	[a15]8,a4
-.L507:
+.L459:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   363              if (es->p != NULL)                                          /* If there is another packet to be processed...                                            */
-	jz.a	a4,.L39
-.L508:
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   367              if (es->p != NULL)                                          /* If there is another packet to be processed...                                            */
+	jz.a	a4,.L37
+.L460:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   364              {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   365                  pbuf_ref(es->p);                                        /* Inform the LwIP framework that the packet to be processed is linked to the session,      */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   368              {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   369                  pbuf_ref(es->p);                                        /* Inform the LwIP framework that the packet to be processed is linked to the session,      */
 	call	pbuf_ref
-.L39:
+.L37:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   366              }                                                           /* and shall not be disposed                                                                */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   367  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   368              u8_t freed;                                                 /* Number of bytes successfully freed from memory                                           */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   369              do
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   370              {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   371                  freed = pbuf_free(ptr);                                 /* Free memory used by the packet that was just processed                                   */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   372              } while (freed == 0);
-.L40:
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   370              }                                                           /* and shall not be disposed                                                                */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   371  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   372              u8_t freed;                                                 /* Number of bytes successfully freed from memory                                           */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   373              do
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   374              {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   375                  freed = pbuf_free(ptr);                                 /* Free memory used by the packet that was just processed                                   */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   376              } while (freed == 0);
+.L38:
 	mov.aa	a4,a14
-.L342:
+.L310:
 	call	pbuf_free
-.L343:
-	jeq	d2,#0,.L40
-.L509:
+.L311:
+	jeq	d2,#0,.L38
+.L461:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   373  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   374              tcp_recved(tpcb, plen);                                     /* Signal the remote host that more data can be received                                    */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   377  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   378              tcp_recved(tpcb, plen);                                     /* Signal the remote host that more data can be received                                    */
 	mov.aa	a4,a12
-.L344:
+.L312:
 	mov	d4,d15
 	call	tcp_recved
-.L38:
 .L36:
+.L34:
 	ld.w	d15,[a15]8
-.L510:
-	jne	d15,#0,.L37
-.L511:
+.L462:
+	jne	d15,#0,.L35
+.L463:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   375          }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   376      }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   377  }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   379          }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   380      }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   381  }
 	ret
-.L227:
+.L203:
 	
 __echoUnpack_function_end:
 	.size	echoUnpack,__echoUnpack_function_end-echoUnpack
-.L138:
+.L124:
 	; End of function
 	
 	.sdecl	'.text.Echo.echoClose',code,cluster('echoClose')
@@ -998,276 +1035,76 @@ __echoUnpack_function_end:
 	
 	.global	echoClose
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   378  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   379  /* Close function: closes a TCP connection and deallocates session resources */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   380  void echoClose(tcpPcb *tpcb, EchoSession *es)
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   382  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   383  /* Close function: closes a TCP connection and deallocates session resources */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   384  void echoClose(tcpPcb *tpcb, EchoSession *es)
 ; Function echoClose
-.L79:
+.L69:
 echoClose:	.type	func
 	mov.aa	a15,a4
-.L347:
+.L315:
 	mov.aa	a12,a5
-.L348:
+.L316:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   381  {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   382      tcp_arg(tpcb, NULL);                                                /* Set the argument passed to every callback to NULL                                        */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   385  {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   386      tcp_arg(tpcb, NULL);                                                /* Set the argument passed to every callback to NULL                                        */
 	mov.a	a5,#0
-.L345:
+.L313:
 	call	tcp_arg
-.L346:
+.L314:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   383      tcp_sent(tpcb, NULL);                                               /* Set the data sent callback to NULL                                                       */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   387      tcp_sent(tpcb, NULL);                                               /* Set the data sent callback to NULL                                                       */
 	mov.a	a5,#0
 	mov.aa	a4,a15
-.L349:
+.L317:
 	call	tcp_sent
-.L350:
+.L318:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   384      tcp_recv(tpcb, NULL);                                               /* Set the data received callback to NULL                                                   */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   388      tcp_recv(tpcb, NULL);                                               /* Set the data received callback to NULL                                                   */
 	mov.a	a5,#0
 	mov.aa	a4,a15
-.L351:
+.L319:
 	call	tcp_recv
-.L352:
+.L320:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   385      tcp_err(tpcb, NULL);                                                /* Set the data error callback to NULL                                                      */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   389      tcp_err(tpcb, NULL);                                                /* Set the data error callback to NULL                                                      */
 	mov.a	a5,#0
 	mov.aa	a4,a15
-.L353:
+.L321:
 	call	tcp_err
-.L354:
+.L322:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   386      tcp_poll(tpcb, NULL, 0);                                            /* Set the periodical callback to NULL                                                      */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   390      tcp_poll(tpcb, NULL, 0);                                            /* Set the periodical callback to NULL                                                      */
 	mov.a	a5,#0
-.L516:
+.L468:
 	mov	d4,#0
 	mov.aa	a4,a15
-.L355:
+.L323:
 	call	tcp_poll
-.L356:
+.L324:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   387  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   388      if (es != NULL)                                                     /* If a session still exists...                                                             */
-	jz.a	a12,.L41
-.L517:
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   391  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   392      if (es != NULL)                                                     /* If a session still exists...                                                             */
+	jz.a	a12,.L39
+.L469:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   389      {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   390          mem_free(es);                                                   /* ...free memory assigned to the session.                                                  */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   393      {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   394          mem_free(es);                                                   /* ...free memory assigned to the session.                                                  */
 	mov.aa	a4,a12
-.L357:
+.L325:
 	call	mem_free
-.L41:
+.L39:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   391      }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   392      tcp_close(tpcb);                                                    /* Close the TCP connection                                                                 */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   395      }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   396      tcp_close(tpcb);                                                    /* Close the TCP connection                                                                 */
 	mov.aa	a4,a15
-.L358:
+.L326:
 	j	tcp_close
-.L235:
+.L211:
 	
 __echoClose_function_end:
 	.size	echoClose,__echoClose_function_end-echoClose
-.L143:
-	; End of function
-	
-	.sdecl	'.text.Echo.tcp_server_accept',code,cluster('tcp_server_accept')
-	.sect	'.text.Echo.tcp_server_accept'
-	.align	2
-	
-
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   393  }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   394  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   395  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   396  /******************************************************************************
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   397   * 描述  : 客户端接收回调函数
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   398   * 参数  : -
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   399   * 返回  : -
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   400   ******************************************************************************/
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   401  static err_t tcp_server_accept(void *arg, struct tcp_pcb *newpcb, err_t err)
-; Function tcp_server_accept
-.L81:
-tcp_server_accept:	.type	func
-
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   402  {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   403      /* 注册接收回调函数 */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   404      tcp_recv(newpcb, tcp_server_recv);
-	movh.a	a15,#@his(tcp_server_recv)
-	lea	a15,[a15]@los(tcp_server_recv)
-	mov.aa	a4,a5
-.L359:
-	mov.aa	a5,a15
-.L361:
-	call	tcp_recv
-.L360:
-
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   405  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   406      return ERR_OK;
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   407  }
-	mov	d2,#0
-	ret
-.L249:
-	
-__tcp_server_accept_function_end:
-	.size	tcp_server_accept,__tcp_server_accept_function_end-tcp_server_accept
-.L153:
-	; End of function
-	
-	.sdecl	'.text.Echo.tcp_server_recv',code,cluster('tcp_server_recv')
-	.sect	'.text.Echo.tcp_server_recv'
-	.align	2
-	
-
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   408  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   409  /******************************************************************************
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   410   * 描述  : 接收回调函数
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   411   * 参数  : -
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   412   * 返回  : -
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   413   ******************************************************************************/
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   414  static err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb,
-; Function tcp_server_recv
-.L83:
-tcp_server_recv:	.type	func
-	sub.a	a10,#8
-.L362:
-	mov.aa	a15,a5
-.L364:
-	mov.aa	a12,a6
-.L365:
-
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   415                              struct pbuf *p, err_t err)
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   416  {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   417      #define   TCP_SEND_DATA_LEN     200
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   418      uint32_t i;
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   419      err_t tcpSendRet = 0xFF;
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   420      
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   421      if (p != NULL)
-	jz.a	a12,.L43
-.L247:
-
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   422      {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   423          struct pbuf *ptmp = p;
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   424          
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   425          while(ptmp != NULL)
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   426          {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   427              for (i = 0; i < TCP_SEND_DATA_LEN; i++)
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   428              {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   429                  TCP_RecData[i] = *((char *)p->payload + i);
-	movh.a	a13,#@his(TCP_RecData)
-	lea	a13,[a13]@los(TCP_RecData)
-.L44:
-	mov	d15,#0
-	mov.aa	a2,a13
-.L366:
-	lea	a4,199
-.L45:
-	ld.a	a5,[a12]4
-.L522:
-	addsc.a	a5,a5,d15,#0
-.L523:
-	add	d15,#1
-.L524:
-	ld.bu	d0,[a5]
-.L525:
-	st.b	[a2+],d0
-	loop	a4,.L45
-.L526:
-
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   430              }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   431              ptmp = p->next;
-	ld.w	d15,[a12]
-.L367:
-	jne	d15,#0,.L44
-.L527:
-
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   432          }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   433  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   434          LWIP_DEBUGF(TCP_OUTPUT_DEBUG | LWIP_DBG_STATE | LWIP_DBG_LEVEL_SEVERE, ("tcp_write: (len=%"U16_F" , snd_buf=%"U16_F")\n",
-	ld.hu	d15,[a12]8
-	st.w	[a10],d15
-	ld.hu	d15,[a15]100
-	st.w	[a10]4,d15
-	movh.a	a4,#@his(.3.str)
-	lea	a4,[a4]@los(.3.str)
-	call	Ifx_Lwip_printf
-.L363:
-
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   435                  p->tot_len, tpcb->snd_buf));
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   436                  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   437          tcp_recved(tpcb, p->tot_len);
-	ld.hu	d4,[a12]8
-	mov.aa	a4,a15
-.L368:
-	call	tcp_recved
-.L369:
-
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   438          /* 关闭nagle算法 */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   439          tcp_nagle_disable(tpcb);
-	ld.hu	d15,[a15]26
-.L528:
-
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   440          /* 发送数据 */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   441          tcp_write(tpcb, TCP_RecData, p->tot_len, TCP_WRITE_FLAG_COPY);
-	mov	d5,#1
-	mov.aa	a5,a13
-.L529:
-	or	d15,#64
-	st.h	[a15]26,d15
-.L530:
-	mov.aa	a4,a15
-.L370:
-	ld.hu	d4,[a12]8
-.L531:
-	call	tcp_write
-.L371:
-
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   442          tcp_output(tpcb);
-	mov.aa	a4,a15
-.L372:
-	call	tcp_output
-.L373:
-
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   443          /* 释放缓冲区数据 */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   444          pbuf_free(p);
-	mov.aa	a4,a12
-.L374:
-	call	pbuf_free
-.L248:
-	j	.L46
-.L43:
-
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   445      }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   446      else if (err == ERR_OK)
-	jne	d4,#0,.L47
-.L532:
-
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   447      {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   448          tcp_recved(tpcb, p->tot_len);
-	ld.hu	d4,0x8
-.L376:
-	mov.aa	a4,a15
-.L375:
-	call	tcp_recved
-.L377:
-
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   449          
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   450          return tcp_close(tpcb);
-	mov.aa	a4,a15
-.L378:
-	j	tcp_close
-.L47:
-.L46:
-
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   451      }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   452  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   453      return ERR_OK;
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   454  }
-	mov	d2,#0
-	ret
-.L238:
-	
-__tcp_server_recv_function_end:
-	.size	tcp_server_recv,__tcp_server_recv_function_end-tcp_server_recv
-.L148:
+.L129:
 	; End of function
 	
 	.sdecl	'.text.Echo.TCP_client_init',code,cluster('TCP_client_init')
@@ -1276,84 +1113,151 @@ __tcp_server_recv_function_end:
 	
 	.global	TCP_client_init
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   455  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   456  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   457  void TCP_client_init(void)
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   397  }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   398  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   399  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   400  /******************************************************************************
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   401   * 描述  : 客户端接收回调函数
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   402   * 参数  : -
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   403   * 返回  : -
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   404   ******************************************************************************/
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   405  static err_t tcp_server_accept(void *arg, struct tcp_pcb *newpcb, err_t err)
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   406  {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   407      /* 关闭nagle算法 */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   408      tcp_nagle_disable(newpcb);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   409      /* 发送数据 */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   410      tcp_write(newpcb, "Server Connect", 50, TCP_WRITE_FLAG_COPY);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   411      tcp_output(newpcb);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   412      /* 注册接收回调函数 */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   413      tcp_recv(newpcb, tcp_server_recv);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   414  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   415      return ERR_OK;
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   416  }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   417  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   418  /******************************************************************************
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   419   * 描述  : 接收回调函数
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   420   * 参数  : -
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   421   * 返回  : -
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   422   ******************************************************************************/
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   423  static err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb,
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   424                              struct pbuf *p, err_t err)
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   425  {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   426      #define   TCP_SEND_DATA_LEN     200
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   427      uint32_t i;
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   428      err_t tcpSendRet = 0xFF;
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   429      
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   430      if (p != NULL)
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   431      {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   432          struct pbuf *ptmp = p;
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   433          
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   434          while(ptmp != NULL)
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   435          {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   436              for (i = 0; i < TCP_SEND_DATA_LEN; i++)
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   437              {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   438                  TCP_RecData[i] = *((char *)p->payload + i);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   439              }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   440              ptmp = p->next;
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   441          }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   442  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   443          LWIP_DEBUGF(TCP_OUTPUT_DEBUG | LWIP_DBG_STATE | LWIP_DBG_LEVEL_SEVERE, ("tcp_write: (len=%"U16_F" , snd_buf=%"U16_F")\n",
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   444                  p->tot_len, tpcb->snd_buf));
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   445                  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   446          tcp_recved(tpcb, p->tot_len);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   447          /* 关闭nagle算法 */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   448          tcp_nagle_disable(tpcb);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   449          /* 发送数据 */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   450          tcp_write(tpcb, TCP_RecData, p->tot_len, TCP_WRITE_FLAG_COPY);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   451          tcp_output(tpcb);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   452          /* 释放缓冲区数据 */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   453          pbuf_free(p);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   454      }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   455      else if (err == ERR_OK)
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   456      {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   457          tcp_recved(tpcb, p->tot_len);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   458          
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   459          return tcp_close(tpcb);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   460      }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   461  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   462      return ERR_OK;
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   463  }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   464  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   465  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   466  void TCP_client_init(void)
 ; Function TCP_client_init
-.L85:
+.L71:
 TCP_client_init:	.type	func
 	sub.a	a10,#8
-.L379:
+.L327:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   458  {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   459      #define TCP_REMOTE_PORT_NUMBER  8088
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   460      #define TCP_LOCAL_PORT_NUMBER   8088
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   461  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   462      g_TCPClientPcb = tcp_new();
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   467  {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   468      #define TCP_REMOTE_PORT_NUMBER  8088
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   469      #define TCP_LOCAL_PORT_NUMBER   8088
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   470  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   471      g_TCPClientPcb = tcp_new();
 	call	tcp_new
-.L418:
+.L366:
 	st.a	g_TCPClientPcb,a2
-.L419:
+.L367:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   463  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   464      if (g_TCPClientPcb != NULL)
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   472  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   473      if (g_TCPClientPcb != NULL)
 	mov.aa	a4,a2
-.L420:
-	jz.a	a4,.L50
-.L179:
+.L368:
+	jz.a	a4,.L40
+.L153:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   465      {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   466  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   467          ip4_addr_t server_ip;
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   468          IP4_ADDR(&server_ip, 192, 168, 0, 10);   /* 服务器IP地址 */
-	ld.w	d15,.6.cnt
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   474      {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   475  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   476          ip4_addr_t server_ip;
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   477          IP4_ADDR(&server_ip, 192, 168, 0, 10);   /* 服务器IP地址 */
+	ld.w	d15,.10.cnt
 	st.w	[a10],d15
-.L183:
+.L157:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   469  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   470           err_t err;
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   471           /* 绑定本地端号和IP地址 */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   472           err = tcp_bind(g_TCPClientPcb, IP_ADDR_ANY, TCP_LOCAL_PORT);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   478  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   479           err_t err;
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   480           /* 绑定本地端号和IP地址 */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   481           err = tcp_bind(g_TCPClientPcb, IP_ADDR_ANY, TCP_LOCAL_PORT);
 	lea	a5,ip_addr_any
-.L421:
+.L369:
 	mov	d4,#8088
 	call	tcp_bind
-.L380:
+.L328:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   473           if (err == ERR_OK)
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   474           {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   475               /* 连接服务器 */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   476               tcp_connect(g_TCPClientPcb, &server_ip, TCP_REMOTE_PORT_NUMBER, TCP_client_connected_cb);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   482           if (err == ERR_OK)
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   483           {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   484               /* 连接服务器 */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   485               tcp_connect(g_TCPClientPcb, &server_ip, TCP_REMOTE_PORT_NUMBER, TCP_client_connected_cb);
 	ld.a	a4,g_TCPClientPcb
-.L422:
-	jne	d2,#0,.L51
-.L423:
+.L370:
+	jne	d2,#0,.L41
+.L371:
 	mov	d4,#8088
 	movh.a	a6,#@his(TCP_client_connected_cb)
-.L424:
+.L372:
 	mov.aa	a5,a10
-.L425:
+.L373:
 	lea	a6,[a6]@los(TCP_client_connected_cb)
 	j	tcp_connect
-.L50:
+.L40:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   477           }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   478           else
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   479           {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   480               memp_free(MEMP_TCP_PCB, g_TCPClientPcb);
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   481           }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   482      }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   483  }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   486           }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   487           else
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   488           {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   489               memp_free(MEMP_TCP_PCB, g_TCPClientPcb);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   490           }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   491      }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   492  }
 	ret
-.L51:
+.L41:
 	mov	d4,#1
-.L426:
+.L374:
 	j	memp_free
-.L177:
+.L151:
 	
 __TCP_client_init_function_end:
 	.size	TCP_client_init,__TCP_client_init_function_end-TCP_client_init
-.L103:
+.L89:
 	; End of function
 	
 	.sdecl	'.text.Echo.TCP_client_connected_cb',code,cluster('TCP_client_connected_cb')
@@ -1361,47 +1265,47 @@ __TCP_client_init_function_end:
 	.align	2
 	
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   484  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   485  static err_t TCP_client_connected_cb(void *arg, struct tcp_pcb *tpcb, err_t err)
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   493  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   494  static err_t TCP_client_connected_cb(void *arg, struct tcp_pcb *tpcb, err_t err)
 ; Function TCP_client_connected_cb
-.L87:
+.L73:
 TCP_client_connected_cb:	.type	func
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   486  {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   487      tcp_write(tpcb, "tcp client connected", strlen("tcp client connected"), 0);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   495  {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   496      tcp_write(tpcb, "tcp client connected", strlen("tcp client connected"), 0);
 	mov	d4,#20
 	mov.aa	a15,a5
-.L382:
+.L330:
 	mov	d5,#0
-	movh.a	a5,#@his(.4.str)
-.L383:
-	lea	a5,[a5]@los(.4.str)
-.L541:
+	movh.a	a5,#@his(.8.str)
+.L331:
+	lea	a5,[a5]@los(.8.str)
+.L474:
 	mov.aa	a4,a15
-.L381:
+.L329:
 	call	tcp_write
-.L384:
+.L332:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   488  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   489      /* 注册接收回调函数 */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   490      tcp_recv(tpcb, TCP_client_recv_cb);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   497  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   498      /* 注册接收回调函数 */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   499      tcp_recv(tpcb, TCP_client_recv_cb);
 	movh.a	a5,#@his(TCP_client_recv_cb)
 	lea	a5,[a5]@los(TCP_client_recv_cb)
 	mov.aa	a4,a15
-.L385:
+.L333:
 	call	tcp_recv
-.L386:
+.L334:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   491    
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   492      return ERR_OK;
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   493  }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   500    
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   501      return ERR_OK;
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   502  }
 	mov	d2,#0
 	ret
-.L253:
+.L214:
 	
 __TCP_client_connected_cb_function_end:
 	.size	TCP_client_connected_cb,__TCP_client_connected_cb_function_end-TCP_client_connected_cb
-.L158:
+.L134:
 	; End of function
 	
 	.sdecl	'.text.Echo.TCP_client_recv_cb',code,cluster('TCP_client_recv_cb')
@@ -1409,148 +1313,143 @@ __TCP_client_connected_cb_function_end:
 	.align	2
 	
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   494  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   495  static err_t TCP_client_recv_cb(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err)
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   503  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   504  static err_t TCP_client_recv_cb(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err)
 ; Function TCP_client_recv_cb
-.L89:
+.L75:
 TCP_client_recv_cb:	.type	func
 	mov.aa	a12,a6
-.L390:
+.L338:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   496  {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   497      #define TCP_CLIENT_RECEIVE_BUF_LEN   1500
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   498  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   499      static uint8 recv_buf[TCP_CLIENT_RECEIVE_BUF_LEN] = {0x00};
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   500  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   501      if (p != NULL)
-	jz.a	a12,.L54
-.L263:
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   505  {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   506      #define TCP_CLIENT_RECEIVE_BUF_LEN   1500
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   507  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   508      static uint8 recv_buf[TCP_CLIENT_RECEIVE_BUF_LEN] = {0x00};
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   509  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   510      if (p != NULL)
+	jz.a	a12,.L44
+.L226:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   502      {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   503          struct pbuf *q;
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   504          int recv_count = 0;
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   505  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   506          /* 更新接收窗口 */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   507          tcp_recved(tpcb, p->tot_len); 
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   511      {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   512          struct pbuf *q;
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   513          int recv_count = 0;
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   514  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   515          /* 更新接收窗口 */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   516          tcp_recved(tpcb, p->tot_len); 
 	mov	d15,#0
 	ld.hu	d4,[a12]8
-.L388:
+.L336:
 	mov.aa	a4,a5
-.L387:
+.L335:
 	call	tcp_recved
-.L389:
+.L337:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   508          for (q = p; q != NULL; q = q->next)
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   517          for (q = p; q != NULL; q = q->next)
 	mov.aa	a15,a12
-.L55:
+.L45:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   509          {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   510              if (q->len > TCP_CLIENT_RECEIVE_BUF_LEN)
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   518          {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   519              if (q->len > TCP_CLIENT_RECEIVE_BUF_LEN)
 	ld.hu	d4,[a15]10
-.L546:
+.L479:
 	mov	d0,#1500
-.L547:
-	jge.u	d0,d4,.L56
-.L548:
+.L480:
+	jge.u	d0,d4,.L46
+.L481:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   511              {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   512                  memcpy(recv_buf, q->payload, TCP_CLIENT_RECEIVE_BUF_LEN);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   520              {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   521                  memcpy(recv_buf, q->payload, TCP_CLIENT_RECEIVE_BUF_LEN);
 	movh.a	a4,#@his(_999001_recv_buf)
 	lea	a4,[a4]@los(_999001_recv_buf)
-.L549:
+.L482:
 	ld.a	a5,[a15]4
-.L550:
+.L483:
 	mov	d4,d0
 	call	memcpy
-.L551:
+.L484:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   513                  break;
-	j	.L57
-.L56:
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   522                  break;
+	j	.L47
+.L46:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   514              }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   515              else 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   516              {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   517                  if (recv_count >= TCP_CLIENT_RECEIVE_BUF_LEN)
-	jge	d15,d0,.L58
-.L552:
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   523              }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   524              else 
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   525              {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   526                  if (recv_count >= TCP_CLIENT_RECEIVE_BUF_LEN)
+	jge	d15,d0,.L48
+.L485:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   518                      break;
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   519                  memcpy(&recv_buf[recv_count], q->payload, q->len);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   527                      break;
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   528                  memcpy(&recv_buf[recv_count], q->payload, q->len);
 	movh.a	a2,#@his(_999001_recv_buf)
 	lea	a2,[a2]@los(_999001_recv_buf)
-.L553:
+.L486:
 	addsc.a	a4,a2,d15,#0
-.L554:
+.L487:
 	ld.a	a5,[a15]4
-.L555:
+.L488:
 	call	memcpy
-.L556:
+.L489:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   520                  recv_count += q->len;
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   529                  recv_count += q->len;
 	ld.hu	d0,[a15]10
-.L557:
+.L490:
 	ld.a	a15,[a15]
-.L558:
+.L491:
 	add	d15,d0
-.L559:
-	jnz.a	a15,.L55
+.L492:
+	jnz.a	a15,.L45
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   521              }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   522          }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   523          pbuf_free(p);
-.L58:
-.L57:
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   530              }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   531          }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   532          pbuf_free(p);
+.L48:
+.L47:
 	mov.aa	a4,a12
-.L391:
+.L339:
 	call	pbuf_free
-.L264:
-	j	.L59
-.L54:
+.L227:
+	j	.L49
+.L44:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   524      }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   525      else if (err == ERR_OK)
-	jne	d4,#0,.L60
-.L560:
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   533      }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   534      else if (err == ERR_OK)
+	jne	d4,#0,.L50
+.L493:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   526      {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   527          tcp_close(tpcb);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   535      {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   536          tcp_close(tpcb);
 	mov.aa	a4,a5
-.L392:
+.L340:
 	call	tcp_close
-.L393:
+.L341:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   528          g_TCPClientPcb = NULL;
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   537          g_TCPClientPcb = NULL;
 	mov.a	a15,#0
-.L561:
+.L494:
 	st.a	g_TCPClientPcb,a15
-.L562:
+.L495:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   529          /* reconnect server */
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   530          TCP_client_init();  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   538          /* reconnect server */
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   539          TCP_client_init();  
 	call	TCP_client_init
-.L60:
-.L59:
+.L50:
+.L49:
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   531          return err;
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   532      }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   533  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   534      return ERR_OK;
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   535  }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   540          return err;
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   541      }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   542  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   543      return ERR_OK;
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   544  }
 	mov	d2,#0
 	ret
-.L257:
+.L219:
 	
 __TCP_client_recv_cb_function_end:
 	.size	TCP_client_recv_cb,__TCP_client_recv_cb_function_end-TCP_client_recv_cb
-.L163:
+.L139:
 	; End of function
 	
-	.sdecl	'.bss.Echo.TCP_RecData',data,cluster('TCP_RecData')
-	.sect	'.bss.Echo.TCP_RecData'
-TCP_RecData:	.type	object
-	.size	TCP_RecData,1000
-	.space	1000
 	.sdecl	'.rodata.Echo..1.str',data,rom
 	.sect	'.rodata.Echo..1.str'
 .1.str:	.type	object
@@ -1775,31 +1674,56 @@ g_TCPPcb:	.type	object
 g_TCPClientPcb:	.type	object
 	.size	g_TCPClientPcb,4
 	.space	4
-	.sdecl	'.zrodata.Echo..2.str',data,rom
-	.sect	'.zrodata.Echo..2.str'
+	.sdecl	'.rodata.Echo..2.str',data,rom
+	.sect	'.rodata.Echo..2.str'
 .2.str:	.type	object
-	.size	.2.str,8
-	.byte	66,111,97,114
-	.byte	100,58,32
+	.size	.2.str,16
+	.byte	101,99,104,111
+	.byte	65,99,99,101
+	.byte	112,116,32,99
+	.byte	97,108,108
 	.space	1
 	.sdecl	'.rodata.Echo..3.str',data,rom
 	.sect	'.rodata.Echo..3.str'
 .3.str:	.type	object
-	.size	.3.str,34
-	.byte	116,99,112,95
-	.byte	119,114,105,116
-	.byte	101,58,32,40
-	.byte	108,101,110,61
-	.byte	37,117,32,44
-	.byte	32,115,110,100
-	.byte	95,98,117,102
-	.byte	61,37,117,41
-	.byte	10
+	.size	.3.str,40
+	.byte	101,115,45,62
+	.byte	115,116,97,116
+	.byte	101,32,61,61
+	.byte	32,69,83,95
+	.byte	82,69,67,69
+	.byte	73,86,73,78
+	.byte	71,44,101,115
+	.byte	45,62,112,32
+	.byte	61,61,32,78
+	.byte	85,76,76
 	.space	1
 	.sdecl	'.rodata.Echo..4.str',data,rom
 	.sect	'.rodata.Echo..4.str'
 .4.str:	.type	object
-	.size	.4.str,21
+	.size	.4.str,40
+	.byte	101,115,45,62
+	.byte	115,116,97,116
+	.byte	101,32,61,61
+	.byte	32,69,83,95
+	.byte	82,69,67,69
+	.byte	73,86,73,78
+	.byte	71,44,101,115
+	.byte	45,62,112,32
+	.byte	33,61,32,78
+	.byte	85,76,76
+	.space	1
+	.sdecl	'.zrodata.Echo..5.str',data,rom
+	.sect	'.zrodata.Echo..5.str'
+.5.str:	.type	object
+	.size	.5.str,8
+	.byte	66,111,97,114
+	.byte	100,58,32
+	.space	1
+	.sdecl	'.rodata.Echo..8.str',data,rom
+	.sect	'.rodata.Echo..8.str'
+.8.str:	.type	object
+	.size	.8.str,21
 	.byte	116,99,112,32
 	.byte	99,108,105,101
 	.byte	110,116,32,99
@@ -1811,12 +1735,11 @@ g_TCPClientPcb:	.type	object
 _999001_recv_buf:	.type	object
 	.size	_999001_recv_buf,1500
 	.space	1500
+	.calls	'__INDIRECT__','echoAccept'
 	.calls	'__INDIRECT__','echoRecv'
 	.calls	'__INDIRECT__','echoError'
 	.calls	'__INDIRECT__','echoPoll'
 	.calls	'__INDIRECT__','echoSent'
-	.calls	'__INDIRECT__','tcp_server_recv'
-	.calls	'__INDIRECT__','tcp_server_accept'
 	.calls	'__INDIRECT__','TCP_client_connected_cb'
 	.calls	'__INDIRECT__','TCP_client_recv_cb'
 	.calls	'TCP_server_init','tcp_new'
@@ -1831,12 +1754,14 @@ _999001_recv_buf:	.type	object
 	.calls	'echoAccept','tcp_sent'
 	.calls	'echoAccept','tcp_err'
 	.calls	'echoAccept','tcp_poll'
+	.calls	'echoAccept','Ifx_Lwip_printf'
 	.calls	'echoAccept','strlen'
 	.calls	'echoAccept','tcp_write'
 	.calls	'echoRecv','echoClose'
 	.calls	'echoRecv','pbuf_free'
 	.calls	'echoRecv','echoUnpack'
 	.calls	'echoRecv','echoSend'
+	.calls	'echoRecv','Ifx_Lwip_printf'
 	.calls	'echoRecv','pbuf_chain'
 	.calls	'echoRecv','tcp_recved'
 	.calls	'echoError','mem_free'
@@ -1848,6 +1773,7 @@ _999001_recv_buf:	.type	object
 	.calls	'echoSent','echoSend'
 	.calls	'echoSent','echoClose'
 	.calls	'echoSend','tcp_write'
+	.calls	'echoSend','tcp_output'
 	.calls	'echoUnpack','memcpy'
 	.calls	'echoUnpack','pbuf_ref'
 	.calls	'echoUnpack','pbuf_free'
@@ -1859,13 +1785,6 @@ _999001_recv_buf:	.type	object
 	.calls	'echoClose','tcp_poll'
 	.calls	'echoClose','mem_free'
 	.calls	'echoClose','tcp_close'
-	.calls	'tcp_server_accept','tcp_recv'
-	.calls	'tcp_server_recv','Ifx_Lwip_printf'
-	.calls	'tcp_server_recv','tcp_recved'
-	.calls	'tcp_server_recv','tcp_write'
-	.calls	'tcp_server_recv','tcp_output'
-	.calls	'tcp_server_recv','pbuf_free'
-	.calls	'tcp_server_recv','tcp_close'
 	.calls	'TCP_client_init','tcp_new'
 	.calls	'TCP_client_init','tcp_bind'
 	.calls	'TCP_client_init','tcp_connect'
@@ -1886,8 +1805,6 @@ _999001_recv_buf:	.type	object
 	.calls	'echoSend','',0
 	.calls	'echoUnpack','',0
 	.calls	'echoClose','',0
-	.calls	'tcp_server_accept','',0
-	.calls	'tcp_server_recv','',8
 	.calls	'TCP_client_init','',8
 	.calls	'TCP_client_connected_cb','',0
 	.extern	strlen
@@ -1920,27 +1837,25 @@ _999001_recv_buf:	.type	object
 	.calls	'TCP_client_recv_cb','',0
 	.sdecl	'.debug_info',debug
 	.sect	'.debug_info'
-.L91:
-	.word	5630
+.L77:
+	.word	5619
 	.half	3
-	.word	.L92
+	.word	.L78
 	.byte	4
-.L90:
+.L76:
 	.byte	1
 	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0
 	.byte	'TASKING VX-toolset for TriCore: C compiler',0
 	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1
-	.word	.L93
-.L266:
+	.word	.L79
+.L229:
 	.byte	2
 	.byte	'int',0,4,5,3
 	.word	149
 	.byte	4
 	.byte	'__c11_atomic_thread_fence',0,1,1,1,1,5
 	.word	156
-	.byte	0
-.L245:
-	.byte	2
+	.byte	0,2
 	.byte	'unsigned int',0,4,7,6
 	.word	198
 	.byte	7
@@ -1958,11 +1873,11 @@ _999001_recv_buf:	.type	object
 	.byte	'compare',0
 	.word	198
 	.byte	0
-.L175:
+.L149:
 	.byte	2
 	.byte	'char',0,1,6,2
 	.byte	'unsigned long int',0,4,7
-.L180:
+.L154:
 	.byte	10
 	.byte	'ip4_addr',0,1,51,8,4,11
 	.byte	'addr',0
@@ -1979,7 +1894,7 @@ _999001_recv_buf:	.type	object
 	.word	347
 	.byte	0,14
 	.byte	'void',0
-.L186:
+.L160:
 	.byte	7
 	.word	380
 	.byte	15
@@ -2015,7 +1930,7 @@ _999001_recv_buf:	.type	object
 	.byte	's',0,3,123,34
 	.word	347
 	.byte	17,3,123,37,0
-.L216:
+.L191:
 	.byte	2
 	.byte	'unsigned short int',0,2,7,12
 	.byte	'mem_malloc',0,4,74,7
@@ -2045,12 +1960,12 @@ _999001_recv_buf:	.type	object
 	.byte	'mem',0,5,149,1,36
 	.word	386
 	.byte	0
-.L233:
+.L209:
 	.byte	2
 	.byte	'unsigned char',0,1,8,10
 	.byte	'pbuf',0,6,186,1,8,16,11
 	.byte	'next',0
-	.word	.L242-.L91
+	.word	.L222-.L77
 	.byte	4,2,35,0,11
 	.byte	'payload',0
 	.word	386
@@ -2073,7 +1988,7 @@ _999001_recv_buf:	.type	object
 	.byte	'if_idx',0
 	.word	844
 	.byte	1,2,35,15,0
-.L242:
+.L222:
 	.byte	7
 	.word	861
 	.byte	18
@@ -2114,7 +2029,7 @@ _999001_recv_buf:	.type	object
 	.byte	1,1,5
 	.word	386
 	.byte	5
-	.word	.L240-.L91
+	.word	.L216-.L77
 	.byte	5
 	.word	276
 	.byte	0,7
@@ -2143,7 +2058,7 @@ _999001_recv_buf:	.type	object
 	.word	844
 	.byte	1,2,35,11,11
 	.byte	'next',0
-	.word	.L394-.L91
+	.word	.L342-.L77
 	.byte	4,2,35,12,11
 	.byte	'callback_arg',0
 	.word	386
@@ -2160,7 +2075,7 @@ _999001_recv_buf:	.type	object
 	.byte	'accept',0
 	.word	1322
 	.byte	4,2,35,24,0
-.L394:
+.L342:
 	.byte	7
 	.word	1344
 	.byte	23
@@ -2168,7 +2083,7 @@ _999001_recv_buf:	.type	object
 	.byte	1,1,5
 	.word	386
 	.byte	5
-	.word	.L240-.L91
+	.word	.L216-.L77
 	.byte	5
 	.word	542
 	.byte	0,7
@@ -2181,7 +2096,7 @@ _999001_recv_buf:	.type	object
 	.byte	1,1,5
 	.word	386
 	.byte	5
-	.word	.L240-.L91
+	.word	.L216-.L77
 	.byte	5
 	.word	1001
 	.byte	5
@@ -2199,7 +2114,7 @@ _999001_recv_buf:	.type	object
 	.byte	1,1,5
 	.word	386
 	.byte	5
-	.word	.L240-.L91
+	.word	.L216-.L77
 	.byte	0,7
 	.word	1701
 	.byte	24
@@ -2235,7 +2150,7 @@ _999001_recv_buf:	.type	object
 	.word	844
 	.byte	1,2,35,11,11
 	.byte	'next',0
-	.word	.L240-.L91
+	.word	.L216-.L77
 	.byte	4,2,35,12,11
 	.byte	'callback_arg',0
 	.word	386
@@ -2393,7 +2308,7 @@ _999001_recv_buf:	.type	object
 	.byte	'keep_cnt_sent',0
 	.word	844
 	.byte	1,3,35,155,1,0
-.L240:
+.L216:
 	.byte	7
 	.word	1782
 	.byte	26
@@ -2535,15 +2450,15 @@ _999001_recv_buf:	.type	object
 	.byte	'pcb',0,7,222,3,47
 	.word	2844
 	.byte	0
-.L188:
+.L162:
 	.byte	7
 	.word	1782
-.L198:
+.L172:
 	.byte	7
 	.word	861
-	.byte	27,128,2
+	.byte	27,220,11
 	.word	334
-	.byte	28,255,1,0,29,9,90,9,144,2,11
+	.byte	28,219,11,0,29,9,90,9,236,11,11
 	.byte	'state',0
 	.word	844
 	.byte	1,2,35,0,11
@@ -2555,14 +2470,14 @@ _999001_recv_buf:	.type	object
 	.byte	4,2,35,8,11
 	.byte	'storage',0
 	.word	3676
-	.byte	128,2,2,35,12,11
+	.byte	220,11,2,35,12,11
 	.byte	'nextFreeStoragePos',0
 	.word	542
-	.byte	2,3,35,140,2,0
-.L193:
+	.byte	2,3,35,232,11,0
+.L167:
 	.byte	7
 	.word	3687
-.L262:
+.L225:
 	.byte	27,220,11
 	.word	844
 	.byte	28,219,11,0,30
@@ -2677,7 +2592,7 @@ _999001_recv_buf:	.type	object
 	.byte	23
 	.word	276
 	.byte	1,1,5
-	.word	.L395-.L91
+	.word	.L343-.L77
 	.byte	5
 	.word	1001
 	.byte	5
@@ -2690,7 +2605,7 @@ _999001_recv_buf:	.type	object
 	.byte	23
 	.word	276
 	.byte	1,1,5
-	.word	.L395-.L91
+	.word	.L343-.L77
 	.byte	5
 	.word	1001
 	.byte	0,7
@@ -2705,7 +2620,7 @@ _999001_recv_buf:	.type	object
 	.byte	28,1,0,10
 	.byte	'netif',0,15,132,2,8,48,11
 	.byte	'next',0
-	.word	.L395-.L91
+	.word	.L343-.L77
 	.byte	4,2,35,0,11
 	.byte	'ip_addr',0
 	.word	305
@@ -2717,7 +2632,7 @@ _999001_recv_buf:	.type	object
 	.word	305
 	.byte	4,2,35,12,11
 	.byte	'input',0
-	.word	.L396-.L91
+	.word	.L344-.L77
 	.byte	4,2,35,16,11
 	.byte	'output',0
 	.word	4449
@@ -2749,7 +2664,7 @@ _999001_recv_buf:	.type	object
 	.byte	'rs_count',0
 	.word	844
 	.byte	1,2,35,45,0
-.L395:
+.L343:
 	.byte	7
 	.word	4544
 	.byte	23
@@ -2760,7 +2675,7 @@ _999001_recv_buf:	.type	object
 	.word	4792
 	.byte	0,7
 	.word	4797
-.L396:
+.L344:
 	.byte	24
 	.byte	'netif_input_fn',0,15,178,1,17
 	.word	4815
@@ -2876,17 +2791,13 @@ _999001_recv_buf:	.type	object
 	.byte	24
 	.byte	'EchoSession',0,9,97,3
 	.word	3687
-.L268:
-	.byte	27,232,7
-	.word	334
-	.byte	28,231,7,0
-.L269:
+.L231:
 	.byte	7
 	.word	334
 	.byte	0
 	.sdecl	'.debug_abbrev',debug
 	.sect	'.debug_abbrev'
-.L92:
+.L78:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,16,6,0,0,2,36,0,3,8,11,15,62,15,0,0,3,38,0,73,19,0,0,4,46,1,3,8,54
 	.byte	15,39,12,63,12,60,12,0,0,5,5,0,73,19,0,0,6,53,0,73,19,0,0,7,15,0,73,19,0,0,8,46,1,3,8,73,19,54,15,39,12
 	.byte	63,12,60,12,0,0,9,5,0,3,8,73,19,0,0,10,19,1,3,8,58,15,59,15,57,15,11,15,0,0,11,13,0,3,8,73,19,11,15,56
@@ -2900,12 +2811,12 @@ _999001_recv_buf:	.type	object
 	.byte	59,15,57,15,73,19,63,12,60,12,0,0,33,23,1,58,15,59,15,57,15,11,15,0,0,0
 	.sdecl	'.debug_line',debug
 	.sect	'.debug_line'
-.L93:
-	.word	.L398-.L397
-.L397:
+.L79:
+	.word	.L346-.L345
+.L345:
 	.half	3
-	.word	.L400-.L399
-.L399:
+	.word	.L348-.L347
+.L347:
 	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1
 	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\0_Src\\0_AppSw\\Ethernet\\lwip\\src\\include\\lwip',0
 	.byte	'D:\\App\\Tasking6_3_Install\\ctc\\include\\',0
@@ -2929,611 +2840,978 @@ _999001_recv_buf:	.type	object
 	.byte	'ip_addr.h',0,1,0,0
 	.byte	'netif.h',0,1,0,0
 	.byte	'ip4.h',0,5,0,0,0
-.L400:
-.L398:
+.L348:
+.L346:
 	.sdecl	'.debug_info',debug,cluster('TCP_server_init')
 	.sect	'.debug_info'
-.L94:
+.L80:
 	.word	225
 	.half	3
-	.word	.L95
+	.word	.L81
 	.byte	4,1
 	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0
 	.byte	'TASKING VX-toolset for TriCore: C compiler',0
 	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1
-	.word	.L97,.L96
+	.word	.L83,.L82
 	.byte	2
-	.word	.L90
+	.word	.L76
 	.byte	3
 	.byte	'TCP_server_init',0,1,141,1,6,1,1,1
-	.word	.L63,.L172,.L62
+	.word	.L53,.L146,.L52
 	.byte	4
-	.word	.L63,.L172
+	.word	.L53,.L146
 	.byte	5
-	.word	.L173
+	.word	.L147
 	.byte	6
 	.byte	'err',0,1,146,1,15
-	.word	.L175,.L176
+	.word	.L149,.L150
 	.byte	0,0,0,0
 	.sdecl	'.debug_abbrev',debug,cluster('TCP_server_init')
 	.sect	'.debug_abbrev'
-.L95:
+.L81:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,54,15
 	.byte	39,12,63,12,17,1,18,1,64,6,0,0,4,11,1,17,1,18,1,0,0,5,11,1,85,6,0,0,6,52,0,3,8,58,15,59,15,57,15,73,16
 	.byte	2,6,0,0,0
 	.sdecl	'.debug_line',debug,cluster('TCP_server_init')
 	.sect	'.debug_line'
-.L96:
-	.word	.L402-.L401
-.L401:
+.L82:
+	.word	.L350-.L349
+.L349:
 	.half	3
-	.word	.L404-.L403
-.L403:
+	.word	.L352-.L351
+.L351:
 	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
 	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0,0,0,0,0
-.L404:
+.L352:
 	.byte	5,23,7,0,5,2
-	.word	.L63
+	.word	.L53
 	.byte	3,142,1,1,5,14,9
-	.half	.L405-.L63
+	.half	.L353-.L53
 	.byte	1,5,9,9
-	.half	.L406-.L405
+	.half	.L354-.L353
 	.byte	3,1,1,5,5,9
-	.half	.L407-.L406
+	.half	.L355-.L354
 	.byte	1,5,40,7,9
-	.half	.L174-.L407
+	.half	.L148-.L355
 	.byte	3,2,1,5,53,9
-	.half	.L408-.L174
+	.half	.L356-.L148
 	.byte	1,5,24,9
-	.half	.L270-.L408
+	.half	.L232-.L356
 	.byte	3,3,1,5,9,9
-	.half	.L409-.L270
+	.half	.L357-.L232
 	.byte	3,126,1,5,24,7,9
-	.half	.L410-.L409
+	.half	.L358-.L357
 	.byte	3,2,1,5,22,9
-	.half	.L271-.L410
+	.half	.L233-.L358
 	.byte	1,5,24,9
-	.half	.L411-.L271
-	.byte	3,1,1,5,34,9
-	.half	.L412-.L411
+	.half	.L359-.L233
+	.byte	3,2,1,5,34,9
+	.half	.L360-.L359
 	.byte	1,5,1,9
-	.half	.L2-.L412
-	.byte	3,8,1,5,23,7,9
+	.half	.L2-.L360
+	.byte	3,7,1,5,23,7,9
 	.half	.L3-.L2
-	.byte	3,124,1,5,37,9
-	.half	.L413-.L3
+	.byte	3,125,1,5,37,9
+	.half	.L361-.L3
 	.byte	1,5,1,7,9
-	.half	.L98-.L413
-	.byte	3,4,0,1,1
-.L402:
+	.half	.L84-.L361
+	.byte	3,3,0,1,1
+.L350:
 	.sdecl	'.debug_ranges',debug,cluster('TCP_server_init')
 	.sect	'.debug_ranges'
-.L97:
-	.word	-1,.L63,0,.L98-.L63,0,0
-.L173:
-	.word	-1,.L63,.L174-.L63,.L2-.L63,.L3-.L63,.L172-.L63,0,0
+.L83:
+	.word	-1,.L53,0,.L84-.L53,0,0
+.L147:
+	.word	-1,.L53,.L148-.L53,.L2-.L53,.L3-.L53,.L146-.L53,0,0
 	.sdecl	'.debug_info',debug,cluster('TCP_client_init')
 	.sect	'.debug_info'
-.L99:
+.L85:
 	.word	254
 	.half	3
-	.word	.L100
+	.word	.L86
 	.byte	4,1
 	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0
 	.byte	'TASKING VX-toolset for TriCore: C compiler',0
 	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1
-	.word	.L102,.L101
+	.word	.L88,.L87
 	.byte	2
-	.word	.L90
+	.word	.L76
 	.byte	3
-	.byte	'TCP_client_init',0,1,201,3,6,1,1,1
-	.word	.L85,.L177,.L84
+	.byte	'TCP_client_init',0,1,210,3,6,1,1,1
+	.word	.L71,.L151,.L70
 	.byte	4
-	.word	.L85,.L177
+	.word	.L71,.L151
 	.byte	5
-	.word	.L178
+	.word	.L152
 	.byte	6
-	.byte	'server_ip',0,1,211,3,20
-	.word	.L180,.L181
+	.byte	'server_ip',0,1,220,3,20
+	.word	.L154,.L155
 	.byte	5
-	.word	.L182
+	.word	.L156
 	.byte	6
-	.byte	'err',0,1,214,3,16
-	.word	.L175,.L184
+	.byte	'err',0,1,223,3,16
+	.word	.L149,.L158
 	.byte	0,0,0,0,0
 	.sdecl	'.debug_abbrev',debug,cluster('TCP_client_init')
 	.sect	'.debug_abbrev'
-.L100:
+.L86:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,54,15
 	.byte	39,12,63,12,17,1,18,1,64,6,0,0,4,11,1,17,1,18,1,0,0,5,11,1,85,6,0,0,6,52,0,3,8,58,15,59,15,57,15,73,16
 	.byte	2,6,0,0,0
 	.sdecl	'.debug_line',debug,cluster('TCP_client_init')
 	.sect	'.debug_line'
-.L101:
-	.word	.L415-.L414
-.L414:
+.L87:
+	.word	.L363-.L362
+.L362:
 	.half	3
-	.word	.L417-.L416
-.L416:
+	.word	.L365-.L364
+.L364:
 	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
 	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0,0,0,0,0
-.L417:
+.L365:
 	.byte	5,6,7,0,5,2
-	.word	.L85
-	.byte	3,200,3,1,5,29,9
-	.half	.L379-.L85
+	.word	.L71
+	.byte	3,209,3,1,5,29,9
+	.half	.L327-.L71
 	.byte	3,5,1,5,20,9
-	.half	.L418-.L379
+	.half	.L366-.L327
 	.byte	1,5,9,9
-	.half	.L419-.L418
+	.half	.L367-.L366
 	.byte	3,2,1,5,5,9
-	.half	.L420-.L419
+	.half	.L368-.L367
 	.byte	1,5,9,7,9
-	.half	.L179-.L420
+	.half	.L153-.L368
 	.byte	3,4,1,5,41,9
-	.half	.L183-.L179
+	.half	.L157-.L153
 	.byte	3,4,1,5,54,9
-	.half	.L421-.L183
+	.half	.L369-.L157
 	.byte	1,5,26,9
-	.half	.L380-.L421
+	.half	.L328-.L369
 	.byte	3,4,1,5,10,9
-	.half	.L422-.L380
+	.half	.L370-.L328
 	.byte	3,125,1,5,54,7,9
-	.half	.L423-.L422
+	.half	.L371-.L370
 	.byte	3,127,1,5,78,3,4,1,5,43,9
-	.half	.L424-.L423
+	.half	.L372-.L371
 	.byte	1,5,78,9
-	.half	.L425-.L424
+	.half	.L373-.L372
 	.byte	1,5,1,9
-	.half	.L50-.L425
+	.half	.L40-.L373
 	.byte	3,7,1,5,24,7,9
-	.half	.L51-.L50
+	.half	.L41-.L40
 	.byte	3,125,1,5,38,9
-	.half	.L426-.L51
+	.half	.L374-.L41
 	.byte	1,5,1,7,9
-	.half	.L103-.L426
+	.half	.L89-.L374
 	.byte	3,3,0,1,1
-.L415:
+.L363:
 	.sdecl	'.debug_ranges',debug,cluster('TCP_client_init')
 	.sect	'.debug_ranges'
-.L102:
-	.word	-1,.L85,0,.L103-.L85,0,0
-.L178:
-	.word	-1,.L85,.L179-.L85,.L50-.L85,.L51-.L85,.L177-.L85,0,0
-.L182:
-	.word	-1,.L85,.L183-.L85,.L50-.L85,.L51-.L85,.L177-.L85,0,0
+.L88:
+	.word	-1,.L71,0,.L89-.L71,0,0
+.L152:
+	.word	-1,.L71,.L153-.L71,.L40-.L71,.L41-.L71,.L151-.L71,0,0
+.L156:
+	.word	-1,.L71,.L157-.L71,.L40-.L71,.L41-.L71,.L151-.L71,0,0
 	.sdecl	'.debug_info',debug,cluster('echoAccept')
 	.sect	'.debug_info'
-.L104:
+.L90:
 	.word	301
 	.half	3
-	.word	.L105
+	.word	.L91
 	.byte	4,1
 	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0
 	.byte	'TASKING VX-toolset for TriCore: C compiler',0
 	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1
-	.word	.L107,.L106
+	.word	.L93,.L92
 	.byte	2
-	.word	.L90
+	.word	.L76
 	.byte	3
 	.byte	'echoAccept',0,1,161,1,7
-	.word	.L175
+	.word	.L149
 	.byte	1,1,1
-	.word	.L65,.L185,.L64
+	.word	.L55,.L159,.L54
 	.byte	4
 	.byte	'arg',0,1,161,1,24
-	.word	.L186,.L187
+	.word	.L160,.L161
 	.byte	4
 	.byte	'newPcb',0,1,161,1,37
-	.word	.L188,.L189
+	.word	.L162,.L163
 	.byte	4
 	.byte	'err',0,1,161,1,51
-	.word	.L175,.L190
+	.word	.L149,.L164
 	.byte	5
-	.word	.L65,.L185
+	.word	.L55,.L159
 	.byte	5
-	.word	.L191,.L185
+	.word	.L165,.L159
 	.byte	6
 	.byte	'retErr',0,1,166,1,11
-	.word	.L175,.L192
+	.word	.L149,.L166
 	.byte	6
 	.byte	'es',0,1,167,1,18
-	.word	.L193,.L194
+	.word	.L167,.L168
 	.byte	0,0,0,0
 	.sdecl	'.debug_abbrev',debug,cluster('echoAccept')
 	.sect	'.debug_abbrev'
-.L105:
+.L91:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,73,16
 	.byte	54,15,39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,1,17,1,18,1,0,0,6
 	.byte	52,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,0
 	.sdecl	'.debug_line',debug,cluster('echoAccept')
 	.sect	'.debug_line'
-.L106:
-	.word	.L428-.L427
-.L427:
+.L92:
+	.word	.L376-.L375
+.L375:
 	.half	3
-	.word	.L430-.L429
-.L429:
+	.word	.L378-.L377
+.L377:
 	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
 	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0,0,0,0,0
-.L430:
+.L378:
 	.byte	5,7,7,0,5,2
-	.word	.L65
+	.word	.L55
 	.byte	3,160,1,1,5,49,9
-	.half	.L191-.L65
+	.half	.L165-.L55
 	.byte	3,6,1,5,21,9
-	.half	.L272-.L191
+	.half	.L234-.L165
 	.byte	1,5,5,9
-	.half	.L274-.L272
+	.half	.L236-.L234
 	.byte	3,1,1,5,21,7,9
-	.half	.L431-.L274
+	.half	.L379-.L236
 	.byte	3,2,1,5,19,1,5,29,9
-	.half	.L432-.L431
+	.half	.L380-.L379
 	.byte	3,3,1,5,17,3,126,1,5,32,9
-	.half	.L433-.L432
+	.half	.L381-.L380
 	.byte	3,2,1,5,17,3,127,1,5,15,9
-	.half	.L273-.L433
+	.half	.L235-.L381
 	.byte	1,5,18,9
-	.half	.L434-.L273
+	.half	.L382-.L235
 	.byte	3,1,1,5,32,9
-	.half	.L435-.L434
+	.half	.L383-.L382
 	.byte	1,5,34,9
-	.half	.L436-.L435
+	.half	.L384-.L383
 	.byte	3,1,1,5,32,1,5,25,9
-	.half	.L437-.L436
+	.half	.L385-.L384
 	.byte	3,2,1,5,26,9
-	.half	.L276-.L437
+	.half	.L238-.L385
 	.byte	3,1,1,9
-	.half	.L279-.L276
+	.half	.L241-.L238
 	.byte	3,1,1,5,25,9
-	.half	.L281-.L279
+	.half	.L243-.L241
 	.byte	3,1,1,5,26,9
-	.half	.L283-.L281
+	.half	.L245-.L243
 	.byte	3,1,1,5,36,9
-	.half	.L438-.L283
-	.byte	1,5,42,9
-	.half	.L285-.L438
-	.byte	3,5,1,5,41,9
-	.half	.L439-.L285
+	.half	.L386-.L245
+	.byte	1,5,9,9
+	.half	.L247-.L386
+	.byte	3,4,1,5,42,9
+	.half	.L387-.L247
+	.byte	3,1,1,5,41,9
+	.half	.L388-.L387
 	.byte	1,5,51,1,5,27,9
-	.half	.L286-.L439
+	.half	.L248-.L388
 	.byte	1,5,51,9
-	.half	.L440-.L286
-	.byte	1,5,32,9
-	.half	.L287-.L440
-	.byte	3,113,1,5,16,9
-	.half	.L5-.L287
-	.byte	3,19,1,5,5,9
+	.half	.L389-.L248
+	.byte	1,5,41,9
+	.half	.L249-.L389
+	.byte	1,5,16,9
+	.half	.L5-.L249
+	.byte	3,4,1,5,5,9
 	.half	.L6-.L5
 	.byte	3,2,1,5,1,3,1,1,7,9
-	.half	.L108-.L6
+	.half	.L94-.L6
 	.byte	0,1,1
-.L428:
+.L376:
 	.sdecl	'.debug_ranges',debug,cluster('echoAccept')
 	.sect	'.debug_ranges'
-.L107:
-	.word	-1,.L65,0,.L108-.L65,0,0
+.L93:
+	.word	-1,.L55,0,.L94-.L55,0,0
 	.sdecl	'.debug_info',debug,cluster('echoRecv')
 	.sect	'.debug_info'
-.L109:
+.L95:
 	.word	311
 	.half	3
-	.word	.L110
+	.word	.L96
 	.byte	4,1
 	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0
 	.byte	'TASKING VX-toolset for TriCore: C compiler',0
 	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1
-	.word	.L112,.L111
+	.word	.L98,.L97
 	.byte	2
-	.word	.L90
+	.word	.L76
 	.byte	3
 	.byte	'echoRecv',0,1,195,1,7
-	.word	.L175
+	.word	.L149
 	.byte	1,1,1
-	.word	.L67,.L195,.L66
+	.word	.L57,.L169,.L56
 	.byte	4
 	.byte	'arg',0,1,195,1,22
-	.word	.L186,.L196
+	.word	.L160,.L170
 	.byte	4
 	.byte	'tpcb',0,1,195,1,35
-	.word	.L188,.L197
+	.word	.L162,.L171
 	.byte	4
 	.byte	'p',0,1,195,1,47
-	.word	.L198,.L199
+	.word	.L172,.L173
 	.byte	4
 	.byte	'err',0,1,195,1,56
-	.word	.L175,.L200
+	.word	.L149,.L174
 	.byte	5
-	.word	.L67,.L195
+	.word	.L57,.L169
 	.byte	6
 	.byte	'retErr',0,1,197,1,11
-	.word	.L175,.L201
+	.word	.L149,.L175
 	.byte	6
 	.byte	'es',0,1,198,1,18
-	.word	.L193,.L202
+	.word	.L167,.L176
 	.byte	7
-	.word	.L16,.L203
+	.word	.L177,.L178
 	.byte	0,0,0
 	.sdecl	'.debug_abbrev',debug,cluster('echoRecv')
 	.sect	'.debug_abbrev'
-.L110:
+.L96:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,73,16
 	.byte	54,15,39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,1,17,1,18,1,0,0,6
 	.byte	52,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,7,11,0,17,1,18,1,0,0,0
 	.sdecl	'.debug_line',debug,cluster('echoRecv')
 	.sect	'.debug_line'
-.L111:
-	.word	.L442-.L441
-.L441:
+.L97:
+	.word	.L391-.L390
+.L390:
 	.half	3
-	.word	.L444-.L443
-.L443:
+	.word	.L393-.L392
+.L392:
 	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
 	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0,0,0,0,0
-.L444:
+.L393:
 	.byte	5,7,7,0,5,2
-	.word	.L67
+	.word	.L57
 	.byte	3,194,1,1,5,5,9
-	.half	.L292-.L67
-	.byte	3,5,1,5,21,7,9
-	.half	.L293-.L292
+	.half	.L252-.L57
+	.byte	3,5,1,5,7,9
+	.half	.L253-.L252
+	.byte	3,123,1,5,5,9
+	.half	.L254-.L253
+	.byte	3,5,1,5,7,9
+	.half	.L394-.L254
+	.byte	3,123,1,5,5,9
+	.half	.L255-.L394
+	.byte	3,6,1,5,21,7,9
+	.half	.L395-.L255
 	.byte	3,2,1,5,19,1,5,15,9
-	.half	.L294-.L293
+	.half	.L396-.L395
 	.byte	3,1,1,5,9,9
-	.half	.L445-.L294
+	.half	.L397-.L396
 	.byte	1,5,29,7,9
-	.half	.L446-.L445
+	.half	.L398-.L397
 	.byte	3,2,1,5,32,9
-	.half	.L289-.L446
+	.half	.L251-.L398
 	.byte	1,5,10,9
-	.half	.L8-.L289
+	.half	.L8-.L251
 	.byte	3,9,1,5,21,7,9
-	.half	.L447-.L8
+	.half	.L399-.L8
 	.byte	3,5,1,5,19,9
-	.half	.L448-.L447
+	.half	.L400-.L399
 	.byte	1,5,23,9
-	.half	.L449-.L448
+	.half	.L401-.L400
 	.byte	3,1,1,5,21,9
-	.half	.L297-.L449
+	.half	.L258-.L401
 	.byte	3,2,1,5,16,9
-	.half	.L11-.L297
+	.half	.L11-.L258
 	.byte	3,2,1,5,10,9
-	.half	.L298-.L11
+	.half	.L402-.L11
 	.byte	1,5,21,7,9
-	.half	.L450-.L298
-	.byte	3,2,1,5,19,1,5,33,9
-	.half	.L451-.L450
-	.byte	1,5,10,9
-	.half	.L13-.L451
+	.half	.L403-.L402
+	.byte	3,2,1,5,19,1,5,15,9
+	.half	.L404-.L403
+	.byte	3,1,1,5,26,9
+	.half	.L9-.L404
+	.byte	3,1,1,5,24,9
+	.half	.L260-.L9
+	.byte	3,1,1,5,33,9
+	.half	.L263-.L260
+	.byte	3,125,1,5,10,9
+	.half	.L13-.L263
 	.byte	3,6,1,5,15,7,9
-	.half	.L452-.L13
+	.half	.L405-.L13
 	.byte	3,2,1,5,9,9
-	.half	.L299-.L452
+	.half	.L406-.L405
 	.byte	1,5,19,7,9
-	.half	.L14-.L299
+	.half	.L407-.L406
 	.byte	3,2,1,5,30,9
-	.half	.L9-.L14
+	.half	.L408-.L407
 	.byte	3,1,1,5,28,9
-	.half	.L300-.L9
-	.byte	3,1,1,5,22,9
-	.half	.L304-.L300
-	.byte	3,126,1,5,29,9
-	.half	.L16-.L304
-	.byte	3,7,1,5,24,9
-	.half	.L203-.L16
+	.half	.L266-.L408
+	.byte	3,1,1,5,13,9
+	.half	.L269-.L266
+	.byte	3,1,1,5,128,1,9
+	.half	.L409-.L269
+	.byte	1,5,13,9
+	.half	.L16-.L409
+	.byte	3,4,1,5,27,9
+	.half	.L177-.L16
+	.byte	3,1,1,5,29,9
+	.half	.L410-.L177
+	.byte	3,1,1,5,24,9
+	.half	.L178-.L410
 	.byte	3,2,1,5,27,9
-	.half	.L15-.L203
+	.half	.L15-.L178
 	.byte	3,4,1,5,17,9
-	.half	.L309-.L15
+	.half	.L275-.L15
 	.byte	3,1,1,5,15,9
-	.half	.L453-.L309
+	.half	.L411-.L275
 	.byte	1,5,19,9
-	.half	.L454-.L453
+	.half	.L412-.L411
 	.byte	3,1,1,5,16,9
-	.half	.L10-.L454
+	.half	.L10-.L412
 	.byte	3,1,1,5,5,9
 	.half	.L12-.L10
 	.byte	3,3,1,5,1,3,1,1,7,9
-	.half	.L113-.L12
+	.half	.L99-.L12
 	.byte	0,1,1
-.L442:
+.L391:
 	.sdecl	'.debug_ranges',debug,cluster('echoRecv')
 	.sect	'.debug_ranges'
-.L112:
-	.word	-1,.L67,0,.L113-.L67,0,0
+.L98:
+	.word	-1,.L57,0,.L99-.L57,0,0
 	.sdecl	'.debug_info',debug,cluster('echoError')
 	.sect	'.debug_info'
-.L114:
+.L100:
 	.word	256
 	.half	3
-	.word	.L115
+	.word	.L101
 	.byte	4,1
 	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0
 	.byte	'TASKING VX-toolset for TriCore: C compiler',0
 	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1
-	.word	.L117,.L116
+	.word	.L103,.L102
 	.byte	2
-	.word	.L90
+	.word	.L76
 	.byte	3
-	.byte	'echoError',0,1,131,2,6,1,1,1
-	.word	.L69,.L204,.L68
+	.byte	'echoError',0,1,134,2,6,1,1,1
+	.word	.L59,.L179,.L58
 	.byte	4
-	.byte	'arg',0,1,131,2,22
-	.word	.L186,.L205
+	.byte	'arg',0,1,134,2,22
+	.word	.L160,.L180
 	.byte	4
-	.byte	'err',0,1,131,2,33
-	.word	.L175,.L206
+	.byte	'err',0,1,134,2,33
+	.word	.L149,.L181
 	.byte	5
-	.word	.L69,.L204
+	.word	.L59,.L179
 	.byte	5
-	.word	.L69,.L204
+	.word	.L59,.L179
 	.byte	6
-	.byte	'es',0,1,135,2,18
-	.word	.L193,.L207
+	.byte	'es',0,1,138,2,18
+	.word	.L167,.L182
 	.byte	0,0,0,0
 	.sdecl	'.debug_abbrev',debug,cluster('echoError')
 	.sect	'.debug_abbrev'
-.L115:
+.L101:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,54,15
 	.byte	39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,1,17,1,18,1,0,0,6,52,0,3
 	.byte	8,58,15,59,15,57,15,73,16,2,6,0,0,0
 	.sdecl	'.debug_line',debug,cluster('echoError')
 	.sect	'.debug_line'
-.L116:
-	.word	.L456-.L455
-.L455:
+.L102:
+	.word	.L414-.L413
+.L413:
 	.half	3
-	.word	.L458-.L457
-.L457:
+	.word	.L416-.L415
+.L415:
 	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
 	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0,0,0,0,0
-.L458:
+.L416:
 	.byte	5,5,7,0,5,2
-	.word	.L69
-	.byte	3,136,2,1,5,18,7,9
-	.half	.L459-.L69
+	.word	.L59
+	.byte	3,139,2,1,5,18,7,9
+	.half	.L417-.L59
 	.byte	3,2,1,5,1,7,9
-	.half	.L20-.L459
+	.half	.L20-.L417
 	.byte	3,2,1,7,9
-	.half	.L118-.L20
+	.half	.L104-.L20
 	.byte	0,1,1
-.L456:
+.L414:
 	.sdecl	'.debug_ranges',debug,cluster('echoError')
 	.sect	'.debug_ranges'
-.L117:
-	.word	-1,.L69,0,.L118-.L69,0,0
+.L103:
+	.word	-1,.L59,0,.L104-.L59,0,0
 	.sdecl	'.debug_info',debug,cluster('echoPoll')
 	.sect	'.debug_info'
-.L119:
+.L105:
 	.word	270
 	.half	3
-	.word	.L120
+	.word	.L106
 	.byte	4,1
 	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0
 	.byte	'TASKING VX-toolset for TriCore: C compiler',0
 	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1
-	.word	.L122,.L121
+	.word	.L108,.L107
 	.byte	2
-	.word	.L90
+	.word	.L76
 	.byte	3
-	.byte	'echoPoll',0,1,144,2,7
-	.word	.L175
+	.byte	'echoPoll',0,1,147,2,7
+	.word	.L149
 	.byte	1,1,1
-	.word	.L71,.L208,.L70
+	.word	.L61,.L183,.L60
 	.byte	4
-	.byte	'arg',0,1,144,2,22
-	.word	.L186,.L209
+	.byte	'arg',0,1,147,2,22
+	.word	.L160,.L184
 	.byte	4
-	.byte	'tpcb',0,1,144,2,35
-	.word	.L188,.L210
+	.byte	'tpcb',0,1,147,2,35
+	.word	.L162,.L185
 	.byte	5
-	.word	.L71,.L208
+	.word	.L61,.L183
 	.byte	6
-	.byte	'retErr',0,1,146,2,11
-	.word	.L175,.L211
+	.byte	'retErr',0,1,149,2,11
+	.word	.L149,.L186
 	.byte	6
-	.byte	'es',0,1,147,2,18
-	.word	.L193,.L212
+	.byte	'es',0,1,150,2,18
+	.word	.L167,.L187
 	.byte	0,0,0
 	.sdecl	'.debug_abbrev',debug,cluster('echoPoll')
 	.sect	'.debug_abbrev'
-.L120:
+.L106:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,73,16
 	.byte	54,15,39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,1,17,1,18,1,0,0,6
 	.byte	52,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,0
 	.sdecl	'.debug_line',debug,cluster('echoPoll')
 	.sect	'.debug_line'
-.L121:
-	.word	.L461-.L460
-.L460:
+.L107:
+	.word	.L419-.L418
+.L418:
 	.half	3
-	.word	.L463-.L462
-.L462:
+	.word	.L421-.L420
+.L420:
 	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
 	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0,0,0,0,0
-.L463:
+.L421:
 	.byte	5,7,7,0,5,2
-	.word	.L71
-	.byte	3,143,2,1,5,5,9
-	.half	.L313-.L71
+	.word	.L61
+	.byte	3,146,2,1,5,5,9
+	.half	.L279-.L61
 	.byte	3,5,1,5,15,7,9
-	.half	.L464-.L313
+	.half	.L422-.L279
 	.byte	3,2,1,5,13,9
-	.half	.L465-.L464
+	.half	.L423-.L422
 	.byte	1,5,15,7,9
-	.half	.L466-.L465
+	.half	.L424-.L423
 	.byte	3,1,1,5,36,9
-	.half	.L467-.L466
+	.half	.L425-.L424
 	.byte	1,5,30,7,9
-	.half	.L22-.L467
+	.half	.L22-.L425
 	.byte	3,2,1,5,28,9
-	.half	.L314-.L22
+	.half	.L280-.L22
 	.byte	3,1,1,5,33,9
-	.half	.L317-.L314
+	.half	.L283-.L280
 	.byte	3,127,1,5,19,9
-	.half	.L23-.L317
+	.half	.L23-.L283
 	.byte	3,5,1,5,13,9
-	.half	.L468-.L23
+	.half	.L426-.L23
 	.byte	1,5,33,7,9
-	.half	.L469-.L468
+	.half	.L427-.L426
 	.byte	3,2,1,5,16,9
-	.half	.L24-.L469
+	.half	.L24-.L427
 	.byte	3,3,1,5,1,3,8,1,5,19,7,9
 	.half	.L21-.L24
 	.byte	3,124,1,5,16,9
-	.half	.L322-.L21
+	.half	.L288-.L21
 	.byte	3,1,1,5,1,3,3,1,7,9
-	.half	.L123-.L322
+	.half	.L109-.L288
 	.byte	0,1,1
-.L461:
+.L419:
 	.sdecl	'.debug_ranges',debug,cluster('echoPoll')
 	.sect	'.debug_ranges'
-.L122:
-	.word	-1,.L71,0,.L123-.L71,0,0
+.L108:
+	.word	-1,.L61,0,.L109-.L61,0,0
 	.sdecl	'.debug_info',debug,cluster('echoSent')
 	.sect	'.debug_info'
-.L124:
+.L110:
 	.word	273
 	.half	3
-	.word	.L125
+	.word	.L111
 	.byte	4,1
 	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0
 	.byte	'TASKING VX-toolset for TriCore: C compiler',0
 	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1
-	.word	.L127,.L126
+	.word	.L113,.L112
 	.byte	2
-	.word	.L90
+	.word	.L76
 	.byte	3
-	.byte	'echoSent',0,1,175,2,7
-	.word	.L175
+	.byte	'echoSent',0,1,178,2,7
+	.word	.L149
 	.byte	1,1,1
-	.word	.L73,.L213,.L72
+	.word	.L63,.L188,.L62
 	.byte	4
-	.byte	'arg',0,1,175,2,22
-	.word	.L186,.L214
+	.byte	'arg',0,1,178,2,22
+	.word	.L160,.L189
 	.byte	4
-	.byte	'tpcb',0,1,175,2,35
-	.word	.L188,.L215
+	.byte	'tpcb',0,1,178,2,35
+	.word	.L162,.L190
 	.byte	4
-	.byte	'len',0,1,175,2,47
-	.word	.L216,.L217
+	.byte	'len',0,1,178,2,47
+	.word	.L191,.L192
 	.byte	5
-	.word	.L73,.L213
+	.word	.L63,.L188
 	.byte	6
-	.word	.L218
+	.word	.L193
 	.byte	7
-	.byte	'es',0,1,179,2,18
-	.word	.L193,.L222
+	.byte	'es',0,1,182,2,18
+	.word	.L167,.L197
 	.byte	0,0,0,0
 	.sdecl	'.debug_abbrev',debug,cluster('echoSent')
 	.sect	'.debug_abbrev'
-.L125:
+.L111:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,73,16
 	.byte	54,15,39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,1,17,1,18,1,0,0,6
 	.byte	11,1,85,6,0,0,7,52,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,0
 	.sdecl	'.debug_line',debug,cluster('echoSent')
 	.sect	'.debug_line'
+.L112:
+	.word	.L429-.L428
+.L428:
+	.half	3
+	.word	.L431-.L430
+.L430:
+	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
+	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0,0,0,0,0
+.L431:
+	.byte	5,7,7,0,5,2
+	.word	.L63
+	.byte	3,177,2,1,5,11,9
+	.half	.L194-.L63
+	.byte	3,6,1,5,7,9
+	.half	.L195-.L194
+	.byte	3,122,1,5,5,9
+	.half	.L196-.L195
+	.byte	3,6,1,5,26,7,9
+	.half	.L432-.L196
+	.byte	3,2,1,5,24,9
+	.half	.L290-.L432
+	.byte	3,1,1,5,29,9
+	.half	.L293-.L290
+	.byte	3,127,1,5,15,9
+	.half	.L28-.L293
+	.byte	3,5,1,5,9,9
+	.half	.L433-.L28
+	.byte	1,5,29,7,9
+	.half	.L434-.L433
+	.byte	3,2,1,5,12,9
+	.half	.L29-.L434
+	.byte	3,3,1,5,1,3,1,1,7,9
+	.half	.L114-.L29
+	.byte	0,1,1
+.L429:
+	.sdecl	'.debug_ranges',debug,cluster('echoSent')
+	.sect	'.debug_ranges'
+.L113:
+	.word	-1,.L63,0,.L114-.L63,0,0
+.L193:
+	.word	-1,.L63,.L194-.L63,.L195-.L63,.L196-.L63,.L188-.L63,0,0
+	.sdecl	'.debug_info',debug,cluster('echoSend')
+	.sect	'.debug_info'
+.L115:
+	.word	258
+	.half	3
+	.word	.L116
+	.byte	4,1
+	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0
+	.byte	'TASKING VX-toolset for TriCore: C compiler',0
+	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1
+	.word	.L118,.L117
+	.byte	2
+	.word	.L76
+	.byte	3
+	.byte	'echoSend',0,1,200,2,6,1,1,1
+	.word	.L65,.L198,.L64
+	.byte	4
+	.byte	'tpcb',0,1,200,2,23
+	.word	.L162,.L199
+	.byte	4
+	.byte	'es',0,1,200,2,42
+	.word	.L167,.L200
+	.byte	5
+	.word	.L65,.L198
+	.byte	5
+	.word	.L201,.L198
+	.byte	6
+	.byte	'wrErr',0,1,211,2,11
+	.word	.L149,.L202
+	.byte	0,0,0,0
+	.sdecl	'.debug_abbrev',debug,cluster('echoSend')
+	.sect	'.debug_abbrev'
+.L116:
+	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,54,15
+	.byte	39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,1,17,1,18,1,0,0,6,52,0,3
+	.byte	8,58,15,59,15,57,15,73,16,2,6,0,0,0
+	.sdecl	'.debug_line',debug,cluster('echoSend')
+	.sect	'.debug_line'
+.L117:
+	.word	.L436-.L435
+.L435:
+	.half	3
+	.word	.L438-.L437
+.L437:
+	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
+	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0,0,0,0,0
+.L438:
+	.byte	5,6,7,0,5,2
+	.word	.L65
+	.byte	3,199,2,1,5,10,9
+	.half	.L299-.L65
+	.byte	3,2,1,5,6,9
+	.half	.L439-.L299
+	.byte	3,126,1,5,5,9
+	.half	.L300-.L439
+	.byte	3,2,1,5,46,7,9
+	.half	.L201-.L300
+	.byte	3,9,1,5,35,1,5,49,9
+	.half	.L297-.L201
+	.byte	1,5,17,9
+	.half	.L298-.L297
+	.byte	1,5,32,3,1,1,5,45,9
+	.half	.L302-.L298
+	.byte	1,5,67,9
+	.half	.L440-.L302
+	.byte	1,5,11,9
+	.half	.L301-.L440
+	.byte	1,5,16,3,1,1,5,5,9
+	.half	.L305-.L301
+	.byte	3,1,1,5,32,7,9
+	.half	.L441-.L305
+	.byte	3,2,1,5,1,9
+	.half	.L32-.L441
+	.byte	3,2,1,7,9
+	.half	.L119-.L32
+	.byte	0,1,1
+.L436:
+	.sdecl	'.debug_ranges',debug,cluster('echoSend')
+	.sect	'.debug_ranges'
+.L118:
+	.word	-1,.L65,0,.L119-.L65,0,0
+	.sdecl	'.debug_info',debug,cluster('echoUnpack')
+	.sect	'.debug_info'
+.L120:
+	.word	305
+	.half	3
+	.word	.L121
+	.byte	4,1
+	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0
+	.byte	'TASKING VX-toolset for TriCore: C compiler',0
+	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1
+	.word	.L123,.L122
+	.byte	2
+	.word	.L76
+	.byte	3
+	.byte	'echoUnpack',0,1,221,2,6,1,1,1
+	.word	.L67,.L203,.L66
+	.byte	4
+	.byte	'tpcb',0,1,221,2,25
+	.word	.L162,.L204
+	.byte	4
+	.byte	'es',0,1,221,2,44
+	.word	.L167,.L205
+	.byte	5
+	.word	.L67,.L203
+	.byte	6
+	.byte	'ptr',0,1,223,2,11
+	.word	.L172,.L206
+	.byte	5
+	.word	.L207,.L34
+	.byte	6
+	.byte	'plen',0,1,236,2,19
+	.word	.L191,.L208
+	.byte	5
+	.word	.L38,.L34
+	.byte	6
+	.byte	'freed',0,1,244,2,18
+	.word	.L209,.L210
+	.byte	0,0,0,0,0
+	.sdecl	'.debug_abbrev',debug,cluster('echoUnpack')
+	.sect	'.debug_abbrev'
+.L121:
+	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,54,15
+	.byte	39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,1,17,1,18,1,0,0,6,52,0,3
+	.byte	8,58,15,59,15,57,15,73,16,2,6,0,0,0
+	.sdecl	'.debug_line',debug,cluster('echoUnpack')
+	.sect	'.debug_line'
+.L122:
+	.word	.L443-.L442
+.L442:
+	.half	3
+	.word	.L445-.L444
+.L444:
+	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
+	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0,0,0,0,0
+.L445:
+	.byte	5,6,7,0,5,2
+	.word	.L67
+	.byte	3,220,2,1,5,15,9
+	.half	.L307-.L67
+	.byte	3,8,1,5,27,9
+	.half	.L446-.L307
+	.byte	3,124,1,5,17,9
+	.half	.L35-.L446
+	.byte	3,2,1,5,15,9
+	.half	.L308-.L35
+	.byte	3,2,1,5,50,9
+	.half	.L447-.L308
+	.byte	1,5,41,9
+	.half	.L448-.L447
+	.byte	1,5,36,9
+	.half	.L449-.L448
+	.byte	1,5,9,9
+	.half	.L450-.L449
+	.byte	1,5,32,7,9
+	.half	.L451-.L450
+	.byte	3,2,1,5,24,9
+	.half	.L452-.L451
+	.byte	3,1,1,5,23,9
+	.half	.L453-.L452
+	.byte	3,127,1,5,24,9
+	.half	.L454-.L453
+	.byte	3,2,1,5,15,9
+	.half	.L455-.L454
+	.byte	3,1,1,5,42,9
+	.half	.L456-.L455
+	.byte	1,5,36,9
+	.half	.L457-.L456
+	.byte	1,5,24,9
+	.half	.L207-.L457
+	.byte	3,4,1,5,29,9
+	.half	.L458-.L207
+	.byte	3,126,1,5,19,9
+	.half	.L309-.L458
+	.byte	3,2,1,5,13,9
+	.half	.L459-.L309
+	.byte	3,1,1,5,28,7,9
+	.half	.L460-.L459
+	.byte	3,2,1,5,35,9
+	.half	.L38-.L460
+	.byte	3,6,1,5,33,9
+	.half	.L311-.L38
+	.byte	3,1,1,5,30,7,9
+	.half	.L461-.L311
+	.byte	3,2,1,5,15,9
+	.half	.L34-.L461
+	.byte	3,103,1,5,27,9
+	.half	.L462-.L34
+	.byte	1,5,1,7,9
+	.half	.L463-.L462
+	.byte	3,28,1,7,9
+	.half	.L124-.L463
+	.byte	0,1,1
+.L443:
+	.sdecl	'.debug_ranges',debug,cluster('echoUnpack')
+	.sect	'.debug_ranges'
+.L123:
+	.word	-1,.L67,0,.L124-.L67,0,0
+	.sdecl	'.debug_info',debug,cluster('echoClose')
+	.sect	'.debug_info'
+.L125:
+	.word	229
+	.half	3
+	.word	.L126
+	.byte	4,1
+	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0
+	.byte	'TASKING VX-toolset for TriCore: C compiler',0
+	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1
+	.word	.L128,.L127
+	.byte	2
+	.word	.L76
+	.byte	3
+	.byte	'echoClose',0,1,128,3,6,1,1,1
+	.word	.L69,.L211,.L68
+	.byte	4
+	.byte	'tpcb',0,1,128,3,24
+	.word	.L162,.L212
+	.byte	4
+	.byte	'es',0,1,128,3,43
+	.word	.L167,.L213
+	.byte	5
+	.word	.L69,.L211
+	.byte	0,0
+	.sdecl	'.debug_abbrev',debug,cluster('echoClose')
+	.sect	'.debug_abbrev'
 .L126:
+	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,54,15
+	.byte	39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,0,17,1,18,1,0,0,0
+	.sdecl	'.debug_line',debug,cluster('echoClose')
+	.sect	'.debug_line'
+.L127:
+	.word	.L465-.L464
+.L464:
+	.half	3
+	.word	.L467-.L466
+.L466:
+	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
+	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0,0,0,0,0
+.L467:
+	.byte	5,6,7,0,5,2
+	.word	.L69
+	.byte	3,255,2,1,5,19,9
+	.half	.L316-.L69
+	.byte	3,2,1,5,20,9
+	.half	.L314-.L316
+	.byte	3,1,1,9
+	.half	.L318-.L314
+	.byte	3,1,1,5,19,9
+	.half	.L320-.L318
+	.byte	3,1,1,5,20,9
+	.half	.L322-.L320
+	.byte	3,1,1,5,26,9
+	.half	.L468-.L322
+	.byte	1,5,5,9
+	.half	.L324-.L468
+	.byte	3,2,1,5,18,7,9
+	.half	.L469-.L324
+	.byte	3,2,1,5,15,9
+	.half	.L39-.L469
+	.byte	3,2,1,5,1,9
+	.half	.L129-.L39
+	.byte	3,1,0,1,1
+.L465:
+	.sdecl	'.debug_ranges',debug,cluster('echoClose')
+	.sect	'.debug_ranges'
+.L128:
+	.word	-1,.L69,0,.L129-.L69,0,0
+	.sdecl	'.debug_info',debug,cluster('TCP_client_connected_cb')
+	.sect	'.debug_info'
+.L130:
+	.word	264
+	.half	3
+	.word	.L131
+	.byte	4,1
+	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0
+	.byte	'TASKING VX-toolset for TriCore: C compiler',0
+	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1
+	.word	.L133,.L132
+	.byte	2
+	.word	.L76
+	.byte	3
+	.byte	'TCP_client_connected_cb',0,1,238,3,14
+	.word	.L149
+	.byte	1,1
+	.word	.L73,.L214,.L72
+	.byte	4
+	.byte	'arg',0,1,238,3,44
+	.word	.L160,.L215
+	.byte	4
+	.byte	'tpcb',0,1,238,3,65
+	.word	.L216,.L217
+	.byte	4
+	.byte	'err',0,1,238,3,77
+	.word	.L149,.L218
+	.byte	5
+	.word	.L73,.L214
+	.byte	0,0
+	.sdecl	'.debug_abbrev',debug,cluster('TCP_client_connected_cb')
+	.sect	'.debug_abbrev'
+.L131:
+	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,73,16
+	.byte	54,15,39,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,0,17,1,18,1,0,0,0
+	.sdecl	'.debug_line',debug,cluster('TCP_client_connected_cb')
+	.sect	'.debug_line'
+.L132:
 	.word	.L471-.L470
 .L470:
 	.half	3
@@ -3542,1462 +3820,830 @@ _999001_recv_buf:	.type	object
 	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
 	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0,0,0,0,0
 .L473:
-	.byte	5,7,7,0,5,2
+	.byte	5,45,7,0,5,2
 	.word	.L73
-	.byte	3,174,2,1,5,11,9
-	.half	.L219-.L73
-	.byte	3,6,1,5,7,9
-	.half	.L220-.L219
-	.byte	3,122,1,5,5,9
-	.half	.L221-.L220
-	.byte	3,6,1,5,26,7,9
-	.half	.L474-.L221
-	.byte	3,2,1,5,24,9
-	.half	.L324-.L474
-	.byte	3,1,1,5,29,9
-	.half	.L327-.L324
-	.byte	3,127,1,5,15,9
-	.half	.L28-.L327
-	.byte	3,5,1,5,9,9
-	.half	.L475-.L28
-	.byte	1,5,29,7,9
-	.half	.L476-.L475
-	.byte	3,2,1,5,12,9
-	.half	.L29-.L476
-	.byte	3,3,1,5,1,3,1,1,7,9
-	.half	.L128-.L29
+	.byte	3,239,3,1,5,14,3,126,1,5,77,9
+	.half	.L330-.L73
+	.byte	3,2,1,5,21,1,5,77,9
+	.half	.L474-.L330
+	.byte	1,5,20,9
+	.half	.L332-.L474
+	.byte	3,3,1,5,12,9
+	.half	.L334-.L332
+	.byte	3,2,1,5,1,3,1,1,7,9
+	.half	.L134-.L334
 	.byte	0,1,1
 .L471:
-	.sdecl	'.debug_ranges',debug,cluster('echoSent')
-	.sect	'.debug_ranges'
-.L127:
-	.word	-1,.L73,0,.L128-.L73,0,0
-.L218:
-	.word	-1,.L73,.L219-.L73,.L220-.L73,.L221-.L73,.L213-.L73,0,0
-	.sdecl	'.debug_info',debug,cluster('echoSend')
-	.sect	'.debug_info'
-.L129:
-	.word	258
-	.half	3
-	.word	.L130
-	.byte	4,1
-	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0
-	.byte	'TASKING VX-toolset for TriCore: C compiler',0
-	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1
-	.word	.L132,.L131
-	.byte	2
-	.word	.L90
-	.byte	3
-	.byte	'echoSend',0,1,197,2,6,1,1,1
-	.word	.L75,.L223,.L74
-	.byte	4
-	.byte	'tpcb',0,1,197,2,23
-	.word	.L188,.L224
-	.byte	4
-	.byte	'es',0,1,197,2,42
-	.word	.L193,.L225
-	.byte	5
-	.word	.L75,.L223
-	.byte	5
-	.word	.L33,.L223
-	.byte	6
-	.byte	'wrErr',0,1,208,2,11
-	.word	.L175,.L226
-	.byte	0,0,0,0
-	.sdecl	'.debug_abbrev',debug,cluster('echoSend')
-	.sect	'.debug_abbrev'
-.L130:
-	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,54,15
-	.byte	39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,1,17,1,18,1,0,0,6,52,0,3
-	.byte	8,58,15,59,15,57,15,73,16,2,6,0,0,0
-	.sdecl	'.debug_line',debug,cluster('echoSend')
-	.sect	'.debug_line'
-.L131:
-	.word	.L478-.L477
-.L477:
-	.half	3
-	.word	.L480-.L479
-.L479:
-	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
-	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0,0,0,0,0
-.L480:
-	.byte	5,6,7,0,5,2
-	.word	.L75
-	.byte	3,196,2,1,5,10,9
-	.half	.L333-.L75
-	.byte	3,2,1,5,6,9
-	.half	.L481-.L333
-	.byte	3,126,1,5,5,9
-	.half	.L334-.L481
-	.byte	3,2,1,5,19,7,9
-	.half	.L482-.L334
-	.byte	3,4,1,5,51,9
-	.half	.L483-.L482
-	.byte	1,5,8,9
-	.half	.L484-.L483
-	.byte	1,5,33,7,9
-	.half	.L485-.L484
-	.byte	3,1,1,5,31,9
-	.half	.L486-.L485
-	.byte	1,5,46,7,9
-	.half	.L33-.L486
-	.byte	3,4,1,5,35,1,5,49,9
-	.half	.L331-.L33
-	.byte	1,5,17,9
-	.half	.L332-.L331
-	.byte	1,5,32,3,1,1,5,45,9
-	.half	.L336-.L332
-	.byte	1,5,67,9
-	.half	.L487-.L336
-	.byte	1,5,11,9
-	.half	.L335-.L487
-	.byte	1,5,5,9
-	.half	.L488-.L335
-	.byte	3,1,1,5,32,7,9
-	.half	.L489-.L488
-	.byte	3,2,1,5,1,9
-	.half	.L32-.L489
-	.byte	3,2,1,7,9
-	.half	.L133-.L32
-	.byte	0,1,1
-.L478:
-	.sdecl	'.debug_ranges',debug,cluster('echoSend')
-	.sect	'.debug_ranges'
-.L132:
-	.word	-1,.L75,0,.L133-.L75,0,0
-	.sdecl	'.debug_info',debug,cluster('echoUnpack')
-	.sect	'.debug_info'
-.L134:
-	.word	305
-	.half	3
-	.word	.L135
-	.byte	4,1
-	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0
-	.byte	'TASKING VX-toolset for TriCore: C compiler',0
-	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1
-	.word	.L137,.L136
-	.byte	2
-	.word	.L90
-	.byte	3
-	.byte	'echoUnpack',0,1,217,2,6,1,1,1
-	.word	.L77,.L227,.L76
-	.byte	4
-	.byte	'tpcb',0,1,217,2,25
-	.word	.L188,.L228
-	.byte	4
-	.byte	'es',0,1,217,2,44
-	.word	.L193,.L229
-	.byte	5
-	.word	.L77,.L227
-	.byte	6
-	.byte	'ptr',0,1,219,2,11
-	.word	.L198,.L230
-	.byte	5
-	.word	.L231,.L36
-	.byte	6
-	.byte	'plen',0,1,232,2,19
-	.word	.L216,.L232
-	.byte	5
-	.word	.L40,.L36
-	.byte	6
-	.byte	'freed',0,1,240,2,18
-	.word	.L233,.L234
-	.byte	0,0,0,0,0
-	.sdecl	'.debug_abbrev',debug,cluster('echoUnpack')
-	.sect	'.debug_abbrev'
-.L135:
-	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,54,15
-	.byte	39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,1,17,1,18,1,0,0,6,52,0,3
-	.byte	8,58,15,59,15,57,15,73,16,2,6,0,0,0
-	.sdecl	'.debug_line',debug,cluster('echoUnpack')
-	.sect	'.debug_line'
-.L136:
-	.word	.L491-.L490
-.L490:
-	.half	3
-	.word	.L493-.L492
-.L492:
-	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
-	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0,0,0,0,0
-.L493:
-	.byte	5,6,7,0,5,2
-	.word	.L77
-	.byte	3,216,2,1,5,15,9
-	.half	.L339-.L77
-	.byte	3,8,1,5,27,9
-	.half	.L494-.L339
-	.byte	3,124,1,5,17,9
-	.half	.L37-.L494
-	.byte	3,2,1,5,15,9
-	.half	.L340-.L37
-	.byte	3,2,1,5,50,9
-	.half	.L495-.L340
-	.byte	1,5,41,9
-	.half	.L496-.L495
-	.byte	1,5,36,9
-	.half	.L497-.L496
-	.byte	1,5,9,9
-	.half	.L498-.L497
-	.byte	1,5,32,7,9
-	.half	.L499-.L498
-	.byte	3,2,1,5,24,9
-	.half	.L500-.L499
-	.byte	3,1,1,5,23,9
-	.half	.L501-.L500
-	.byte	3,127,1,5,24,9
-	.half	.L502-.L501
-	.byte	3,2,1,5,15,9
-	.half	.L503-.L502
-	.byte	3,1,1,5,42,9
-	.half	.L504-.L503
-	.byte	1,5,36,9
-	.half	.L505-.L504
-	.byte	1,5,24,9
-	.half	.L231-.L505
-	.byte	3,4,1,5,29,9
-	.half	.L506-.L231
-	.byte	3,126,1,5,19,9
-	.half	.L341-.L506
-	.byte	3,2,1,5,13,9
-	.half	.L507-.L341
-	.byte	3,1,1,5,28,7,9
-	.half	.L508-.L507
-	.byte	3,2,1,5,35,9
-	.half	.L40-.L508
-	.byte	3,6,1,5,33,9
-	.half	.L343-.L40
-	.byte	3,1,1,5,30,7,9
-	.half	.L509-.L343
-	.byte	3,2,1,5,15,9
-	.half	.L36-.L509
-	.byte	3,103,1,5,27,9
-	.half	.L510-.L36
-	.byte	1,5,1,7,9
-	.half	.L511-.L510
-	.byte	3,28,1,7,9
-	.half	.L138-.L511
-	.byte	0,1,1
-.L491:
-	.sdecl	'.debug_ranges',debug,cluster('echoUnpack')
-	.sect	'.debug_ranges'
-.L137:
-	.word	-1,.L77,0,.L138-.L77,0,0
-	.sdecl	'.debug_info',debug,cluster('echoClose')
-	.sect	'.debug_info'
-.L139:
-	.word	229
-	.half	3
-	.word	.L140
-	.byte	4,1
-	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0
-	.byte	'TASKING VX-toolset for TriCore: C compiler',0
-	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1
-	.word	.L142,.L141
-	.byte	2
-	.word	.L90
-	.byte	3
-	.byte	'echoClose',0,1,252,2,6,1,1,1
-	.word	.L79,.L235,.L78
-	.byte	4
-	.byte	'tpcb',0,1,252,2,24
-	.word	.L188,.L236
-	.byte	4
-	.byte	'es',0,1,252,2,43
-	.word	.L193,.L237
-	.byte	5
-	.word	.L79,.L235
-	.byte	0,0
-	.sdecl	'.debug_abbrev',debug,cluster('echoClose')
-	.sect	'.debug_abbrev'
-.L140:
-	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,54,15
-	.byte	39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,0,17,1,18,1,0,0,0
-	.sdecl	'.debug_line',debug,cluster('echoClose')
-	.sect	'.debug_line'
-.L141:
-	.word	.L513-.L512
-.L512:
-	.half	3
-	.word	.L515-.L514
-.L514:
-	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
-	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0,0,0,0,0
-.L515:
-	.byte	5,6,7,0,5,2
-	.word	.L79
-	.byte	3,251,2,1,5,19,9
-	.half	.L348-.L79
-	.byte	3,2,1,5,20,9
-	.half	.L346-.L348
-	.byte	3,1,1,9
-	.half	.L350-.L346
-	.byte	3,1,1,5,19,9
-	.half	.L352-.L350
-	.byte	3,1,1,5,20,9
-	.half	.L354-.L352
-	.byte	3,1,1,5,26,9
-	.half	.L516-.L354
-	.byte	1,5,5,9
-	.half	.L356-.L516
-	.byte	3,2,1,5,18,7,9
-	.half	.L517-.L356
-	.byte	3,2,1,5,15,9
-	.half	.L41-.L517
-	.byte	3,2,1,5,1,9
-	.half	.L143-.L41
-	.byte	3,1,0,1,1
-.L513:
-	.sdecl	'.debug_ranges',debug,cluster('echoClose')
-	.sect	'.debug_ranges'
-.L142:
-	.word	-1,.L79,0,.L143-.L79,0,0
-	.sdecl	'.debug_info',debug,cluster('tcp_server_recv')
-	.sect	'.debug_info'
-.L144:
-	.word	296
-	.half	3
-	.word	.L145
-	.byte	4,1
-	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0
-	.byte	'TASKING VX-toolset for TriCore: C compiler',0
-	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1
-	.word	.L147,.L146
-	.byte	2
-	.word	.L90
-	.byte	3
-	.byte	'tcp_server_recv',0,1,158,3,14
-	.word	.L175
-	.byte	1,1
-	.word	.L83,.L238,.L82
-	.byte	4
-	.byte	'arg',0,1,158,3,36
-	.word	.L186,.L239
-	.byte	4
-	.byte	'tpcb',0,1,158,3,57
-	.word	.L240,.L241
-	.byte	4
-	.byte	'p',0,1,159,3,42
-	.word	.L242,.L243
-	.byte	4
-	.byte	'err',0,1,159,3,51
-	.word	.L175,.L244
-	.byte	5
-	.word	.L83,.L238
-	.byte	6
-	.byte	'i',0,1,162,3,14
-	.word	.L245,.L246
-	.byte	7
-	.word	.L247,.L248
-	.byte	0,0,0
-	.sdecl	'.debug_abbrev',debug,cluster('tcp_server_recv')
-	.sect	'.debug_abbrev'
-.L145:
-	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,73,16
-	.byte	54,15,39,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,1,17,1,18,1,0,0,6,52,0,3
-	.byte	8,58,15,59,15,57,15,73,16,2,6,0,0,7,11,0,17,1,18,1,0,0,0
-	.sdecl	'.debug_line',debug,cluster('tcp_server_recv')
-	.sect	'.debug_line'
-.L146:
-	.word	.L519-.L518
-.L518:
-	.half	3
-	.word	.L521-.L520
-.L520:
-	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
-	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0,0,0,0,0
-.L521:
-	.byte	5,14,7,0,5,2
-	.word	.L83
-	.byte	3,157,3,1,5,5,9
-	.half	.L365-.L83
-	.byte	3,7,1,5,17,7,9
-	.half	.L247-.L365
-	.byte	3,8,1,5,20,9
-	.half	.L44-.L247
-	.byte	3,126,1,5,51,1,5,46,9
-	.half	.L366-.L44
-	.byte	1,5,45,9
-	.half	.L45-.L366
-	.byte	3,2,1,5,55,9
-	.half	.L522-.L45
-	.byte	1,5,49,9
-	.half	.L523-.L522
-	.byte	3,126,1,5,34,9
-	.half	.L524-.L523
-	.byte	3,2,1,5,32,9
-	.half	.L525-.L524
-	.byte	1,5,46,3,126,1,5,21,7,9
-	.half	.L526-.L525
-	.byte	3,4,1,5,27,9
-	.half	.L367-.L526
-	.byte	3,122,1,5,9,7,9
-	.half	.L527-.L367
-	.byte	3,9,1,5,27,9
-	.half	.L363-.L527
-	.byte	3,3,1,5,9,9
-	.half	.L369-.L363
-	.byte	3,2,1,5,50,9
-	.half	.L528-.L369
-	.byte	3,2,1,5,9,9
-	.half	.L529-.L528
-	.byte	3,126,1,5,50,9
-	.half	.L530-.L529
-	.byte	3,2,1,5,39,9
-	.half	.L370-.L530
-	.byte	1,5,50,9
-	.half	.L531-.L370
-	.byte	1,5,20,9
-	.half	.L371-.L531
-	.byte	3,1,1,5,19,9
-	.half	.L373-.L371
-	.byte	3,2,1,5,70,9
-	.half	.L248-.L373
-	.byte	3,125,1,5,10,9
-	.half	.L43-.L248
-	.byte	3,5,1,5,27,7,9
-	.half	.L532-.L43
-	.byte	3,2,1,5,26,9
-	.half	.L377-.L532
-	.byte	3,2,1,5,12,9
-	.half	.L46-.L377
-	.byte	3,3,1,5,1,3,1,1,7,9
-	.half	.L148-.L46
-	.byte	0,1,1
-.L519:
-	.sdecl	'.debug_ranges',debug,cluster('tcp_server_recv')
-	.sect	'.debug_ranges'
-.L147:
-	.word	-1,.L83,0,.L148-.L83,0,0
-	.sdecl	'.debug_info',debug,cluster('tcp_server_accept')
-	.sect	'.debug_info'
-.L149:
-	.word	260
-	.half	3
-	.word	.L150
-	.byte	4,1
-	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0
-	.byte	'TASKING VX-toolset for TriCore: C compiler',0
-	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1
-	.word	.L152,.L151
-	.byte	2
-	.word	.L90
-	.byte	3
-	.byte	'tcp_server_accept',0,1,145,3,14
-	.word	.L175
-	.byte	1,1
-	.word	.L81,.L249,.L80
-	.byte	4
-	.byte	'arg',0,1,145,3,38
-	.word	.L186,.L250
-	.byte	4
-	.byte	'newpcb',0,1,145,3,59
-	.word	.L240,.L251
-	.byte	4
-	.byte	'err',0,1,145,3,73
-	.word	.L175,.L252
-	.byte	5
-	.word	.L81,.L249
-	.byte	0,0
-	.sdecl	'.debug_abbrev',debug,cluster('tcp_server_accept')
-	.sect	'.debug_abbrev'
-.L150:
-	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,73,16
-	.byte	54,15,39,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,0,17,1,18,1,0,0,0
-	.sdecl	'.debug_line',debug,cluster('tcp_server_accept')
-	.sect	'.debug_line'
-.L151:
-	.word	.L534-.L533
-.L533:
-	.half	3
-	.word	.L536-.L535
-.L535:
-	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
-	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0,0,0,0,0
-.L536:
-	.byte	5,22,7,0,5,2
-	.word	.L81
-	.byte	3,147,3,1,5,12,9
-	.half	.L360-.L81
-	.byte	3,2,1,5,1,3,1,1,7,9
-	.half	.L153-.L360
-	.byte	0,1,1
-.L534:
-	.sdecl	'.debug_ranges',debug,cluster('tcp_server_accept')
-	.sect	'.debug_ranges'
-.L152:
-	.word	-1,.L81,0,.L153-.L81,0,0
-	.sdecl	'.debug_info',debug,cluster('TCP_client_connected_cb')
-	.sect	'.debug_info'
-.L154:
-	.word	264
-	.half	3
-	.word	.L155
-	.byte	4,1
-	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0
-	.byte	'TASKING VX-toolset for TriCore: C compiler',0
-	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1
-	.word	.L157,.L156
-	.byte	2
-	.word	.L90
-	.byte	3
-	.byte	'TCP_client_connected_cb',0,1,229,3,14
-	.word	.L175
-	.byte	1,1
-	.word	.L87,.L253,.L86
-	.byte	4
-	.byte	'arg',0,1,229,3,44
-	.word	.L186,.L254
-	.byte	4
-	.byte	'tpcb',0,1,229,3,65
-	.word	.L240,.L255
-	.byte	4
-	.byte	'err',0,1,229,3,77
-	.word	.L175,.L256
-	.byte	5
-	.word	.L87,.L253
-	.byte	0,0
-	.sdecl	'.debug_abbrev',debug,cluster('TCP_client_connected_cb')
-	.sect	'.debug_abbrev'
-.L155:
-	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,73,16
-	.byte	54,15,39,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,0,17,1,18,1,0,0,0
-	.sdecl	'.debug_line',debug,cluster('TCP_client_connected_cb')
-	.sect	'.debug_line'
-.L156:
-	.word	.L538-.L537
-.L537:
-	.half	3
-	.word	.L540-.L539
-.L539:
-	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
-	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0,0,0,0,0
-.L540:
-	.byte	5,45,7,0,5,2
-	.word	.L87
-	.byte	3,230,3,1,5,14,3,126,1,5,77,9
-	.half	.L382-.L87
-	.byte	3,2,1,5,21,1,5,77,9
-	.half	.L541-.L382
-	.byte	1,5,20,9
-	.half	.L384-.L541
-	.byte	3,3,1,5,12,9
-	.half	.L386-.L384
-	.byte	3,2,1,5,1,3,1,1,7,9
-	.half	.L158-.L386
-	.byte	0,1,1
-.L538:
 	.sdecl	'.debug_ranges',debug,cluster('TCP_client_connected_cb')
 	.sect	'.debug_ranges'
-.L157:
-	.word	-1,.L87,0,.L158-.L87,0,0
+.L133:
+	.word	-1,.L73,0,.L134-.L73,0,0
 	.sdecl	'.debug_info',debug,cluster('TCP_client_recv_cb')
 	.sect	'.debug_info'
-.L159:
+.L135:
 	.word	348
 	.half	3
-	.word	.L160
+	.word	.L136
 	.byte	4,1
 	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0
 	.byte	'TASKING VX-toolset for TriCore: C compiler',0
 	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1
-	.word	.L162,.L161
+	.word	.L138,.L137
 	.byte	2
-	.word	.L90
+	.word	.L76
 	.byte	3
-	.byte	'TCP_client_recv_cb',0,1,239,3,14
-	.word	.L175
+	.byte	'TCP_client_recv_cb',0,1,248,3,14
+	.word	.L149
 	.byte	1,1
-	.word	.L89,.L257,.L88
+	.word	.L75,.L219,.L74
 	.byte	4
-	.byte	'arg',0,1,239,3,39
-	.word	.L186,.L258
+	.byte	'arg',0,1,248,3,39
+	.word	.L160,.L220
 	.byte	4
-	.byte	'tpcb',0,1,239,3,60
-	.word	.L240,.L259
+	.byte	'tpcb',0,1,248,3,60
+	.word	.L216,.L221
 	.byte	4
-	.byte	'p',0,1,239,3,79
-	.word	.L242,.L260
+	.byte	'p',0,1,248,3,79
+	.word	.L222,.L223
 	.byte	4
-	.byte	'err',0,1,239,3,88
-	.word	.L175,.L261
+	.byte	'err',0,1,248,3,88
+	.word	.L149,.L224
 	.byte	5
-	.word	.L89,.L257
+	.word	.L75,.L219
 	.byte	6
-	.byte	'recv_buf',0,1,243,3,18
-	.word	.L262
+	.byte	'recv_buf',0,1,252,3,18
+	.word	.L225
 	.byte	5,3
 	.word	_999001_recv_buf
 	.byte	5
-	.word	.L263,.L264
+	.word	.L226,.L227
 	.byte	7
-	.byte	'q',0,1,247,3,22
-	.word	.L242,.L265
+	.byte	'q',0,1,128,4,22
+	.word	.L222,.L228
 	.byte	7
-	.byte	'recv_count',0,1,248,3,13
-	.word	.L266,.L267
+	.byte	'recv_count',0,1,129,4,13
+	.word	.L229,.L230
 	.byte	0,0,0,0
 	.sdecl	'.debug_abbrev',debug,cluster('TCP_client_recv_cb')
 	.sect	'.debug_abbrev'
-.L160:
+.L136:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,73,16
 	.byte	54,15,39,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,1,17,1,18,1,0,0,6,52,0,3
 	.byte	8,58,15,59,15,57,15,73,16,2,9,0,0,7,52,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,0
 	.sdecl	'.debug_line',debug,cluster('TCP_client_recv_cb')
 	.sect	'.debug_line'
-.L161:
-	.word	.L543-.L542
-.L542:
+.L137:
+	.word	.L476-.L475
+.L475:
 	.half	3
-	.word	.L545-.L544
-.L544:
+	.word	.L478-.L477
+.L477:
 	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
 	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0,0,0,0,0
-.L545:
+.L478:
 	.byte	5,14,7,0,5,2
-	.word	.L89
-	.byte	3,238,3,1,5,5,9
-	.half	.L390-.L89
+	.word	.L75
+	.byte	3,247,3,1,5,5,9
+	.half	.L338-.L75
 	.byte	3,6,1,5,24,7,9
-	.half	.L263-.L390
+	.half	.L226-.L338
 	.byte	3,3,1,5,27,3,3,1,5,16,9
-	.half	.L389-.L263
+	.half	.L337-.L226
 	.byte	3,1,1,5,18,9
-	.half	.L55-.L389
+	.half	.L45-.L337
 	.byte	3,2,1,5,26,9
-	.half	.L546-.L55
+	.half	.L479-.L45
 	.byte	1,5,13,9
-	.half	.L547-.L546
+	.half	.L480-.L479
 	.byte	1,5,24,7,9
-	.half	.L548-.L547
+	.half	.L481-.L480
 	.byte	3,2,1,5,35,9
-	.half	.L549-.L548
+	.half	.L482-.L481
 	.byte	1,5,46,9
-	.half	.L550-.L549
+	.half	.L483-.L482
 	.byte	1,5,17,9
-	.half	.L551-.L550
+	.half	.L484-.L483
 	.byte	3,1,1,9
-	.half	.L56-.L551
+	.half	.L46-.L484
 	.byte	3,4,1,5,25,7,9
-	.half	.L552-.L56
+	.half	.L485-.L46
 	.byte	3,2,1,5,33,9
-	.half	.L553-.L552
+	.half	.L486-.L485
 	.byte	1,5,48,9
-	.half	.L554-.L553
+	.half	.L487-.L486
 	.byte	1,5,60,9
-	.half	.L555-.L554
+	.half	.L488-.L487
 	.byte	1,5,32,9
-	.half	.L556-.L555
+	.half	.L489-.L488
 	.byte	3,1,1,5,37,9
-	.half	.L557-.L556
+	.half	.L490-.L489
 	.byte	3,116,1,5,28,9
-	.half	.L558-.L557
+	.half	.L491-.L490
 	.byte	3,12,1,5,30,9
-	.half	.L559-.L558
+	.half	.L492-.L491
 	.byte	3,116,1,5,19,7,9
-	.half	.L57-.L559
+	.half	.L47-.L492
 	.byte	3,15,1,5,21,9
-	.half	.L264-.L57
+	.half	.L227-.L47
 	.byte	1,5,10,9
-	.half	.L54-.L264
+	.half	.L44-.L227
 	.byte	3,2,1,5,19,7,9
-	.half	.L560-.L54
+	.half	.L493-.L44
 	.byte	3,2,1,5,26,9
-	.half	.L393-.L560
+	.half	.L341-.L493
 	.byte	3,1,1,5,24,9
-	.half	.L561-.L393
+	.half	.L494-.L341
 	.byte	1,9
-	.half	.L562-.L561
+	.half	.L495-.L494
 	.byte	3,2,1,5,12,9
-	.half	.L59-.L562
+	.half	.L49-.L495
 	.byte	3,4,1,5,1,3,1,1,7,9
-	.half	.L163-.L59
+	.half	.L139-.L49
 	.byte	0,1,1
-.L543:
+.L476:
 	.sdecl	'.debug_ranges',debug,cluster('TCP_client_recv_cb')
 	.sect	'.debug_ranges'
-.L162:
-	.word	-1,.L89,0,.L163-.L89,0,0
-	.sdecl	'.debug_info',debug,cluster('TCP_RecData')
-	.sect	'.debug_info'
-.L164:
-	.word	173
-	.half	3
-	.word	.L165
-	.byte	4,1
-	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0
-	.byte	'TASKING VX-toolset for TriCore: C compiler',0
-	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1,2
-	.word	.L90
-	.byte	3
-	.byte	'TCP_RecData',0,9,98,13
-	.word	.L268
-	.byte	5,3
-	.word	TCP_RecData
-	.byte	0
-	.sdecl	'.debug_abbrev',debug,cluster('TCP_RecData')
-	.sect	'.debug_abbrev'
-.L165:
-	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,0,0,2,61,0,24,16,0,0,3,52,0,3,8,58,15,59,15,57,15,73,16,2,9,0,0,0
+.L138:
+	.word	-1,.L75,0,.L139-.L75,0,0
 	.sdecl	'.debug_info',debug,cluster('g_Logo')
 	.sect	'.debug_info'
-.L166:
+.L140:
 	.word	169
 	.half	3
-	.word	.L167
+	.word	.L141
 	.byte	4,1
 	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0
 	.byte	'TASKING VX-toolset for TriCore: C compiler',0
 	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1,2
-	.word	.L90
+	.word	.L76
 	.byte	3
 	.byte	'g_Logo',0,9,103,8
-	.word	.L269
+	.word	.L231
 	.byte	1,5,3
 	.word	g_Logo
 	.byte	0
 	.sdecl	'.debug_abbrev',debug,cluster('g_Logo')
 	.sect	'.debug_abbrev'
-.L167:
+.L141:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,0,0,2,61,0,24,16,0,0,3,52,0,3,8,58,15,59,15,57,15,73,16,63,12,2,9
 	.byte	0,0,0
 	.sdecl	'.debug_info',debug,cluster('g_TCPPcb')
 	.sect	'.debug_info'
-.L168:
+.L142:
 	.word	171
 	.half	3
-	.word	.L169
+	.word	.L143
 	.byte	4,1
 	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0
 	.byte	'TASKING VX-toolset for TriCore: C compiler',0
 	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1,2
-	.word	.L90
+	.word	.L76
 	.byte	3
 	.byte	'g_TCPPcb',0,9,118,17
-	.word	.L240
+	.word	.L216
 	.byte	1,5,3
 	.word	g_TCPPcb
 	.byte	0
 	.sdecl	'.debug_abbrev',debug,cluster('g_TCPPcb')
 	.sect	'.debug_abbrev'
-.L169:
+.L143:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,0,0,2,61,0,24,16,0,0,3,52,0,3,8,58,15,59,15,57,15,73,16,63,12,2,9
 	.byte	0,0,0
 	.sdecl	'.debug_info',debug,cluster('g_TCPClientPcb')
 	.sect	'.debug_info'
-.L170:
+.L144:
 	.word	177
 	.half	3
-	.word	.L171
+	.word	.L145
 	.byte	4,1
 	.byte	'..\\0_Src\\0_AppSw\\Tricore\\Main\\Echo.c',0
 	.byte	'TASKING VX-toolset for TriCore: C compiler',0
 	.byte	'D:\\WorkSpace\\Tasking\\Tasking_TC375_Ethernet\\Debug\\',0,12,1,2
-	.word	.L90
+	.word	.L76
 	.byte	3
 	.byte	'g_TCPClientPcb',0,9,119,17
-	.word	.L240
+	.word	.L216
 	.byte	1,5,3
 	.word	g_TCPClientPcb
 	.byte	0
 	.sdecl	'.debug_abbrev',debug,cluster('g_TCPClientPcb')
 	.sect	'.debug_abbrev'
-.L171:
+.L145:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,0,0,2,61,0,24,16,0,0,3,52,0,3,8,58,15,59,15,57,15,73,16,63,12,2,9
 	.byte	0,0,0
 	.sdecl	'.debug_loc',debug,cluster('TCP_client_connected_cb')
 	.sect	'.debug_loc'
-.L86:
-	.word	-1,.L87,0,.L253-.L87
+.L72:
+	.word	-1,.L73,0,.L214-.L73
 	.half	2
 	.byte	138,0
 	.word	0,0
-.L254:
-	.word	-1,.L87,0,.L381-.L87
+.L215:
+	.word	-1,.L73,0,.L329-.L73
 	.half	1
 	.byte	100
 	.word	0,0
-.L256:
-	.word	-1,.L87,0,.L382-.L87
+.L218:
+	.word	-1,.L73,0,.L330-.L73
 	.half	1
 	.byte	84
 	.word	0,0
-.L255:
-	.word	-1,.L87,0,.L383-.L87
+.L217:
+	.word	-1,.L73,0,.L331-.L73
 	.half	1
 	.byte	101
-	.word	.L382-.L87,.L253-.L87
+	.word	.L330-.L73,.L214-.L73
 	.half	1
 	.byte	111
-	.word	.L381-.L87,.L384-.L87
+	.word	.L329-.L73,.L332-.L73
 	.half	1
 	.byte	100
-	.word	.L385-.L87,.L386-.L87
+	.word	.L333-.L73,.L334-.L73
 	.half	1
 	.byte	100
 	.word	0,0
 	.sdecl	'.debug_loc',debug,cluster('TCP_client_init')
 	.sect	'.debug_loc'
-.L84:
-	.word	-1,.L85,0,.L379-.L85
+.L70:
+	.word	-1,.L71,0,.L327-.L71
 	.half	2
 	.byte	138,0
-	.word	.L379-.L85,.L50-.L85
+	.word	.L327-.L71,.L40-.L71
 	.half	2
 	.byte	138,8
-	.word	.L50-.L85,.L50-.L85
+	.word	.L40-.L71,.L40-.L71
 	.half	2
 	.byte	138,0
-	.word	.L50-.L85,.L51-.L85
+	.word	.L40-.L71,.L41-.L71
 	.half	2
 	.byte	138,8
-	.word	.L51-.L85,.L51-.L85
+	.word	.L41-.L71,.L41-.L71
 	.half	2
 	.byte	138,0
-	.word	.L51-.L85,.L177-.L85
+	.word	.L41-.L71,.L151-.L71
 	.half	2
 	.byte	138,8
-	.word	.L177-.L85,.L177-.L85
+	.word	.L151-.L71,.L151-.L71
 	.half	2
 	.byte	138,0
 	.word	0,0
-.L184:
-	.word	-1,.L85,.L380-.L85,.L50-.L85
+.L158:
+	.word	-1,.L71,.L328-.L71,.L40-.L71
 	.half	1
 	.byte	82
-	.word	.L51-.L85,.L177-.L85
+	.word	.L41-.L71,.L151-.L71
 	.half	1
 	.byte	82
 	.word	0,0
-.L181:
-	.word	-1,.L85,0,.L177-.L85
+.L155:
+	.word	-1,.L71,0,.L151-.L71
 	.half	2
 	.byte	145,120
 	.word	0,0
 	.sdecl	'.debug_loc',debug,cluster('TCP_client_recv_cb')
 	.sect	'.debug_loc'
-.L88:
-	.word	-1,.L89,0,.L257-.L89
+.L74:
+	.word	-1,.L75,0,.L219-.L75
 	.half	2
 	.byte	138,0
 	.word	0,0
-.L258:
-	.word	-1,.L89,0,.L387-.L89
+.L220:
+	.word	-1,.L75,0,.L335-.L75
 	.half	1
 	.byte	100
-	.word	.L54-.L89,.L392-.L89
+	.word	.L44-.L75,.L340-.L75
 	.half	1
 	.byte	100
 	.word	0,0
-.L261:
-	.word	-1,.L89,0,.L388-.L89
+.L224:
+	.word	-1,.L75,0,.L336-.L75
 	.half	1
 	.byte	84
-	.word	.L54-.L89,.L393-.L89
+	.word	.L44-.L75,.L341-.L75
 	.half	1
 	.byte	84
 	.word	0,0
-.L260:
-	.word	-1,.L89,0,.L389-.L89
+.L223:
+	.word	-1,.L75,0,.L337-.L75
 	.half	1
 	.byte	102
-	.word	.L390-.L89,.L257-.L89
+	.word	.L338-.L75,.L219-.L75
 	.half	1
 	.byte	108
-	.word	.L391-.L89,.L264-.L89
+	.word	.L339-.L75,.L227-.L75
 	.half	1
 	.byte	100
-	.word	.L54-.L89,.L393-.L89
+	.word	.L44-.L75,.L341-.L75
 	.half	1
 	.byte	102
 	.word	0,0
-.L265:
-	.word	-1,.L89,.L55-.L89,.L54-.L89
+.L228:
+	.word	-1,.L75,.L45-.L75,.L44-.L75
 	.half	1
 	.byte	111
 	.word	0,0
-.L267:
-	.word	-1,.L89,.L388-.L89,.L54-.L89
+.L230:
+	.word	-1,.L75,.L336-.L75,.L44-.L75
 	.half	1
 	.byte	95
 	.word	0,0
-.L259:
-	.word	-1,.L89,0,.L389-.L89
+.L221:
+	.word	-1,.L75,0,.L337-.L75
 	.half	1
 	.byte	101
-	.word	.L387-.L89,.L389-.L89
+	.word	.L335-.L75,.L337-.L75
 	.half	1
 	.byte	100
-	.word	.L54-.L89,.L393-.L89
+	.word	.L44-.L75,.L341-.L75
 	.half	1
 	.byte	101
-	.word	.L392-.L89,.L393-.L89
+	.word	.L340-.L75,.L341-.L75
 	.half	1
 	.byte	100
 	.word	0,0
 	.sdecl	'.debug_loc',debug,cluster('TCP_server_init')
 	.sect	'.debug_loc'
-.L62:
-	.word	-1,.L63,0,.L172-.L63
+.L52:
+	.word	-1,.L53,0,.L146-.L53
 	.half	2
 	.byte	138,0
 	.word	0,0
-.L176:
-	.word	-1,.L63,.L270-.L63,.L271-.L63
+.L150:
+	.word	-1,.L53,.L232-.L53,.L233-.L53
 	.half	1
 	.byte	82
-	.word	.L3-.L63,.L172-.L63
+	.word	.L3-.L53,.L146-.L53
 	.half	1
 	.byte	82
 	.word	0,0
 	.sdecl	'.debug_loc',debug,cluster('echoAccept')
 	.sect	'.debug_loc'
-.L187:
-	.word	-1,.L65,0,.L272-.L65
+.L161:
+	.word	-1,.L55,0,.L234-.L55
 	.half	1
 	.byte	100
 	.word	0,0
-.L64:
-	.word	-1,.L65,0,.L185-.L65
+.L54:
+	.word	-1,.L55,0,.L159-.L55
 	.half	2
 	.byte	138,0
 	.word	0,0
-.L190:
-	.word	-1,.L65,0,.L272-.L65
+.L164:
+	.word	-1,.L55,0,.L234-.L55
 	.half	1
 	.byte	84
 	.word	0,0
-.L194:
-	.word	-1,.L65,.L272-.L65,.L273-.L65
+.L168:
+	.word	-1,.L55,.L234-.L55,.L235-.L55
 	.half	1
 	.byte	98
-	.word	.L274-.L65,.L185-.L65
+	.word	.L236-.L55,.L159-.L55
 	.half	1
 	.byte	111
-	.word	.L277-.L65,.L276-.L65
+	.word	.L239-.L55,.L238-.L55
 	.half	1
 	.byte	101
-	.word	.L5-.L65,.L6-.L65
+	.word	.L5-.L55,.L6-.L55
 	.half	1
 	.byte	98
 	.word	0,0
-.L189:
-	.word	-1,.L65,0,.L272-.L65
+.L163:
+	.word	-1,.L55,0,.L234-.L55
 	.half	1
 	.byte	101
-	.word	.L191-.L65,.L185-.L65
+	.word	.L165-.L55,.L159-.L55
 	.half	1
 	.byte	108
-	.word	.L275-.L65,.L276-.L65
+	.word	.L237-.L55,.L238-.L55
 	.half	1
 	.byte	100
-	.word	.L278-.L65,.L279-.L65
+	.word	.L240-.L55,.L241-.L55
 	.half	1
 	.byte	100
-	.word	.L280-.L65,.L281-.L65
+	.word	.L242-.L55,.L243-.L55
 	.half	1
 	.byte	100
-	.word	.L282-.L65,.L283-.L65
+	.word	.L244-.L55,.L245-.L55
 	.half	1
 	.byte	100
-	.word	.L284-.L65,.L285-.L65
+	.word	.L246-.L55,.L247-.L55
 	.half	1
 	.byte	100
-	.word	.L286-.L65,.L287-.L65
+	.word	.L248-.L55,.L249-.L55
 	.half	1
 	.byte	100
 	.word	0,0
-.L192:
-	.word	-1,.L65,.L6-.L65,.L185-.L65
+.L166:
+	.word	-1,.L55,.L6-.L55,.L159-.L55
 	.half	1
 	.byte	95
 	.word	0,0
 	.sdecl	'.debug_loc',debug,cluster('echoClose')
 	.sect	'.debug_loc'
-.L78:
-	.word	-1,.L79,0,.L235-.L79
+.L68:
+	.word	-1,.L69,0,.L211-.L69
 	.half	2
 	.byte	138,0
 	.word	0,0
-.L237:
-	.word	-1,.L79,0,.L345-.L79
+.L213:
+	.word	-1,.L69,0,.L313-.L69
 	.half	1
 	.byte	101
-	.word	.L348-.L79,.L235-.L79
+	.word	.L316-.L69,.L211-.L69
 	.half	1
 	.byte	108
-	.word	.L357-.L79,.L41-.L79
+	.word	.L325-.L69,.L39-.L69
 	.half	1
 	.byte	100
 	.word	0,0
-.L236:
-	.word	-1,.L79,0,.L346-.L79
+.L212:
+	.word	-1,.L69,0,.L314-.L69
 	.half	1
 	.byte	100
-	.word	.L347-.L79,.L235-.L79
+	.word	.L315-.L69,.L211-.L69
 	.half	1
 	.byte	111
-	.word	.L349-.L79,.L350-.L79
+	.word	.L317-.L69,.L318-.L69
 	.half	1
 	.byte	100
-	.word	.L351-.L79,.L352-.L79
+	.word	.L319-.L69,.L320-.L69
 	.half	1
 	.byte	100
-	.word	.L353-.L79,.L354-.L79
+	.word	.L321-.L69,.L322-.L69
 	.half	1
 	.byte	100
-	.word	.L355-.L79,.L356-.L79
+	.word	.L323-.L69,.L324-.L69
 	.half	1
 	.byte	100
-	.word	.L358-.L79,.L235-.L79
+	.word	.L326-.L69,.L211-.L69
 	.half	1
 	.byte	100
 	.word	0,0
 	.sdecl	'.debug_loc',debug,cluster('echoError')
 	.sect	'.debug_loc'
-.L205:
-	.word	-1,.L69,0,.L204-.L69
+.L180:
+	.word	-1,.L59,0,.L179-.L59
 	.half	1
 	.byte	100
 	.word	0,0
-.L68:
-	.word	-1,.L69,0,.L204-.L69
+.L58:
+	.word	-1,.L59,0,.L179-.L59
 	.half	2
 	.byte	138,0
 	.word	0,0
-.L206:
-	.word	-1,.L69,0,.L204-.L69
+.L181:
+	.word	-1,.L59,0,.L179-.L59
 	.half	1
 	.byte	84
 	.word	0,0
-.L207:
+.L182:
 	.word	0,0
 	.sdecl	'.debug_loc',debug,cluster('echoPoll')
 	.sect	'.debug_loc'
-.L209:
-	.word	-1,.L71,0,.L311-.L71
+.L184:
+	.word	-1,.L61,0,.L277-.L61
 	.half	1
 	.byte	100
-	.word	.L312-.L71,.L208-.L71
+	.word	.L278-.L61,.L183-.L61
 	.half	1
 	.byte	111
-	.word	.L315-.L71,.L314-.L71
+	.word	.L281-.L61,.L280-.L61
 	.half	1
 	.byte	101
-	.word	.L318-.L71,.L317-.L71
+	.word	.L284-.L61,.L283-.L61
 	.half	1
 	.byte	101
-	.word	.L23-.L71,.L319-.L71
+	.word	.L23-.L61,.L285-.L61
 	.half	1
 	.byte	100
-	.word	.L320-.L71,.L24-.L71
+	.word	.L286-.L61,.L24-.L61
 	.half	1
 	.byte	101
-	.word	.L21-.L71,.L321-.L71
+	.word	.L21-.L61,.L287-.L61
 	.half	1
 	.byte	100
 	.word	0,0
-.L70:
-	.word	-1,.L71,0,.L208-.L71
+.L60:
+	.word	-1,.L61,0,.L183-.L61
 	.half	2
 	.byte	138,0
 	.word	0,0
-.L212:
+.L187:
 	.word	0,0
-.L211:
+.L186:
 	.word	0,0
-.L210:
-	.word	-1,.L71,0,.L311-.L71
+.L185:
+	.word	-1,.L61,0,.L277-.L61
 	.half	1
 	.byte	101
-	.word	.L313-.L71,.L208-.L71
+	.word	.L279-.L61,.L183-.L61
 	.half	1
 	.byte	108
-	.word	.L311-.L71,.L314-.L71
+	.word	.L277-.L61,.L280-.L61
 	.half	1
 	.byte	100
-	.word	.L316-.L71,.L317-.L71
+	.word	.L282-.L61,.L283-.L61
 	.half	1
 	.byte	100
-	.word	.L23-.L71,.L319-.L71
+	.word	.L23-.L61,.L285-.L61
 	.half	1
 	.byte	101
-	.word	.L319-.L71,.L24-.L71
+	.word	.L285-.L61,.L24-.L61
 	.half	1
 	.byte	100
-	.word	.L21-.L71,.L321-.L71
+	.word	.L21-.L61,.L287-.L61
 	.half	1
 	.byte	101
-	.word	.L321-.L71,.L322-.L71
+	.word	.L287-.L61,.L288-.L61
 	.half	1
 	.byte	100
 	.word	0,0
 	.sdecl	'.debug_loc',debug,cluster('echoRecv')
 	.sect	'.debug_loc'
-.L196:
-	.word	-1,.L67,0,.L288-.L67
+.L170:
+	.word	-1,.L57,0,.L250-.L57
 	.half	1
 	.byte	100
-	.word	.L290-.L67,.L195-.L67
+	.word	.L255-.L57,.L169-.L57
 	.half	1
 	.byte	111
-	.word	.L295-.L67,.L289-.L67
+	.word	.L256-.L57,.L251-.L57
 	.half	1
 	.byte	101
-	.word	.L8-.L67,.L296-.L67
+	.word	.L8-.L57,.L257-.L57
 	.half	1
 	.byte	100
-	.word	.L11-.L67,.L299-.L67
+	.word	.L11-.L57,.L259-.L57
 	.half	1
 	.byte	100
-	.word	.L302-.L67,.L300-.L67
+	.word	.L261-.L57,.L260-.L57
 	.half	1
 	.byte	101
-	.word	.L305-.L67,.L304-.L67
+	.word	.L264-.L57,.L263-.L57
 	.half	1
 	.byte	101
-	.word	.L15-.L67,.L307-.L67
+	.word	.L13-.L57,.L265-.L57
+	.half	1
+	.byte	100
+	.word	.L267-.L57,.L266-.L57
+	.half	1
+	.byte	101
+	.word	.L270-.L57,.L269-.L57
+	.half	1
+	.byte	101
+	.word	.L16-.L57,.L271-.L57
+	.half	1
+	.byte	100
+	.word	.L15-.L57,.L273-.L57
 	.half	1
 	.byte	100
 	.word	0,0
-.L66:
-	.word	-1,.L67,0,.L195-.L67
+.L56:
+	.word	-1,.L57,0,.L169-.L57
 	.half	2
 	.byte	138,0
 	.word	0,0
-.L200:
-	.word	-1,.L67,0,.L289-.L67
+.L174:
+	.word	-1,.L57,0,.L251-.L57
 	.half	1
 	.byte	84
-	.word	.L293-.L67,.L294-.L67
+	.word	.L253-.L57,.L169-.L57
 	.half	1
-	.byte	95
-	.word	.L8-.L67,.L297-.L67
-	.half	1
-	.byte	84
-	.word	.L8-.L67,.L298-.L67
-	.half	1
-	.byte	95
-	.word	.L11-.L67,.L300-.L67
+	.byte	88
+	.word	.L8-.L57,.L258-.L57
 	.half	1
 	.byte	84
-	.word	.L16-.L67,.L203-.L67
+	.word	.L11-.L57,.L260-.L57
 	.half	1
 	.byte	84
-	.word	.L15-.L67,.L308-.L67
+	.word	.L13-.L57,.L266-.L57
 	.half	1
 	.byte	84
-	.word	.L12-.L67,.L195-.L67
+	.word	.L16-.L57,.L177-.L57
 	.half	1
-	.byte	95
+	.byte	84
+	.word	.L15-.L57,.L274-.L57
+	.half	1
+	.byte	84
 	.word	0,0
-.L202:
+.L176:
 	.word	0,0
-.L199:
-	.word	-1,.L67,0,.L289-.L67
+.L173:
+	.word	-1,.L57,0,.L251-.L57
 	.half	1
 	.byte	102
-	.word	.L292-.L67,.L195-.L67
+	.word	.L254-.L57,.L169-.L57
 	.half	1
 	.byte	109
-	.word	.L8-.L67,.L296-.L67
+	.word	.L8-.L57,.L257-.L57
 	.half	1
 	.byte	102
-	.word	.L296-.L67,.L297-.L67
+	.word	.L257-.L57,.L258-.L57
 	.half	1
 	.byte	100
-	.word	.L11-.L67,.L300-.L67
+	.word	.L11-.L57,.L260-.L57
 	.half	1
 	.byte	102
-	.word	.L16-.L67,.L306-.L67
+	.word	.L13-.L57,.L266-.L57
 	.half	1
 	.byte	102
-	.word	.L306-.L67,.L203-.L67
+	.word	.L16-.L57,.L177-.L57
+	.half	1
+	.byte	102
+	.word	.L272-.L57,.L178-.L57
 	.half	1
 	.byte	101
-	.word	.L15-.L67,.L309-.L67
+	.word	.L15-.L57,.L275-.L57
 	.half	1
 	.byte	102
-	.word	.L310-.L67,.L10-.L67
+	.word	.L276-.L57,.L10-.L57
 	.half	1
 	.byte	100
 	.word	0,0
-.L201:
+.L175:
 	.word	0,0
-.L197:
-	.word	-1,.L67,0,.L288-.L67
+.L171:
+	.word	-1,.L57,0,.L250-.L57
 	.half	1
 	.byte	101
-	.word	.L291-.L67,.L195-.L67
+	.word	.L252-.L57,.L169-.L57
 	.half	1
 	.byte	108
-	.word	.L288-.L67,.L289-.L67
+	.word	.L250-.L57,.L251-.L57
 	.half	1
 	.byte	100
-	.word	.L8-.L67,.L297-.L67
+	.word	.L8-.L57,.L258-.L57
 	.half	1
 	.byte	101
-	.word	.L11-.L67,.L301-.L67
+	.word	.L11-.L57,.L259-.L57
 	.half	1
 	.byte	101
-	.word	.L301-.L67,.L300-.L67
+	.word	.L259-.L57,.L260-.L57
 	.half	1
 	.byte	100
-	.word	.L303-.L67,.L304-.L67
+	.word	.L262-.L57,.L263-.L57
 	.half	1
 	.byte	100
-	.word	.L16-.L67,.L306-.L67
+	.word	.L13-.L57,.L265-.L57
 	.half	1
 	.byte	101
-	.word	.L15-.L67,.L307-.L67
+	.word	.L265-.L57,.L266-.L57
+	.half	1
+	.byte	100
+	.word	.L268-.L57,.L269-.L57
+	.half	1
+	.byte	100
+	.word	.L16-.L57,.L177-.L57
 	.half	1
 	.byte	101
-	.word	.L307-.L67,.L309-.L67
+	.word	.L15-.L57,.L273-.L57
+	.half	1
+	.byte	101
+	.word	.L273-.L57,.L275-.L57
 	.half	1
 	.byte	100
 	.word	0,0
 	.sdecl	'.debug_loc',debug,cluster('echoSend')
 	.sect	'.debug_loc'
-.L74:
-	.word	-1,.L75,0,.L223-.L75
+.L64:
+	.word	-1,.L65,0,.L198-.L65
 	.half	2
 	.byte	138,0
 	.word	0,0
-.L225:
-	.word	-1,.L75,0,.L331-.L75
+.L200:
+	.word	-1,.L65,0,.L297-.L65
 	.half	1
 	.byte	101
-	.word	.L333-.L75,.L223-.L75
+	.word	.L299-.L65,.L198-.L65
 	.half	1
 	.byte	108
 	.word	0,0
-.L224:
-	.word	-1,.L75,0,.L332-.L75
+.L199:
+	.word	-1,.L65,0,.L298-.L65
 	.half	1
 	.byte	100
-	.word	.L334-.L75,.L223-.L75
+	.word	.L300-.L65,.L198-.L65
 	.half	1
 	.byte	111
-	.word	.L337-.L75,.L335-.L75
+	.word	.L303-.L65,.L301-.L65
+	.half	1
+	.byte	100
+	.word	.L304-.L65,.L305-.L65
 	.half	1
 	.byte	100
 	.word	0,0
-.L226:
-	.word	-1,.L75,.L332-.L75,.L335-.L75
+.L202:
+	.word	-1,.L65,.L298-.L65,.L301-.L65
 	.half	1
 	.byte	82
-	.word	.L336-.L75,.L32-.L75
+	.word	.L302-.L65,.L32-.L65
 	.half	1
 	.byte	95
 	.word	0,0
 	.sdecl	'.debug_loc',debug,cluster('echoSent')
 	.sect	'.debug_loc'
-.L214:
-	.word	-1,.L73,0,.L323-.L73
+.L189:
+	.word	-1,.L63,0,.L289-.L63
 	.half	1
 	.byte	100
-	.word	.L219-.L73,.L213-.L73
+	.word	.L194-.L63,.L188-.L63
 	.half	1
 	.byte	111
-	.word	.L325-.L73,.L324-.L73
+	.word	.L291-.L63,.L290-.L63
 	.half	1
 	.byte	101
-	.word	.L328-.L73,.L327-.L73
+	.word	.L294-.L63,.L293-.L63
 	.half	1
 	.byte	101
-	.word	.L28-.L73,.L329-.L73
+	.word	.L28-.L63,.L295-.L63
 	.half	1
 	.byte	100
-	.word	.L330-.L73,.L29-.L73
+	.word	.L296-.L63,.L29-.L63
 	.half	1
 	.byte	101
 	.word	0,0
-.L72:
-	.word	-1,.L73,0,.L213-.L73
+.L62:
+	.word	-1,.L63,0,.L188-.L63
 	.half	2
 	.byte	138,0
 	.word	0,0
-.L222:
+.L197:
 	.word	0,0
-.L217:
-	.word	-1,.L73,0,.L324-.L73
+.L192:
+	.word	-1,.L63,0,.L290-.L63
 	.half	1
 	.byte	84
-	.word	.L28-.L73,.L29-.L73
+	.word	.L28-.L63,.L29-.L63
 	.half	1
 	.byte	84
 	.word	0,0
-.L215:
-	.word	-1,.L73,0,.L323-.L73
+.L190:
+	.word	-1,.L63,0,.L289-.L63
 	.half	1
 	.byte	101
-	.word	.L221-.L73,.L213-.L73
+	.word	.L196-.L63,.L188-.L63
 	.half	1
 	.byte	108
-	.word	.L323-.L73,.L324-.L73
+	.word	.L289-.L63,.L290-.L63
 	.half	1
 	.byte	100
-	.word	.L326-.L73,.L327-.L73
+	.word	.L292-.L63,.L293-.L63
 	.half	1
 	.byte	100
-	.word	.L28-.L73,.L329-.L73
+	.word	.L28-.L63,.L295-.L63
 	.half	1
 	.byte	101
-	.word	.L329-.L73,.L29-.L73
+	.word	.L295-.L63,.L29-.L63
 	.half	1
 	.byte	100
 	.word	0,0
 	.sdecl	'.debug_loc',debug,cluster('echoUnpack')
 	.sect	'.debug_loc'
-.L76:
-	.word	-1,.L77,0,.L227-.L77
+.L66:
+	.word	-1,.L67,0,.L203-.L67
 	.half	2
 	.byte	138,0
 	.word	0,0
-.L229:
-	.word	-1,.L77,0,.L37-.L77
+.L205:
+	.word	-1,.L67,0,.L35-.L67
 	.half	1
 	.byte	101
-	.word	.L339-.L77,.L227-.L77
+	.word	.L307-.L67,.L203-.L67
 	.half	1
 	.byte	111
 	.word	0,0
-.L234:
-	.word	-1,.L77,.L343-.L77,.L36-.L77
+.L210:
+	.word	-1,.L67,.L311-.L67,.L34-.L67
 	.half	1
 	.byte	82
 	.word	0,0
-.L232:
-	.word	-1,.L77,.L341-.L77,.L36-.L77
+.L208:
+	.word	-1,.L67,.L309-.L67,.L34-.L67
 	.half	1
 	.byte	95
 	.word	0,0
-.L230:
-	.word	-1,.L77,.L340-.L77,.L36-.L77
+.L206:
+	.word	-1,.L67,.L308-.L67,.L34-.L67
 	.half	1
 	.byte	110
-	.word	.L342-.L77,.L343-.L77
+	.word	.L310-.L67,.L311-.L67
 	.half	1
 	.byte	100
 	.word	0,0
-.L228:
-	.word	-1,.L77,0,.L37-.L77
+.L204:
+	.word	-1,.L67,0,.L35-.L67
 	.half	1
 	.byte	100
-	.word	.L338-.L77,.L227-.L77
+	.word	.L306-.L67,.L203-.L67
 	.half	1
 	.byte	108
-	.word	.L344-.L77,.L36-.L77
-	.half	1
-	.byte	100
-	.word	0,0
-	.sdecl	'.debug_loc',debug,cluster('tcp_server_accept')
-	.sect	'.debug_loc'
-.L250:
-	.word	-1,.L81,0,.L359-.L81
-	.half	1
-	.byte	100
-	.word	0,0
-.L252:
-	.word	-1,.L81,0,.L360-.L81
-	.half	1
-	.byte	84
-	.word	0,0
-.L251:
-	.word	-1,.L81,0,.L361-.L81
-	.half	1
-	.byte	101
-	.word	.L359-.L81,.L360-.L81
-	.half	1
-	.byte	100
-	.word	0,0
-.L80:
-	.word	-1,.L81,0,.L249-.L81
-	.half	2
-	.byte	138,0
-	.word	0,0
-	.sdecl	'.debug_loc',debug,cluster('tcp_server_recv')
-	.sect	'.debug_loc'
-.L239:
-	.word	-1,.L83,0,.L44-.L83
-	.half	1
-	.byte	100
-	.word	.L43-.L83,.L375-.L83
-	.half	1
-	.byte	100
-	.word	0,0
-.L244:
-	.word	-1,.L83,0,.L363-.L83
-	.half	1
-	.byte	84
-	.word	.L43-.L83,.L376-.L83
-	.half	1
-	.byte	84
-	.word	0,0
-.L246:
-	.word	-1,.L83,.L366-.L83,.L367-.L83
-	.half	1
-	.byte	95
-	.word	0,0
-.L243:
-	.word	-1,.L83,0,.L363-.L83
-	.half	1
-	.byte	102
-	.word	.L365-.L83,.L238-.L83
-	.half	1
-	.byte	108
-	.word	.L374-.L83,.L248-.L83
-	.half	1
-	.byte	100
-	.word	.L43-.L83,.L377-.L83
-	.half	1
-	.byte	102
-	.word	0,0
-.L82:
-	.word	-1,.L83,0,.L362-.L83
-	.half	2
-	.byte	138,0
-	.word	.L362-.L83,.L47-.L83
-	.half	2
-	.byte	138,8
-	.word	.L47-.L83,.L47-.L83
-	.half	2
-	.byte	138,0
-	.word	.L47-.L83,.L238-.L83
-	.half	2
-	.byte	138,8
-	.word	.L238-.L83,.L238-.L83
-	.half	2
-	.byte	138,0
-	.word	0,0
-.L241:
-	.word	-1,.L83,0,.L44-.L83
-	.half	1
-	.byte	101
-	.word	.L364-.L83,.L238-.L83
-	.half	1
-	.byte	111
-	.word	.L368-.L83,.L369-.L83
-	.half	1
-	.byte	100
-	.word	.L370-.L83,.L371-.L83
-	.half	1
-	.byte	100
-	.word	.L372-.L83,.L373-.L83
-	.half	1
-	.byte	100
-	.word	.L43-.L83,.L375-.L83
-	.half	1
-	.byte	101
-	.word	.L375-.L83,.L377-.L83
-	.half	1
-	.byte	100
-	.word	.L378-.L83,.L46-.L83
+	.word	.L312-.L67,.L34-.L67
 	.half	1
 	.byte	100
 	.word	0,0
 	.sdecl	'.debug_frame',debug
 	.sect	'.debug_frame'
-.L563:
+.L496:
 	.word	48
 	.word	-1
 	.byte	3,0,2,1,27,12,26,0,8,27,8,26,8,28,8,29,8,30,8,31,8,34,8,35,8,32,8,33,8,16,8,17,8,24,8,25,8,36,8,37,8,38
@@ -5005,88 +4651,73 @@ _999001_recv_buf:	.type	object
 	.sdecl	'.debug_frame',debug,cluster('TCP_server_init')
 	.sect	'.debug_frame'
 	.word	12
-	.word	.L563,.L63,.L172-.L63
+	.word	.L496,.L53,.L146-.L53
 	.sdecl	'.debug_frame',debug,cluster('echoAccept')
 	.sect	'.debug_frame'
 	.word	12
-	.word	.L563,.L65,.L185-.L65
+	.word	.L496,.L55,.L159-.L55
 	.sdecl	'.debug_frame',debug,cluster('echoRecv')
 	.sect	'.debug_frame'
 	.word	12
-	.word	.L563,.L67,.L195-.L67
+	.word	.L496,.L57,.L169-.L57
 	.sdecl	'.debug_frame',debug,cluster('echoError')
 	.sect	'.debug_frame'
 	.word	12
-	.word	.L563,.L69,.L204-.L69
+	.word	.L496,.L59,.L179-.L59
 	.sdecl	'.debug_frame',debug,cluster('echoPoll')
 	.sect	'.debug_frame'
 	.word	12
-	.word	.L563,.L71,.L208-.L71
+	.word	.L496,.L61,.L183-.L61
 	.sdecl	'.debug_frame',debug,cluster('echoSent')
 	.sect	'.debug_frame'
 	.word	12
-	.word	.L563,.L73,.L213-.L73
+	.word	.L496,.L63,.L188-.L63
 	.sdecl	'.debug_frame',debug,cluster('echoSend')
 	.sect	'.debug_frame'
 	.word	12
-	.word	.L563,.L75,.L223-.L75
+	.word	.L496,.L65,.L198-.L65
 	.sdecl	'.debug_frame',debug,cluster('echoUnpack')
 	.sect	'.debug_frame'
 	.word	12
-	.word	.L563,.L77,.L227-.L77
+	.word	.L496,.L67,.L203-.L67
 	.sdecl	'.debug_frame',debug,cluster('echoClose')
 	.sect	'.debug_frame'
 	.word	12
-	.word	.L563,.L79,.L235-.L79
-	.sdecl	'.debug_frame',debug,cluster('tcp_server_accept')
-	.sect	'.debug_frame'
-	.word	12
-	.word	.L563,.L81,.L249-.L81
-	.sdecl	'.debug_frame',debug,cluster('tcp_server_recv')
-	.sect	'.debug_frame'
-	.word	52
-	.word	.L563,.L83,.L238-.L83
-	.byte	4
-	.word	(.L362-.L83)/2
-	.byte	19,8,22,26,3,19,138,8,4
-	.word	(.L47-.L362)/2
-	.byte	19,0,8,26,19,8,22,26,3,19,138,8,4
-	.word	(.L238-.L47)/2
-	.byte	19,0,8,26,0
+	.word	.L496,.L69,.L211-.L69
 	.sdecl	'.debug_frame',debug,cluster('TCP_client_init')
 	.sect	'.debug_frame'
 	.word	68
-	.word	.L563,.L85,.L177-.L85
+	.word	.L496,.L71,.L151-.L71
 	.byte	4
-	.word	(.L379-.L85)/2
+	.word	(.L327-.L71)/2
 	.byte	19,8,22,26,3,19,138,8,4
-	.word	(.L50-.L379)/2
+	.word	(.L40-.L327)/2
 	.byte	19,0,8,26,19,8,22,26,3,19,138,8,4
-	.word	(.L51-.L50)/2
+	.word	(.L41-.L40)/2
 	.byte	19,0,8,26,19,8,22,26,3,19,138,8,4
-	.word	(.L177-.L51)/2
+	.word	(.L151-.L41)/2
 	.byte	19,0,8,26
 	.sdecl	'.debug_frame',debug,cluster('TCP_client_connected_cb')
 	.sect	'.debug_frame'
 	.word	12
-	.word	.L563,.L87,.L253-.L87
+	.word	.L496,.L73,.L214-.L73
 	.sdecl	'.debug_frame',debug,cluster('TCP_client_recv_cb')
 	.sect	'.debug_frame'
 	.word	12
-	.word	.L563,.L89,.L257-.L89
+	.word	.L496,.L75,.L219-.L75
 
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   536  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   537  static err_t TCP_poll_cb(void *arg, struct tcp_pcb *tpcb)
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   538  {
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   539      #define TCP_CLIENT_SEND_BUF_LEN   200
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   540      char buf[TCP_CLIENT_SEND_BUF_LEN] = { 0xAA, 0x55, 0xAA, 0xAA, 0x55 };
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   541  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   542      tcp_write(tpcb, buf, sizeof(buf), 1);
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   543      tcp_output(tpcb);
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   544      return ERR_OK;
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   545  }
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   546  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   547  
-; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   548  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   545  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   546  static err_t TCP_poll_cb(void *arg, struct tcp_pcb *tpcb)
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   547  {
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   548      #define TCP_CLIENT_SEND_BUF_LEN   200
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   549      char buf[TCP_CLIENT_SEND_BUF_LEN] = { 0xAA, 0x55, 0xAA, 0xAA, 0x55 };
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   550  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   551      tcp_write(tpcb, buf, sizeof(buf), 1);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   552      tcp_output(tpcb);
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   553      return ERR_OK;
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   554  }
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   555  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   556  
+; ..\0_Src\0_AppSw\Tricore\Main\Echo.c	   557  
 
 	; Module end
